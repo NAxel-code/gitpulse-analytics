@@ -1,26 +1,44 @@
 services:
-  timescaledb:
-    image: timescale/timescaledb:latest-pg16
-    container_name: omnipulse-timescaledb
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: gitpulse-backend
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./backend/data:/app/data
     environment:
-      POSTGRES_USER: omnipulse_user
-      POSTGRES_PASSWORD: omnipulse_password
-      POSTGRES_DB: omnipulse_analytics
-    ports:
-      - "5432:5432"
-    volumes:
-      - timescaledb_data:/var/lib/postgresql/data
+      - PYTHONUNBUFFERED=1
+      - DUCKDB_PATH=/app/data/omnipulse.duckdb
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 5s
     restart: unless-stopped
+    networks:
+      - gitpulse-net
 
-  redis:
-    image: redis:7-alpine
-    container_name: omnipulse-redis
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: gitpulse-frontend
     ports:
-      - "6379:6379"
-    volumes:
-      - redis_data:/data
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+      - BACKEND_INTERNAL_URL=http://backend:8000
+      - NEXT_PUBLIC_API_URL=http://localhost:8000/api/v1/github
+    depends_on:
+      backend:
+        condition: service_healthy
     restart: unless-stopped
+    networks:
+      - gitpulse-net
 
-volumes:
-  timescaledb_data:
-  redis_data:
+networks:
+  gitpulse-net:
+    driver: bridge
