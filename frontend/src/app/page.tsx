@@ -174,6 +174,12 @@ export default function GitPulseDashboard() {
         isOpen={isAIModalOpen}
         onClose={() => setIsAIModalOpen(false)}
         currentRepo={currentRepo}
+        onViewJourney={handleOpenJourney}
+        onRepoChange={(r) => {
+          setCurrentRepo(r);
+          handleSyncRepo(r);
+        }}
+        onSyncRepo={handleSyncRepo}
       />
     </div>
   );

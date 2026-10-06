@@ -139,3 +139,20 @@ def test_github_ai_insight_endpoint():
     assert "generated_sql" in data
     assert "summary" in data
     assert data["execution_time_ms"] >= 0
+
+def test_github_ai_insight_username_lookup():
+    payload = {"query": "Naxel-code", "repo_name": "vercel/next.js"}
+    response = client.post("/api/v1/ai/insight", json=payload)
+    assert response.status_code == 200
+    data = response.json()
+    assert "Naxel-code" in data["summary"]
+    assert data["chart_type"] in ["developer_profile", "not_found"]
+
+def test_github_ai_insight_command_sync():
+    payload = {"query": "sync", "repo_name": "vercel/next.js"}
+    response = client.post("/api/v1/ai/insight", json=payload)
+    assert response.status_code == 200
+    data = response.json()
+    assert data["chart_type"] == "command_action"
+    assert data["action"]["type"] == "sync"
+

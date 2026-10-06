@@ -120,3 +120,4 @@ class AIInsightResponse(BaseModel):
     chart_data: List[Dict[str, Any]] = Field(default_factory=list)
     confidence: float = 0.95
     execution_time_ms: int = 10
+    action: Optional[Dict[str, Any]] = None
