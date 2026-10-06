@@ -1,0 +1,26 @@
+services:
+  timescaledb:
+    image: timescale/timescaledb:latest-pg16
+    container_name: omnipulse-timescaledb
+    environment:
+      POSTGRES_USER: omnipulse_user
+      POSTGRES_PASSWORD: omnipulse_password
+      POSTGRES_DB: omnipulse_analytics
+    ports:
+      - "5432:5432"
+    volumes:
+      - timescaledb_data:/var/lib/postgresql/data
+    restart: unless-stopped
+
+  redis:
+    image: redis:7-alpine
+    container_name: omnipulse-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    restart: unless-stopped
+
+volumes:
+  timescaledb_data:
+  redis_data:
