@@ -10,6 +10,7 @@ import {
   Tooltip,
   ResponsiveContainer,
 } from "recharts";
+import { AI_API_URL } from "@/lib/api";
 
 interface AIModalProps {
   isOpen: boolean;
@@ -41,7 +42,7 @@ export function AIModal({ isOpen, onClose, currentRepo }: AIModalProps) {
 
     setLoading(true);
     try {
-      const res = await fetch("http://127.0.0.1:8000/api/v1/ai/insight", {
+      const res = await fetch(`${AI_API_URL}/insight`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ query: q, repo_name: currentRepo }),

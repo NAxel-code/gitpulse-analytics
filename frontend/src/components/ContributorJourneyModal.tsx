@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { X, GitCommit, GitPullRequest, AlertCircle, Award, Clock, ArrowRight } from "lucide-react";
 import { formatNumber } from "@/lib/utils";
+import { GITHUB_API_URL } from "@/lib/api";
 
 interface JourneyEvent {
   timestamp: string;
@@ -41,7 +42,7 @@ export function ContributorJourneyModal({
   useEffect(() => {
     if (!isOpen || !login) return;
     setLoading(true);
-    fetch(`http://127.0.0.1:8000/api/v1/github/contributor-journey?repo=${encodeURIComponent(repoName)}&login=${encodeURIComponent(login)}`)
+    fetch(`${GITHUB_API_URL}/contributor-journey?repo=${encodeURIComponent(repoName)}&login=${encodeURIComponent(login)}`)
       .then((res) => res.json())
       .then((d) => setData(d))
       .catch((err) => console.error("Error fetching journey:", err))

@@ -9,6 +9,7 @@ import { ContributorTable } from "@/components/ContributorTable";
 import { ContributorJourneyModal } from "@/components/ContributorJourneyModal";
 import { DORAFeed } from "@/components/DORAFeed";
 import { AIModal } from "@/components/AIModal";
+import { GITHUB_API_URL } from "@/lib/api";
 
 export default function GitPulseDashboard() {
   const [currentRepo, setCurrentRepo] = useState("vercel/next.js");
@@ -63,16 +64,14 @@ export default function GitPulseDashboard() {
   }, []);
 
   const fetchData = async () => {
-    const baseUrl = "http://127.0.0.1:8000/api/v1/github";
-
     try {
       const [kpiRes, timelineRes, funnelRes, contribRes, anomalyRes, summaryRes] = await Promise.all([
-        fetch(`${baseUrl}/overview?repo=${encodeURIComponent(currentRepo)}&days=${days}`).then((r) => r.json()),
-        fetch(`${baseUrl}/timeline?repo=${encodeURIComponent(currentRepo)}&days=${days}`).then((r) => r.json()),
-        fetch(`${baseUrl}/pr-funnel?repo=${encodeURIComponent(currentRepo)}&days=${days}`).then((r) => r.json()),
-        fetch(`${baseUrl}/contributors?repo=${encodeURIComponent(currentRepo)}&days=${days}`).then((r) => r.json()),
-        fetch(`${baseUrl}/anomalies?repo=${encodeURIComponent(currentRepo)}`).then((r) => r.json()),
-        fetch(`${baseUrl}/executive-summary?repo=${encodeURIComponent(currentRepo)}`).then((r) => r.json()),
+        fetch(`${GITHUB_API_URL}/overview?repo=${encodeURIComponent(currentRepo)}&days=${days}`).then((r) => r.json()),
+        fetch(`${GITHUB_API_URL}/timeline?repo=${encodeURIComponent(currentRepo)}&days=${days}`).then((r) => r.json()),
+        fetch(`${GITHUB_API_URL}/pr-funnel?repo=${encodeURIComponent(currentRepo)}&days=${days}`).then((r) => r.json()),
+        fetch(`${GITHUB_API_URL}/contributors?repo=${encodeURIComponent(currentRepo)}&days=${days}`).then((r) => r.json()),
+        fetch(`${GITHUB_API_URL}/anomalies?repo=${encodeURIComponent(currentRepo)}`).then((r) => r.json()),
+        fetch(`${GITHUB_API_URL}/executive-summary?repo=${encodeURIComponent(currentRepo)}`).then((r) => r.json()),
       ]);
 
       setKpiData(kpiRes);
@@ -89,7 +88,7 @@ export default function GitPulseDashboard() {
   const handleSyncRepo = async (repoName: string) => {
     setSyncing(true);
     try {
-      await fetch("http://127.0.0.1:8000/api/v1/github/sync", {
+      await fetch(`${GITHUB_API_URL}/sync`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
