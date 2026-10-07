@@ -12,7 +12,17 @@ interface PRFunnelStage {
 }
 
 export function FunnelChart({ stages }: { stages: PRFunnelStage[] }) {
-  if (!stages || stages.length === 0) return null;
+  if (!stages || stages.length === 0) {
+    return (
+      <div className="rounded-xl border border-zinc-800/80 bg-zinc-900/60 p-5 shadow-sm flex flex-col justify-center items-center h-full min-h-[260px] text-center">
+        <GitPullRequest className="h-8 w-8 text-zinc-600 mb-2" />
+        <h4 className="text-xs font-semibold text-zinc-300">Data PR Funnel Belum Tersedia</h4>
+        <p className="text-[11px] text-zinc-500 mt-1 max-w-xs">
+          Belum ada aktivitas pull request yang tercatat. Jalankan &apos;Sync Live Repo&apos; untuk mengambil data lifecycle PR.
+        </p>
+      </div>
+    );
+  }
 
   const maxCount = stages[0]?.count || 1;
 

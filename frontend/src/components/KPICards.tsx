@@ -13,7 +13,6 @@ import {
   Activity,
 } from "lucide-react";
 import { NumberTicker } from "./magicui/number-ticker";
-import { BorderBeam } from "./magicui/border-beam";
 
 interface RepoKPIData {
   total_commits: number;
@@ -82,7 +81,7 @@ export function KPICards({ data }: { data: RepoKPIData | null }) {
       suffix: "%",
       delta: data.pr_rate_change_pct,
       icon: GitPullRequest,
-      highlight: true, // Uses Magic UI Border Beam
+      highlight: true,
       subtitle: `${data.merged_prs} of ${data.total_prs} PRs merged`,
     },
     {
@@ -115,14 +114,12 @@ export function KPICards({ data }: { data: RepoKPIData | null }) {
           return (
             <div
               key={idx}
-              className={`relative overflow-hidden rounded-xl border bg-zinc-900/70 p-5 shadow-sm transition hover:border-zinc-700/80 ${
-                kpi.highlight ? "border-violet-500/40 bg-zinc-900/90" : "border-zinc-800/80"
+              className={`relative overflow-hidden rounded-xl border bg-zinc-900/70 p-5 shadow-sm transition hover:border-zinc-700 ${
+                kpi.highlight
+                  ? "border-zinc-700 bg-zinc-900/90 before:absolute before:inset-x-0 before:top-0 before:h-0.5 before:bg-indigo-500"
+                  : "border-zinc-800/80"
               }`}
             >
-              {kpi.highlight && (
-                <BorderBeam size={180} duration={8} borderWidth={1.5} colorFrom="#8b5cf6" colorTo="#38bdf8" />
-              )}
-
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-1.5">
                   <span className="text-xs font-medium text-zinc-400">{kpi.title}</span>
@@ -133,7 +130,7 @@ export function KPICards({ data }: { data: RepoKPIData | null }) {
                     </span>
                   )}
                 </div>
-                <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-zinc-800 text-zinc-300">
+                <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-zinc-800/90 text-zinc-300 border border-zinc-700/50">
                   <Icon className="h-4 w-4" />
                 </div>
               </div>
@@ -142,15 +139,15 @@ export function KPICards({ data }: { data: RepoKPIData | null }) {
                 <NumberTicker
                   value={kpi.value}
                   decimalPlaces={kpi.decimalPlaces || 0}
-                  className="text-3xl font-extrabold text-white"
+                  className="text-3xl font-bold tracking-tight text-white font-mono tabular-nums"
                 />
-                {kpi.suffix && <span className="text-2xl font-bold text-white">{kpi.suffix}</span>}
+                {kpi.suffix && <span className="text-2xl font-semibold text-zinc-300 font-mono">{kpi.suffix}</span>}
               </div>
 
               <div className="mt-2 flex items-center justify-between text-xs">
                 <span className="text-zinc-500 text-[11px] truncate max-w-[130px]">{kpi.subtitle}</span>
                 <div
-                  className={`flex items-center gap-0.5 font-semibold ${
+                  className={`flex items-center gap-0.5 font-semibold font-mono text-[11px] ${
                     isPositive ? "text-emerald-400" : "text-rose-400"
                   }`}
                 >
@@ -180,8 +177,8 @@ export function KPICards({ data }: { data: RepoKPIData | null }) {
             </div>
           </div>
           <div className="text-right">
-            <div className="text-sm font-bold text-white">{leadTime.toFixed(1)} hrs</div>
-            <div className={`text-[10px] font-semibold ${leadTimeDelta <= 0 ? "text-emerald-400" : "text-rose-400"}`}>
+            <div className="text-sm font-mono font-bold text-white tabular-nums">{leadTime.toFixed(1)} hrs</div>
+            <div className={`text-[10px] font-mono font-semibold ${leadTimeDelta <= 0 ? "text-emerald-400" : "text-rose-400"}`}>
               {leadTimeDelta <= 0 ? `▼ ${Math.abs(leadTimeDelta)}% faster` : `▲ ${leadTimeDelta}% slower`}
             </div>
           </div>
@@ -202,8 +199,8 @@ export function KPICards({ data }: { data: RepoKPIData | null }) {
             </div>
           </div>
           <div className="text-right">
-            <div className="text-sm font-bold text-white">{ttfr.toFixed(1)} hrs</div>
-            <div className={`text-[10px] font-semibold ${ttfrDelta <= 0 ? "text-emerald-400" : "text-rose-400"}`}>
+            <div className="text-sm font-mono font-bold text-white tabular-nums">{ttfr.toFixed(1)} hrs</div>
+            <div className={`text-[10px] font-mono font-semibold ${ttfrDelta <= 0 ? "text-emerald-400" : "text-rose-400"}`}>
               {ttfrDelta <= 0 ? `▼ ${Math.abs(ttfrDelta)}% faster` : `▲ ${ttfrDelta}% slower`}
             </div>
           </div>

@@ -154,14 +154,38 @@ export function ContributorTable({ data, onSelectContributor }: ContributorTable
             </tr>
           </thead>
           <tbody className="divide-y divide-zinc-800/60">
-            {filtered.slice(0, 10).map((dev, idx) => {
-              return (
-                <tr
-                  key={idx}
-                  onClick={() => onSelectContributor?.(dev.login)}
-                  className="hover:bg-zinc-850/80 cursor-pointer transition group"
-                  title={`Klik untuk melihat riwayat aktivitas @${dev.login}`}
-                >
+            {filtered.length === 0 ? (
+              <tr>
+                <td colSpan={7} className="py-8 text-center">
+                  <p className="text-xs font-medium text-zinc-300">
+                    {search
+                      ? `Tidak ditemukan kontributor yang cocok dengan "${search}".`
+                      : "Belum ada data kontributor untuk repositori ini."}
+                  </p>
+                  <p className="text-[11px] text-zinc-500 mt-1">
+                    {search
+                      ? "Periksa kembali ejaan username atau hapus filter pencarian."
+                      : "Klik tombol 'Sync Live Repo' di navigasi atas untuk memuat data GitHub."}
+                  </p>
+                  {search && (
+                    <button
+                      onClick={() => setSearch("")}
+                      className="mt-3 inline-flex items-center rounded-lg border border-zinc-700 bg-zinc-800 px-3 py-1 text-xs text-zinc-200 hover:bg-zinc-700 transition"
+                    >
+                      Reset Filter
+                    </button>
+                  )}
+                </td>
+              </tr>
+            ) : (
+              filtered.slice(0, 10).map((dev, idx) => {
+                return (
+                  <tr
+                    key={idx}
+                    onClick={() => onSelectContributor?.(dev.login)}
+                    className="hover:bg-zinc-800/50 cursor-pointer transition group"
+                    title={`Klik untuk melihat riwayat aktivitas @${dev.login}`}
+                  >
                   <td className="py-2.5 px-3 whitespace-nowrap">
                     {getRankBadgeDisplay(dev.rank_badge, dev.rank ?? idx + 1)}
                   </td>
@@ -207,7 +231,7 @@ export function ContributorTable({ data, onSelectContributor }: ContributorTable
                   </td>
                 </tr>
               );
-            })}
+            }))}
           </tbody>
         </table>
       </div>

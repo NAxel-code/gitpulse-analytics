@@ -68,9 +68,18 @@ export function ActivityChart({ data, repoName }: { data: ActivityPoint[]; repoN
         </div>
       </div>
 
-      <div className="h-[280px] w-full">
-        <ResponsiveContainer width="100%" height="100%">
-          <AreaChart data={formattedData} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
+      {formattedData.length === 0 ? (
+        <div className="h-[280px] w-full flex flex-col items-center justify-center text-center">
+          <Activity className="h-8 w-8 text-zinc-600 mb-2" />
+          <h4 className="text-xs font-semibold text-zinc-300">Belum Ada Riwayat Aktivitas Harian</h4>
+          <p className="text-[11px] text-zinc-500 mt-1 max-w-xs">
+            Data time-series belum tersinkronisasi. Jalankan &apos;Sync Live Repo&apos; untuk mengambil riwayat commit dan PR.
+          </p>
+        </div>
+      ) : (
+        <div className="h-[280px] w-full">
+          <ResponsiveContainer width="100%" height="100%">
+            <AreaChart data={formattedData} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
             <defs>
               <linearGradient id="colorCommits" x1="0" y1="0" x2="0" y2="1">
                 <stop offset="5%" stopColor="#8b5cf6" stopOpacity={0.4} />
@@ -158,6 +167,7 @@ export function ActivityChart({ data, repoName }: { data: ActivityPoint[]; repoN
           </AreaChart>
         </ResponsiveContainer>
       </div>
+      )}
     </div>
   );
 }

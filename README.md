@@ -20,6 +20,7 @@ Proyek ini dikembangkan dengan pendekatan **AI-Assisted Pair Programming** (berk
 * **🔥 Kalodata-Style Momentum Badges:** Klasifikasi produktivitas developer dengan lencana podium (`🥇 Gold`, `🥈 Silver`, `🥉 Bronze`) dan tag kecepatan (`🔥 High Velocity`, `⚡ Surging`, `📈 Steady`).
 * **💬 Hybrid AI Text-to-Insight (Cmd+K):** Tanya jawab analitik dalam bahasa alami yang dilindungi **AST SQL Sanitizer (`sqlglot`)** untuk kueri read-only yang aman.
 * **🔑 GitHub PAT Resilience:** Dialog Personal Access Token lokal di browser untuk menaikkan limit API GitHub dari 60 menjadi **5.000 request/jam**.
+* **🔌 Model Context Protocol (MCP) Server:** Menyediakan integrasi native dengan Claude Desktop, Cursor, dan AI coding assistants untuk inspeksi velocity developer, DORA metrics, dan bottleneck PR secara otomatis via LLM function calling (`mcp_config.json`).
 * **💸 $0/Bulan Production Ready:** Image Docker multi-stage super ringan (~95 MB) dan panduan deploy tanpa biaya di Cloudflare Pages & Fly.io.
 
 ---
@@ -50,11 +51,14 @@ docker compose up -d --build
 Proyek ini dilengkapi pengujian otomatis dari backend hingga frontend:
 
 ```bash
-# Jalankan test suite backend (22 tests passing):
+# Jalankan test suite backend (30 tests passing, termasuk MCP suite):
 pytest -v backend/tests
 
 # Jalankan test suite frontend (Node 24 native test runner):
 cd frontend && npm test
+
+# Jalankan automated Playwright browser E2E test:
+python tests/test_e2e_browser.py
 ```
 
 ---

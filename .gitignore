@@ -37,6 +37,7 @@ __pycache__/
 backend/.pytest_cache/
 .coverage
 htmlcov/
+tests/*.png
 
 # Local Database & Storage State
 *.duckdb

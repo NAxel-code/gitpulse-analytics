@@ -49,6 +49,17 @@ export function ContributorJourneyModal({
       .finally(() => setLoading(false));
   }, [isOpen, login, repoName]);
 
+  useEffect(() => {
+    if (!isOpen) return;
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        onClose();
+      }
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [isOpen, onClose]);
+
   if (!isOpen || !login) return null;
 
   return (
