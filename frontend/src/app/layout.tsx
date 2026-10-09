@@ -2,8 +2,8 @@ import "./globals.css";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "OmniPulse Analytics — Real-time Marketing & Traffic Intelligence",
-  description: "Next-gen marketing analytics platform with stream ingestion, bento grid visualization, and hybrid AI insights.",
+  title: "GitPulse Analytics — High-Performance GitHub Developer Intelligence",
+  description: "Real-time GitHub analytics, DORA velocity metrics, PR lifecycle funnels, and AI text-to-insight powered by DuckDB.",
 };
 
 export default function RootLayout({
