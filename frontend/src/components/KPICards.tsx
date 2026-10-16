@@ -163,17 +163,14 @@ export function KPICards({ data }: { data: RepoKPIData | null }) {
       {/* DORA Velocity & Engineering Hygiene Sub-Strip */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
         {/* Lead Time to Merge */}
-        <div className="rounded-xl border border-zinc-800/80 bg-zinc-900/50 p-3.5 flex items-center justify-between hover:border-zinc-700/80 transition">
+        <div className="rounded-xl border border-zinc-800/80 bg-zinc-900/60 p-3.5 flex items-center justify-between hover:border-zinc-700 transition">
           <div className="flex items-center gap-3">
-            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-cyan-500/10 text-cyan-400 border border-cyan-500/20">
+            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-zinc-800 text-zinc-300 border border-zinc-700/60">
               <Clock className="h-4 w-4" />
             </div>
             <div>
-              <div className="flex items-center gap-1.5">
-                <span className="text-xs font-semibold text-zinc-200">DORA Lead Time to Merge</span>
-                <span className="text-[10px] rounded bg-cyan-500/15 text-cyan-300 px-1 py-0.2 font-mono">DORA</span>
-              </div>
-              <p className="text-[11px] text-zinc-500">Waktu dari commit pertama hingga main merge</p>
+              <div className="text-xs font-semibold text-zinc-200">Lead Time to Merge</div>
+              <p className="text-[11px] text-zinc-400 mt-0.5">Waktu dari commit pertama hingga main merge</p>
             </div>
           </div>
           <div className="text-right">
@@ -185,17 +182,14 @@ export function KPICards({ data }: { data: RepoKPIData | null }) {
         </div>
 
         {/* Time to First Review */}
-        <div className="rounded-xl border border-zinc-800/80 bg-zinc-900/50 p-3.5 flex items-center justify-between hover:border-zinc-700/80 transition">
+        <div className="rounded-xl border border-zinc-800/80 bg-zinc-900/60 p-3.5 flex items-center justify-between hover:border-zinc-700 transition">
           <div className="flex items-center gap-3">
-            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-violet-500/10 text-violet-400 border border-violet-500/20">
+            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-zinc-800 text-zinc-300 border border-zinc-700/60">
               <Zap className="h-4 w-4" />
             </div>
             <div>
-              <div className="flex items-center gap-1.5">
-                <span className="text-xs font-semibold text-zinc-200">Time to First Review (TTFR)</span>
-                <span className="text-[10px] rounded bg-violet-500/15 text-violet-300 px-1 py-0.2 font-mono">Speed</span>
-              </div>
-              <p className="text-[11px] text-zinc-500">Respon reviewer awal sejak PR dibuka</p>
+              <div className="text-xs font-semibold text-zinc-200">Time to First Review (TTFR)</div>
+              <p className="text-[11px] text-zinc-400 mt-0.5">Respon reviewer awal sejak PR dibuka</p>
             </div>
           </div>
           <div className="text-right">
@@ -207,29 +201,33 @@ export function KPICards({ data }: { data: RepoKPIData | null }) {
         </div>
 
         {/* PR Size Distribution */}
-        <div className="rounded-xl border border-zinc-800/80 bg-zinc-900/50 p-3.5 flex items-center justify-between hover:border-zinc-700/80 transition">
+        <div className="rounded-xl border border-zinc-800/80 bg-zinc-900/60 p-3.5 flex items-center justify-between hover:border-zinc-700 transition">
           <div className="flex items-center gap-3">
-            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-amber-500/10 text-amber-400 border border-amber-500/20">
+            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-zinc-800 text-zinc-300 border border-zinc-700/60">
               <Layers className="h-4 w-4" />
             </div>
             <div>
-              <div className="flex items-center gap-1.5">
+              <div className="flex items-center gap-2">
                 <span className="text-xs font-semibold text-zinc-200">PR Size Hygiene</span>
-                <span className="text-[10px] text-emerald-400 font-medium">{Math.round((prDist.small / totalDist) * 100)}% Small</span>
+                <span className="text-[10px] text-emerald-400 font-mono font-semibold">{Math.round((prDist.small / totalDist) * 100)}% Small</span>
               </div>
-              <p className="text-[11px] text-zinc-500">Ukuran PR ideal &lt;200 LoC untuk review cepat</p>
+              <p className="text-[11px] text-zinc-400 mt-0.5">Ukuran PR ideal &lt;200 LoC untuk review cepat</p>
             </div>
           </div>
-          <div className="flex items-center gap-1.5">
-            <span className="rounded-md bg-emerald-500/15 border border-emerald-500/30 px-1.5 py-0.5 text-[10px] font-mono text-emerald-400" title="Small (<200 LoC)">
-              S: {prDist.small}
-            </span>
-            <span className="rounded-md bg-amber-500/15 border border-amber-500/30 px-1.5 py-0.5 text-[10px] font-mono text-amber-400" title="Medium (200-500 LoC)">
-              M: {prDist.medium}
-            </span>
-            <span className="rounded-md bg-rose-500/15 border border-rose-500/30 px-1.5 py-0.5 text-[10px] font-mono text-rose-400" title="Large (>500 LoC)">
-              L: {prDist.large}
-            </span>
+          <div className="flex flex-col items-end gap-1.5">
+            {/* Segmented breakdown bar */}
+            <div className="w-24 h-2 rounded-full overflow-hidden flex bg-zinc-800">
+              <div style={{ width: `${(prDist.small / totalDist) * 100}%` }} className="bg-emerald-500 h-full" title={`Small: ${prDist.small}`} />
+              <div style={{ width: `${(prDist.medium / totalDist) * 100}%` }} className="bg-amber-500 h-full" title={`Medium: ${prDist.medium}`} />
+              <div style={{ width: `${(prDist.large / totalDist) * 100}%` }} className="bg-rose-500 h-full" title={`Large: ${prDist.large}`} />
+            </div>
+            <div className="flex items-center gap-1.5 text-[10px] font-mono">
+              <span className="text-emerald-400 font-medium">S:{prDist.small}</span>
+              <span className="text-zinc-600">·</span>
+              <span className="text-amber-400 font-medium">M:{prDist.medium}</span>
+              <span className="text-zinc-600">·</span>
+              <span className="text-rose-400 font-medium">L:{prDist.large}</span>
+            </div>
           </div>
         </div>
       </div>

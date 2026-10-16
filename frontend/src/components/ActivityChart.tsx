@@ -33,7 +33,7 @@ export function ActivityChart({ data, repoName }: { data: ActivityPoint[]; repoN
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6">
         <div>
           <div className="flex items-center gap-2">
-            <Activity className="h-4 w-4 text-violet-400" />
+            <Activity className="h-4 w-4 text-indigo-400" />
             <h3 className="font-semibold text-zinc-100 text-sm md:text-base">
               Repository Activity Velocity
             </h3>
@@ -44,26 +44,26 @@ export function ActivityChart({ data, repoName }: { data: ActivityPoint[]; repoN
         </div>
 
         {/* View Toggle */}
-        <div className="flex items-center rounded-lg border border-zinc-800 bg-zinc-950 p-0.5 self-start">
+        <div className="flex items-center rounded-lg border border-zinc-800 bg-zinc-950 p-1 self-start">
           <button
             onClick={() => setMetric("code")}
-            className={`rounded-md px-3 py-1 text-xs font-medium transition ${
+            className={`rounded-md px-3 py-1 text-xs font-medium transition-colors focus-visible:ring-2 focus-visible:ring-zinc-700 focus:outline-none ${
               metric === "code"
-                ? "bg-violet-600 text-white"
+                ? "bg-zinc-800 text-zinc-100 border border-zinc-700/60 shadow-xs"
                 : "text-zinc-400 hover:text-zinc-200"
             }`}
           >
-            Commits & PRs
+            Commits &amp; PRs
           </button>
           <button
             onClick={() => setMetric("community")}
-            className={`rounded-md px-3 py-1 text-xs font-medium transition ${
+            className={`rounded-md px-3 py-1 text-xs font-medium transition-colors focus-visible:ring-2 focus-visible:ring-zinc-700 focus:outline-none ${
               metric === "community"
-                ? "bg-violet-600 text-white"
+                ? "bg-zinc-800 text-zinc-100 border border-zinc-700/60 shadow-xs"
                 : "text-zinc-400 hover:text-zinc-200"
             }`}
           >
-            Issues & Stars
+            Issues &amp; Stars
           </button>
         </div>
       </div>
@@ -82,19 +82,19 @@ export function ActivityChart({ data, repoName }: { data: ActivityPoint[]; repoN
             <AreaChart data={formattedData} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
             <defs>
               <linearGradient id="colorCommits" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="5%" stopColor="#8b5cf6" stopOpacity={0.4} />
-                <stop offset="95%" stopColor="#8b5cf6" stopOpacity={0.0} />
+                <stop offset="5%" stopColor="#6366f1" stopOpacity={0.35} />
+                <stop offset="95%" stopColor="#6366f1" stopOpacity={0.0} />
               </linearGradient>
               <linearGradient id="colorPRs" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="5%" stopColor="#10b981" stopOpacity={0.5} />
+                <stop offset="5%" stopColor="#10b981" stopOpacity={0.4} />
                 <stop offset="95%" stopColor="#10b981" stopOpacity={0.0} />
               </linearGradient>
               <linearGradient id="colorIssues" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="5%" stopColor="#f59e0b" stopOpacity={0.4} />
+                <stop offset="5%" stopColor="#f59e0b" stopOpacity={0.35} />
                 <stop offset="95%" stopColor="#f59e0b" stopOpacity={0.0} />
               </linearGradient>
               <linearGradient id="colorStars" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="5%" stopColor="#38bdf8" stopOpacity={0.4} />
+                <stop offset="5%" stopColor="#38bdf8" stopOpacity={0.35} />
                 <stop offset="95%" stopColor="#38bdf8" stopOpacity={0.0} />
               </linearGradient>
             </defs>
@@ -127,7 +127,7 @@ export function ActivityChart({ data, repoName }: { data: ActivityPoint[]; repoN
                   type="monotone"
                   dataKey="commits"
                   name="Commits"
-                  stroke="#8b5cf6"
+                  stroke="#6366f1"
                   strokeWidth={2}
                   fillOpacity={1}
                   fill="url(#colorCommits)"

@@ -1,6 +1,6 @@
 "use client";
 
-import { AlertTriangle, Sparkles, CheckCircle2, GitMerge, Clock, Activity } from "lucide-react";
+import { AlertTriangle, FileText, CheckCircle2, GitMerge, Clock, Activity } from "lucide-react";
 
 interface DORAAlert {
   id: string;
@@ -28,33 +28,35 @@ export function DORAFeed({
 }) {
   return (
     <div className="flex flex-col gap-4">
-      {/* AI Daily Engineering Brief Card */}
+      {/* Daily Engineering Brief Card */}
       {summary && (
-        <div className="relative overflow-hidden rounded-xl border border-violet-500/30 bg-gradient-to-br from-violet-950/40 via-zinc-900/60 to-zinc-900/60 p-5 shadow-sm">
+        <div className="rounded-xl border border-zinc-800/80 bg-zinc-900/60 p-5 shadow-sm">
           <div className="flex items-center justify-between mb-3">
             <div className="flex items-center gap-2">
-              <Sparkles className="h-4 w-4 text-violet-400" />
-              <h3 className="font-semibold text-white text-sm">
-                AI Daily Engineering Brief
+              <div className="p-1 rounded-md bg-zinc-800 border border-zinc-700/60 text-zinc-300">
+                <FileText className="h-3.5 w-3.5" />
+              </div>
+              <h3 className="font-semibold text-zinc-100 text-sm">
+                Daily Engineering Brief
               </h3>
             </div>
-            <span className="text-[10px] text-zinc-400 bg-zinc-800/80 px-2 py-0.5 rounded-full border border-zinc-700/60">
+            <span className="text-[10px] font-mono tabular-nums text-zinc-400 bg-zinc-800/90 px-2 py-0.5 rounded border border-zinc-700/60">
               {summary.generated_at}
             </span>
           </div>
 
-          <p className="text-xs leading-relaxed text-zinc-300 mb-3">
+          <p className="text-xs leading-relaxed text-zinc-300 mb-3.5">
             {summary.executive_summary}
           </p>
 
-          <div className="space-y-1.5 border-t border-zinc-800/80 pt-3">
-            <span className="text-[11px] font-semibold text-violet-300 uppercase tracking-wider">
-              DORA & Engineering Highlights
-            </span>
+          <div className="space-y-2 border-t border-zinc-800/80 pt-3">
+            <h4 className="text-xs font-medium text-zinc-300">
+              Sorotan DORA & Rekomendasi
+            </h4>
             {summary.key_takeaways.map((point, idx) => (
-              <div key={idx} className="flex items-start gap-2 text-xs text-zinc-400">
+              <div key={idx} className="flex items-start gap-2 text-xs text-zinc-300">
                 <CheckCircle2 className="h-3.5 w-3.5 text-emerald-400 mt-0.5 shrink-0" />
-                <span>{point}</span>
+                <span className="leading-snug">{point}</span>
               </div>
             ))}
           </div>
@@ -65,43 +67,50 @@ export function DORAFeed({
       <div className="rounded-xl border border-zinc-800/80 bg-zinc-900/60 p-5 shadow-sm">
         <div className="flex items-center justify-between mb-3">
           <div className="flex items-center gap-2">
-            <Activity className="h-4 w-4 text-amber-400" />
+            <div className="p-1 rounded-md bg-zinc-800 border border-zinc-700/60 text-amber-400">
+              <Activity className="h-3.5 w-3.5" />
+            </div>
             <h3 className="font-semibold text-zinc-100 text-sm">
               Engineering Velocity Alerts
             </h3>
           </div>
-          <span className="text-[11px] text-zinc-500 font-mono">DORA Metrics Watcher</span>
+          <span className="text-[11px] text-zinc-400 font-mono">DORA Metrics Watcher</span>
         </div>
 
-        <div className="space-y-3">
+        <div className="space-y-2.5">
           {alerts.map((item) => {
-            const isWarning = item.severity === "warning" || item.severity === "critical";
+            const isCritical = item.severity === "critical";
+            const isWarning = item.severity === "warning";
 
             return (
               <div
                 key={item.id}
-                className={`rounded-lg border p-3 transition ${
-                  isWarning
+                className={`rounded-lg border p-3 transition-colors ${
+                  isCritical
+                    ? "border-rose-500/30 bg-rose-500/5 hover:border-rose-500/50"
+                    : isWarning
                     ? "border-amber-500/30 bg-amber-500/5 hover:border-amber-500/50"
                     : "border-zinc-800 bg-zinc-950/40 hover:border-zinc-700"
                 }`}
               >
                 <div className="flex items-center justify-between mb-1.5">
                   <div className="flex items-center gap-1.5">
-                    {isWarning ? (
+                    {isCritical ? (
+                      <AlertTriangle className="h-3.5 w-3.5 text-rose-400" />
+                    ) : isWarning ? (
                       <Clock className="h-3.5 w-3.5 text-amber-400" />
                     ) : (
                       <GitMerge className="h-3.5 w-3.5 text-emerald-400" />
                     )}
-                    <span className="font-semibold text-xs text-white">{item.metric}</span>
+                    <span className="font-medium text-xs text-zinc-200">{item.metric}</span>
                   </div>
                   <span
-                    className={`rounded px-1.5 py-0.5 text-[10px] font-bold uppercase ${
-                      item.severity === "critical"
-                        ? "bg-rose-500/20 text-rose-400 border border-rose-500/30"
-                        : item.severity === "warning"
-                        ? "bg-amber-500/20 text-amber-400 border border-amber-500/30"
-                        : "bg-violet-500/20 text-violet-400 border border-violet-500/30"
+                    className={`rounded px-1.5 py-0.5 text-[10px] font-mono font-medium uppercase ${
+                      isCritical
+                        ? "bg-rose-500/10 text-rose-300 border border-rose-500/30"
+                        : isWarning
+                        ? "bg-amber-500/10 text-amber-300 border border-amber-500/30"
+                        : "bg-zinc-800 text-zinc-300 border border-zinc-700/60"
                     }`}
                   >
                     {item.severity}
@@ -110,9 +119,9 @@ export function DORAFeed({
 
                 <p className="text-xs text-zinc-300 leading-snug">{item.description}</p>
 
-                <div className="flex items-center justify-between mt-2 text-[10px] text-zinc-500 font-mono">
+                <div className="flex items-center justify-between mt-2.5 text-[11px] text-zinc-400 font-mono tabular-nums">
                   <span>{item.timestamp}</span>
-                  <span>Deviation: {item.z_score}σ</span>
+                  <span className="text-zinc-500">Deviasi: {item.z_score > 0 ? `+${item.z_score}` : item.z_score}σ</span>
                 </div>
               </div>
             );

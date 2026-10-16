@@ -48,25 +48,25 @@ export function Header({
 
   return (
     <>
-      <header className="sticky top-0 z-30 flex flex-col lg:flex-row items-start lg:items-center justify-between gap-3 border-b border-zinc-800/80 bg-zinc-950/85 px-6 py-3 backdrop-blur-md">
+      <header className="sticky top-0 z-30 flex flex-col lg:flex-row items-start lg:items-center justify-between gap-3 border-b border-zinc-800/80 bg-zinc-950/90 px-6 py-3 backdrop-blur-md">
         {/* Brand & Repository Switcher */}
         <div className="flex flex-wrap items-center gap-3">
-          <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-tr from-violet-600 to-indigo-500 shadow-lg shadow-indigo-500/20">
-            <GitPullRequest className="h-5 w-5 text-white" />
+          <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-zinc-900 border border-zinc-700/80 text-zinc-100 shadow-sm">
+            <GitPullRequest className="h-4 w-4 text-zinc-200" />
           </div>
           <div>
             <div className="flex items-center gap-2">
               <span className="font-bold tracking-tight text-white text-base">GitPulse</span>
-              <span className="rounded-full bg-violet-500/10 px-2 py-0.5 text-[10px] font-medium text-violet-400 border border-violet-500/20">
-                v1.1 Intelligence
+              <span className="rounded-md bg-zinc-800/80 px-2 py-0.5 text-[10px] font-mono font-medium text-zinc-300 border border-zinc-700/60">
+                v1.1
               </span>
             </div>
             <div className="flex items-center gap-1.5 text-xs text-zinc-400">
-              <GitBranch className="h-3.5 w-3.5 text-zinc-500" />
-              <span>Target Repo:</span>
+              <GitBranch className="h-3.5 w-3.5 text-zinc-400" />
+              <span>Target:</span>
               <span className="font-mono text-zinc-200 font-semibold">{currentRepo}</span>
-              <span className="inline-block h-1.5 w-1.5 rounded-full bg-emerald-400 animate-ping ml-1" />
-              <span className="text-[10px] text-emerald-400">Live Ingesting</span>
+              <span className="inline-block h-2 w-2 rounded-full bg-emerald-500 ring-2 ring-emerald-500/20 ml-1" />
+              <span className="text-[11px] font-medium text-emerald-400">Live</span>
             </div>
           </div>
 
@@ -76,10 +76,10 @@ export function Header({
               <button
                 key={p}
                 onClick={() => handleSelectPreset(p)}
-                className={`rounded-lg px-2 py-1 text-[11px] font-mono transition ${
+                className={`rounded-lg px-2.5 py-1 text-[11px] font-mono transition cursor-pointer focus-visible:ring-2 focus-visible:ring-zinc-400 focus-visible:outline-none ${
                   currentRepo === p
-                    ? "bg-zinc-800 text-indigo-400 border border-indigo-500/40 font-semibold"
-                    : "bg-zinc-900/60 text-zinc-400 hover:text-zinc-200 hover:bg-zinc-800"
+                    ? "bg-zinc-800 text-zinc-100 border border-zinc-600 font-semibold shadow-xs"
+                    : "bg-zinc-900/60 text-zinc-400 hover:text-zinc-200 hover:bg-zinc-800 border border-transparent"
                 }`}
               >
                 {p.split("/")[1]}
@@ -92,13 +92,13 @@ export function Header({
         <div className="w-full lg:w-auto flex-1 max-w-md mx-auto">
           <button
             onClick={onOpenAI}
-            className="group flex w-full items-center justify-between rounded-xl border border-zinc-800 bg-zinc-900/60 px-3.5 py-1.5 text-sm text-zinc-400 shadow-inner transition hover:border-violet-500/50 hover:bg-zinc-900"
+            className="group flex w-full items-center justify-between rounded-xl border border-zinc-800 bg-zinc-900/70 px-3.5 py-1.5 text-sm text-zinc-400 shadow-xs transition hover:border-zinc-700 hover:bg-zinc-900 hover:text-zinc-200 cursor-pointer focus-visible:ring-2 focus-visible:ring-zinc-400 focus-visible:outline-none"
           >
             <div className="flex items-center gap-2">
-              <Sparkles className="h-4 w-4 text-violet-400 transition group-hover:rotate-12" />
+              <Sparkles className="h-4 w-4 text-indigo-400 transition group-hover:rotate-6" />
               <span className="text-xs md:text-sm text-zinc-300">Tanya AI: &quot;Top contributor dengan PR merge terbanyak&quot;</span>
             </div>
-            <kbd className="hidden sm:inline-block rounded border border-zinc-700 bg-zinc-800 px-1.5 py-0.5 text-[10px] font-medium text-zinc-400">
+            <kbd className="hidden sm:inline-block rounded border border-zinc-700/80 bg-zinc-800 px-1.5 py-0.5 text-[10px] font-mono font-medium text-zinc-300">
               ⌘K
             </kbd>
           </button>
@@ -109,11 +109,11 @@ export function Header({
           {/* GitHub Token / PAT Button */}
           <button
             onClick={() => setShowTokenModal(true)}
-            title={githubToken ? "GitHub Token Aktif (5,000 req/h)" : "Atur Personal Access Token untuk bypass rate limit 60 req/h"}
-            className={`flex items-center gap-1.5 rounded-xl border px-2.5 py-1.5 text-xs font-medium transition ${
+            title={githubToken ? "GitHub Token Aktif (5.000 req/jam)" : "Atur Personal Access Token untuk bypass rate limit 60 req/jam"}
+            className={`flex items-center gap-1.5 rounded-xl border px-2.5 py-1.5 text-xs font-medium transition cursor-pointer focus-visible:ring-2 focus-visible:ring-zinc-400 focus-visible:outline-none ${
               githubToken
-                ? "border-emerald-500/30 bg-emerald-500/10 text-emerald-400"
-                : "border-zinc-800 bg-zinc-900 text-zinc-400 hover:text-zinc-200"
+                ? "border-emerald-500/30 bg-emerald-500/10 text-emerald-400 hover:bg-emerald-500/20"
+                : "border-zinc-800 bg-zinc-900 text-zinc-300 hover:text-white hover:bg-zinc-800 hover:border-zinc-700"
             }`}
           >
             <Key className="h-3.5 w-3.5" />
@@ -124,14 +124,14 @@ export function Header({
           <button
             onClick={() => onSyncRepo(currentRepo)}
             disabled={syncing}
-            className="flex items-center gap-1.5 rounded-xl border border-zinc-800 bg-zinc-900 px-3 py-1.5 text-xs font-medium text-zinc-200 hover:bg-zinc-800 hover:border-zinc-700 disabled:opacity-50 transition"
+            className="flex items-center gap-1.5 rounded-xl border border-zinc-800 bg-zinc-900 px-3 py-1.5 text-xs font-medium text-zinc-200 hover:bg-zinc-800 hover:border-zinc-700 disabled:opacity-50 transition cursor-pointer focus-visible:ring-2 focus-visible:ring-zinc-400 focus-visible:outline-none"
           >
-            <RefreshCw className={`h-3.5 w-3.5 text-violet-400 ${syncing ? "animate-spin" : ""}`} />
+            <RefreshCw className={`h-3.5 w-3.5 text-indigo-400 ${syncing ? "animate-spin" : ""}`} />
             <span>{syncing ? "Syncing..." : "Sync Live Repo"}</span>
           </button>
 
           {/* Date Range Selector */}
-          <div className="flex items-center rounded-xl border border-zinc-800 bg-zinc-900/60 p-1">
+          <div className="flex items-center rounded-xl border border-zinc-800 bg-zinc-900/70 p-1">
             <Calendar className="ml-2 mr-1 h-3.5 w-3.5 text-zinc-400" />
             {[
               { label: "7D", value: 7 },
@@ -141,9 +141,9 @@ export function Header({
               <button
                 key={item.value}
                 onClick={() => onDaysChange(item.value)}
-                className={`rounded-lg px-2.5 py-1 text-xs font-medium transition ${
+                className={`rounded-lg px-2.5 py-1 text-xs font-medium transition cursor-pointer focus-visible:ring-2 focus-visible:ring-zinc-400 focus-visible:outline-none ${
                   days === item.value
-                    ? "bg-violet-600 text-white shadow-sm"
+                    ? "bg-zinc-100 text-zinc-950 font-semibold shadow-xs"
                     : "text-zinc-400 hover:text-zinc-200 hover:bg-zinc-800"
                 }`}
               >

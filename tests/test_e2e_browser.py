@@ -81,9 +81,9 @@ def run_e2e_test(base_url="http://localhost:3000"):
         page.wait_for_timeout(1000)
         
         # Check modal opened
-        modal = page.locator("text=Contributor Journey")
+        modal = page.locator("text=Contributor Profile")
         if modal.is_visible():
-            print("  [PASS] Woopra-style Contributor Journey Modal opened.")
+            print("  [PASS] Contributor Journey / Profile Modal opened.")
             # Close modal with ESC
             page.keyboard.press("Escape")
             page.wait_for_timeout(500)
@@ -92,7 +92,7 @@ def run_e2e_test(base_url="http://localhost:3000"):
         print("[6] Testing AI Search Modal (Ctrl+K)...")
         page.keyboard.press("Control+KeyK")
         page.wait_for_timeout(800)
-        ai_modal_header = page.locator("text=GitPulse AI Search & Analytics")
+        ai_modal_header = page.locator("text=Natural Language Code Analytics")
         if ai_modal_header.is_visible():
             print("  [PASS] AI Modal opened successfully via shortcut.")
             page.keyboard.press("Escape")
