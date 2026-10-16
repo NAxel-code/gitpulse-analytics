@@ -38,7 +38,7 @@ def run_e2e_test(base_url="http://localhost:3000"):
         page.wait_for_selector("text=Active Contributors", timeout=10000)
         page.wait_for_selector("text=Total Commits", timeout=10000)
         page.wait_for_selector("text=PR Merge Velocity", timeout=10000)
-        page.wait_for_selector("text=DORA Lead Time to Merge", timeout=10000)
+        page.wait_for_selector("text=Lead Time to Merge", timeout=10000)
         page.wait_for_selector("text=Time to First Review (TTFR)", timeout=10000)
         page.wait_for_selector("text=PR Size Hygiene", timeout=10000)
         print("  [PASS] KPI Cards and DORA metrics verified.")
