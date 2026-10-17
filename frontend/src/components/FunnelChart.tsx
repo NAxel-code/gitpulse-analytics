@@ -12,13 +12,17 @@ interface PRFunnelStage {
 }
 
 export function FunnelChart({ stages }: { stages: PRFunnelStage[] }) {
-  if (!stages || stages.length === 0) {
+  const isAllZero = !stages || stages.length === 0 || stages.every((s) => s.count === 0);
+
+  if (isAllZero) {
     return (
       <div className="rounded-xl border border-zinc-800/80 bg-zinc-900/60 p-5 shadow-sm flex flex-col justify-center items-center h-full min-h-[260px] text-center">
-        <GitPullRequest className="h-8 w-8 text-zinc-600 mb-2" />
-        <h4 className="text-xs font-semibold text-zinc-300">Data PR Funnel Belum Tersedia</h4>
-        <p className="text-[11px] text-zinc-500 mt-1 max-w-xs">
-          Belum ada aktivitas pull request yang tercatat. Jalankan &apos;Sync Live Repo&apos; untuk mengambil data lifecycle PR.
+        <div className="h-10 w-10 rounded-full bg-zinc-900 border border-zinc-800 flex items-center justify-center text-zinc-400 mb-2 shadow-inner">
+          <GitPullRequest className="h-5 w-5 text-violet-400" />
+        </div>
+        <h4 className="text-xs font-semibold text-zinc-200">Belum Ada Pull Request</h4>
+        <p className="text-[11px] text-zinc-400 mt-1 max-w-xs leading-relaxed">
+          Repositori ini belum memiliki catatan Pull Request. Semua riwayat pengembangan tercatat melalui push commit langsung ke branch.
         </p>
       </div>
     );

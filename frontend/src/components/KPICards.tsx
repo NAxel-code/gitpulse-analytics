@@ -96,12 +96,14 @@ export function KPICards({ data }: { data: RepoKPIData | null }) {
     },
   ];
 
-  const leadTime = data.lead_time_hours ?? 16.5;
-  const leadTimeDelta = data.lead_time_change_pct ?? -12.4;
-  const ttfr = data.time_to_first_review_hours ?? 3.6;
-  const ttfrDelta = data.ttfr_change_pct ?? -18.2;
-  const prDist = data.pr_size_distribution ?? { small: 22, medium: 14, large: 6 };
-  const totalDist = prDist.small + prDist.medium + prDist.large || 1;
+  const hasPRs = (data.total_prs || 0) > 0;
+  const leadTime = hasPRs ? (data.lead_time_hours || 0) : 0;
+  const leadTimeDelta = data.lead_time_change_pct || 0;
+  const ttfr = hasPRs ? (data.time_to_first_review_hours || 0) : 0;
+  const ttfrDelta = data.ttfr_change_pct || 0;
+  const prDist = data.pr_size_distribution || { small: 0, medium: 0, large: 0 };
+  const actualTotalDist = prDist.small + prDist.medium + prDist.large;
+  const totalDist = actualTotalDist || 1;
 
   return (
     <div className="space-y-3.5 mb-6">
@@ -174,9 +176,11 @@ export function KPICards({ data }: { data: RepoKPIData | null }) {
             </div>
           </div>
           <div className="text-right">
-            <div className="text-sm font-mono font-bold text-white tabular-nums">{leadTime.toFixed(1)} hrs</div>
-            <div className={`text-[10px] font-mono font-semibold ${leadTimeDelta <= 0 ? "text-emerald-400" : "text-rose-400"}`}>
-              {leadTimeDelta <= 0 ? `▼ ${Math.abs(leadTimeDelta)}% faster` : `▲ ${leadTimeDelta}% slower`}
+            <div className="text-sm font-mono font-bold text-white tabular-nums">
+              {hasPRs ? `${leadTime.toFixed(1)} hrs` : "-"}
+            </div>
+            <div className={`text-[10px] font-mono font-semibold ${hasPRs ? (leadTimeDelta <= 0 ? "text-emerald-400" : "text-rose-400") : "text-zinc-500"}`}>
+              {hasPRs ? (leadTimeDelta <= 0 ? `▼ ${Math.abs(leadTimeDelta)}% faster` : `▲ ${leadTimeDelta}% slower`) : "Belum ada PR"}
             </div>
           </div>
         </div>
@@ -193,9 +197,11 @@ export function KPICards({ data }: { data: RepoKPIData | null }) {
             </div>
           </div>
           <div className="text-right">
-            <div className="text-sm font-mono font-bold text-white tabular-nums">{ttfr.toFixed(1)} hrs</div>
-            <div className={`text-[10px] font-mono font-semibold ${ttfrDelta <= 0 ? "text-emerald-400" : "text-rose-400"}`}>
-              {ttfrDelta <= 0 ? `▼ ${Math.abs(ttfrDelta)}% faster` : `▲ ${ttfrDelta}% slower`}
+            <div className="text-sm font-mono font-bold text-white tabular-nums">
+              {hasPRs ? `${ttfr.toFixed(1)} hrs` : "-"}
+            </div>
+            <div className={`text-[10px] font-mono font-semibold ${hasPRs ? (ttfrDelta <= 0 ? "text-emerald-400" : "text-rose-400") : "text-zinc-500"}`}>
+              {hasPRs ? (ttfrDelta <= 0 ? `▼ ${Math.abs(ttfrDelta)}% faster` : `▲ ${ttfrDelta}% slower`) : "Belum ada PR"}
             </div>
           </div>
         </div>
@@ -209,7 +215,9 @@ export function KPICards({ data }: { data: RepoKPIData | null }) {
             <div>
               <div className="flex items-center gap-2">
                 <span className="text-xs font-semibold text-zinc-200">PR Size Hygiene</span>
-                <span className="text-[10px] text-emerald-400 font-mono font-semibold">{Math.round((prDist.small / totalDist) * 100)}% Small</span>
+                <span className="text-[10px] text-emerald-400 font-mono font-semibold">
+                  {actualTotalDist > 0 ? `${Math.round((prDist.small / totalDist) * 100)}% Small` : "0 PR"}
+                </span>
               </div>
               <p className="text-[11px] text-zinc-400 mt-0.5">Ukuran PR ideal &lt;200 LoC untuk review cepat</p>
             </div>
@@ -217,9 +225,15 @@ export function KPICards({ data }: { data: RepoKPIData | null }) {
           <div className="flex flex-col items-end gap-1.5">
             {/* Segmented breakdown bar */}
             <div className="w-24 h-2 rounded-full overflow-hidden flex bg-zinc-800">
-              <div style={{ width: `${(prDist.small / totalDist) * 100}%` }} className="bg-emerald-500 h-full" title={`Small: ${prDist.small}`} />
-              <div style={{ width: `${(prDist.medium / totalDist) * 100}%` }} className="bg-amber-500 h-full" title={`Medium: ${prDist.medium}`} />
-              <div style={{ width: `${(prDist.large / totalDist) * 100}%` }} className="bg-rose-500 h-full" title={`Large: ${prDist.large}`} />
+              {actualTotalDist > 0 ? (
+                <>
+                  <div style={{ width: `${(prDist.small / totalDist) * 100}%` }} className="bg-emerald-500 h-full" title={`Small: ${prDist.small}`} />
+                  <div style={{ width: `${(prDist.medium / totalDist) * 100}%` }} className="bg-amber-500 h-full" title={`Medium: ${prDist.medium}`} />
+                  <div style={{ width: `${(prDist.large / totalDist) * 100}%` }} className="bg-rose-500 h-full" title={`Large: ${prDist.large}`} />
+                </>
+              ) : (
+                <div className="w-full h-full bg-zinc-800" title="Belum ada data PR" />
+              )}
             </div>
             <div className="flex items-center gap-1.5 text-[10px] font-mono">
               <span className="text-emerald-400 font-medium">S:{prDist.small}</span>

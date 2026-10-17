@@ -20,20 +20,25 @@ export function NumberTicker({
   decimalPlaces = 0,
 }: NumberTickerProps) {
   const ref = useRef<HTMLSpanElement>(null);
-  const motionValue = useMotionValue(direction === "down" ? value : 0);
+  const motionValue = useMotionValue(0);
   const springValue = useSpring(motionValue, {
-    damping: 60,
-    stiffness: 100,
+    damping: 24,
+    stiffness: 180,
   });
   const isInView = useInView(ref, { once: true, margin: "0px" });
 
   useEffect(() => {
     if (isInView) {
-      setTimeout(() => {
-        motionValue.set(direction === "down" ? 0 : value);
-      }, delay * 1000);
+      if (delay > 0) {
+        const timer = setTimeout(() => {
+          motionValue.set(value);
+        }, delay * 1000);
+        return () => clearTimeout(timer);
+      } else {
+        motionValue.set(value);
+      }
     }
-  }, [motionValue, isInView, delay, value, direction]);
+  }, [motionValue, isInView, delay, value]);
 
   useEffect(
     () =>

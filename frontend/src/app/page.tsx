@@ -97,19 +97,25 @@ export default function GitPulseDashboard() {
         fetch(`${GITHUB_API_URL}/executive-summary?repo=${encodeURIComponent(targetRepo)}`).then((r) => r.json()),
       ]);
 
-      // If timeline is empty array, use fallback data to avoid empty/flat zero chart
-      if (Array.isArray(timelineRes) && timelineRes.length > 0) {
+      // Use authentic real API responses directly from DuckDB & GitHub
+      if (Array.isArray(timelineRes)) {
         setTimelineData(timelineRes);
-      } else {
-        const fallback = getFallbackDashboardData(targetRepo, days);
-        setTimelineData(fallback.timeline);
       }
-
-      setKpiData(kpiRes || getFallbackDashboardData(targetRepo, days).kpis);
-      setFunnelData(Array.isArray(funnelRes) && funnelRes.length > 0 ? funnelRes : getFallbackDashboardData(targetRepo, days).funnel);
-      setContributors(Array.isArray(contribRes) && contribRes.length > 0 ? contribRes : getFallbackDashboardData(targetRepo, days).contributors);
-      setAnomalies(Array.isArray(anomalyRes) ? anomalyRes : getFallbackDashboardData(targetRepo, days).anomalies);
-      setExecutiveSummary(summaryRes || getFallbackDashboardData(targetRepo, days).executiveSummary);
+      if (kpiRes && typeof kpiRes === "object") {
+        setKpiData(kpiRes);
+      }
+      if (Array.isArray(funnelRes)) {
+        setFunnelData(funnelRes);
+      }
+      if (Array.isArray(contribRes)) {
+        setContributors(contribRes);
+      }
+      if (Array.isArray(anomalyRes)) {
+        setAnomalies(anomalyRes);
+      }
+      if (summaryRes && typeof summaryRes === "object") {
+        setExecutiveSummary(summaryRes);
+      }
     } catch (err) {
       console.warn("API unavailable, falling back to resilient preview dataset:", err);
       const fallback = getFallbackDashboardData(targetRepo, days);
@@ -175,7 +181,7 @@ export default function GitPulseDashboard() {
       <main className="flex-1 p-4 md:p-6 max-w-7xl w-full mx-auto space-y-6">
         {/* Top: Bento KPI Cards with Number Ticker & DORA Velocity */}
         <div id="tour-kpi-cards">
-          <KPICards data={kpiData} />
+          <KPICards key={currentRepo} data={kpiData} />
         </div>
 
         {/* Middle Section: Activity Timeline Chart (65%) vs PR Lifecycle Funnel (35%) */}

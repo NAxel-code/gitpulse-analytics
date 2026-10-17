@@ -144,17 +144,21 @@ export function Header({
         </div>
 
         {/* Center Search / AI Query Box */}
-        <div className="w-full lg:w-auto flex-1 max-w-md mx-auto">
+        <div className="w-full xl:w-auto flex-1 max-w-sm sm:max-w-md mx-auto min-w-[200px]">
           <button
             id="tour-ai-search"
             onClick={onOpenAI}
-            className="group flex w-full items-center justify-between rounded-xl border border-zinc-800 bg-zinc-900/70 px-3.5 py-1.5 text-sm text-zinc-400 shadow-xs transition hover:border-zinc-700 hover:bg-zinc-900 hover:text-zinc-200 cursor-pointer focus-visible:ring-2 focus-visible:ring-zinc-400 focus-visible:outline-none"
+            className="group flex w-full h-9 items-center justify-between gap-2 rounded-xl border border-zinc-800 bg-zinc-900/70 px-3 text-xs text-zinc-400 shadow-xs transition hover:border-zinc-700 hover:bg-zinc-900 hover:text-zinc-200 cursor-pointer focus-visible:ring-2 focus-visible:ring-zinc-400 focus-visible:outline-none overflow-hidden"
           >
-            <div className="flex items-center gap-2">
-              <Sparkles className="h-4 w-4 text-indigo-400 transition group-hover:rotate-6" />
-              <span className="text-xs md:text-sm text-zinc-300">Tanya AI: &quot;Top contributor dengan PR merge terbanyak&quot;</span>
+            <div className="flex items-center gap-2 min-w-0 flex-1">
+              <Sparkles className="h-4 w-4 shrink-0 text-indigo-400 transition group-hover:rotate-6" />
+              <span className="truncate whitespace-nowrap text-zinc-300 text-left">
+                <span className="font-semibold text-indigo-300">Tanya AI:</span>{" "}
+                <span className="text-zinc-400 hidden md:inline">&quot;Top contributor dengan PR merge terbanyak&quot;</span>
+                <span className="text-zinc-400 md:hidden">&quot;Top contributor...&quot;</span>
+              </span>
             </div>
-            <kbd className="hidden sm:inline-block rounded border border-zinc-700/80 bg-zinc-800 px-1.5 py-0.5 text-[10px] font-mono font-medium text-zinc-300">
+            <kbd className="shrink-0 hidden sm:inline-flex items-center rounded border border-zinc-700/80 bg-zinc-800/90 px-1.5 py-0.5 text-[10px] font-mono font-medium text-zinc-300">
               ⌘K
             </kbd>
           </button>
