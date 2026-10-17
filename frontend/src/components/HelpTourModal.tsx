@@ -159,35 +159,51 @@ export function HelpTourModal({
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [isTourActive, isHelpOpen, currentStep, onCloseTour, onCloseHelp]);
 
-  // Update target rect when step changes or window resizes
-  const updateTargetRect = useCallback(() => {
+  // Measure target position without triggering scroll
+  const measureTarget = useCallback(() => {
     if (!isTourActive) return;
     const step = TOUR_STEPS[currentStep];
     const el = document.getElementById(step.targetId);
     if (el) {
-      el.scrollIntoView({ behavior: "smooth", block: "center" });
-      setTimeout(() => {
-        const rect = el.getBoundingClientRect();
-        setTargetRect(rect);
-      }, 300);
+      setTargetRect(el.getBoundingClientRect());
     } else {
       setTargetRect(null);
     }
   }, [isTourActive, currentStep]);
 
+  // Smooth scroll to target and measure once when step changes
   useEffect(() => {
-    if (isTourActive) {
-      updateTargetRect();
-      window.addEventListener("resize", updateTargetRect);
-      window.addEventListener("scroll", updateTargetRect);
-      return () => {
-        window.removeEventListener("resize", updateTargetRect);
-        window.removeEventListener("scroll", updateTargetRect);
-      };
+    if (!isTourActive) {
+      setTargetRect(null);
+      return;
+    }
+    const step = TOUR_STEPS[currentStep];
+    const el = document.getElementById(step.targetId);
+    if (el) {
+      el.scrollIntoView({ behavior: "smooth", block: "center" });
+      setTargetRect(el.getBoundingClientRect());
+      const timer = setTimeout(() => {
+        setTargetRect(el.getBoundingClientRect());
+      }, 350);
+      return () => clearTimeout(timer);
     } else {
       setTargetRect(null);
     }
-  }, [isTourActive, currentStep, updateTargetRect]);
+  }, [isTourActive, currentStep]);
+
+  // Update target rect on window resize or scroll without re-scrolling
+  useEffect(() => {
+    if (!isTourActive) return;
+    const onScrollOrResize = () => {
+      measureTarget();
+    };
+    window.addEventListener("resize", onScrollOrResize, { passive: true });
+    window.addEventListener("scroll", onScrollOrResize, { passive: true });
+    return () => {
+      window.removeEventListener("resize", onScrollOrResize);
+      window.removeEventListener("scroll", onScrollOrResize);
+    };
+  }, [isTourActive, measureTarget]);
 
   const handleNextStep = () => {
     if (currentStep < TOUR_STEPS.length - 1) {
@@ -249,16 +265,57 @@ export function HelpTourModal({
         </div>
       )}
 
-      {/* 2. Interactive Spotlight Tour Overlay */}
+      {/* 2. Interactive Spotlight Tour Overlay with Cutout */}
       {isTourActive && (
         <div className="fixed inset-0 z-50 overflow-hidden pointer-events-auto">
-          {/* Dark Backdrop */}
+          {/* SVG Mask Definition with cutout hole for target element */}
+          <svg className="fixed w-0 h-0" aria-hidden="true">
+            <defs>
+              <mask id="tour-spotlight-mask">
+                <rect x="0" y="0" width="100%" height="100%" fill="white" />
+                {targetRect && (
+                  <rect
+                    x={Math.max(0, targetRect.left - 6)}
+                    y={Math.max(0, targetRect.top - 6)}
+                    width={targetRect.width + 12}
+                    height={targetRect.height + 12}
+                    rx="16"
+                    ry="16"
+                    fill="black"
+                  />
+                )}
+              </mask>
+            </defs>
+          </svg>
+
+          {/* Dark Backdrop with Cutout for Spotlight (No blur or dimming over target!) */}
           <div
-            onClick={onCloseTour}
-            className="absolute inset-0 bg-black/75 backdrop-blur-[2px] transition-opacity duration-300"
+            onClick={(e) => {
+              if (targetRect) {
+                const pad = 6;
+                if (
+                  e.clientX >= targetRect.left - pad &&
+                  e.clientX <= targetRect.right + pad &&
+                  e.clientY >= targetRect.top - pad &&
+                  e.clientY <= targetRect.bottom + pad
+                ) {
+                  return; // clicked inside spotlight cutout
+                }
+              }
+              onCloseTour();
+            }}
+            style={
+              targetRect
+                ? {
+                    mask: "url(#tour-spotlight-mask)",
+                    WebkitMask: "url(#tour-spotlight-mask)",
+                  }
+                : undefined
+            }
+            className="absolute inset-0 bg-black/75 backdrop-blur-[2px] transition-opacity duration-300 cursor-pointer"
           />
 
-          {/* Spotlight Highlight Ring around active element */}
+          {/* Spotlight Highlight Ring with Glow around active element */}
           {targetRect && (
             <div
               style={{
@@ -267,12 +324,18 @@ export function HelpTourModal({
                 width: `${targetRect.width + 12}px`,
                 height: `${targetRect.height + 12}px`,
               }}
-              className="absolute pointer-events-none rounded-2xl ring-2 ring-indigo-500/80 shadow-[0_0_60px_rgba(99,102,241,0.35)] transition-all duration-300"
+              className="absolute pointer-events-none rounded-2xl ring-2 ring-indigo-500 shadow-[0_0_35px_rgba(99,102,241,0.5)] transition-all duration-300"
             />
           )}
 
-          {/* Floating Step Card */}
-          <div className="absolute inset-x-4 bottom-6 md:inset-x-auto md:bottom-10 md:left-1/2 md:-translate-x-1/2 z-50 w-full md:max-w-xl">
+          {/* Floating Step Card (Adaptively positioned top or bottom to avoid covering the spotlight target) */}
+          <div
+            className={`fixed inset-x-4 md:inset-x-auto md:left-1/2 md:-translate-x-1/2 z-50 w-full md:max-w-xl transition-all duration-300 pointer-events-auto ${
+              targetRect && typeof window !== "undefined" && targetRect.top > window.innerHeight * 0.45
+                ? "top-6 md:top-8"
+                : "bottom-6 md:bottom-10"
+            }`}
+          >
             <div className="rounded-2xl border border-zinc-700/80 bg-zinc-950/95 p-5 shadow-2xl backdrop-blur-xl animate-in zoom-in-95 duration-200">
               <div className="flex items-center justify-between mb-2">
                 <span className="rounded-md bg-indigo-500/10 px-2.5 py-0.5 text-[11px] font-mono font-medium text-indigo-400 border border-indigo-500/20">
