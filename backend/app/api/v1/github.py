@@ -71,12 +71,21 @@ async def github_webhook(
     storage.insert_events([event_data])
     return {"status": "accepted", "event_type": event_type, "repo": repo_name}
 
+def ensure_repo_data(repo: str, days: int = 14):
+    """Automatically ensures repository developer events exist in DuckDB on demand."""
+    if not repo:
+        return
+    storage = get_storage()
+    if not storage.has_repo_events(repo):
+        github_syncer.sync_repository(repo_name=repo, days=days)
+
 @router.get("/overview", response_model=RepoKPISummary)
 async def get_overview(
     repo: str = Query("vercel/next.js"),
     days: int = Query(14, ge=1, le=90)
 ):
     """Retrieves Bento Grid KPI metrics: Commits, Active Contributors, PR Merge Rate, Stars."""
+    ensure_repo_data(repo, days=days)
     storage = get_storage()
     return storage.get_kpi_summary(repo_name=repo, days=days)
 
@@ -86,6 +95,7 @@ async def get_timeline(
     days: int = Query(14, ge=1, le=90)
 ):
     """Daily activity volume: Commits, PRs, Issues, and Stars."""
+    ensure_repo_data(repo, days=days)
     storage = get_storage()
     return storage.get_activity_timeline(repo_name=repo, days=days)
 
@@ -95,6 +105,7 @@ async def get_pr_funnel(
     days: int = Query(30, ge=1, le=90)
 ):
     """PR review flow: Created -> Review in Progress -> Approved -> Merged."""
+    ensure_repo_data(repo, days=days)
     storage = get_storage()
     return storage.get_pr_funnel(repo_name=repo, days=days)
 
@@ -104,6 +115,7 @@ async def get_contributors(
     days: int = Query(30, ge=1, le=90)
 ):
     """Active developer and contributor leaderboard."""
+    ensure_repo_data(repo, days=days)
     storage = get_storage()
     return storage.get_contributor_leaderboard(repo_name=repo, days=days)
 
@@ -113,6 +125,7 @@ async def get_contributor_journey(
     login: str = Query(...)
 ):
     """Woopra-style Entity Action Timeline for an individual developer."""
+    ensure_repo_data(repo, days=30)
     storage = get_storage()
     return storage.get_contributor_journey(repo_name=repo, login=login)
 
@@ -121,11 +134,13 @@ async def get_anomalies(
     repo: str = Query("vercel/next.js")
 ):
     """DORA and Engineering anomaly detection alerts."""
+    ensure_repo_data(repo, days=14)
     return anomaly_detector.detect_anomalies(repo_name=repo)
 
 @router.get("/executive-summary")
 async def get_executive_summary(repo: str = Query("vercel/next.js")) -> Dict[str, Any]:
     """Automated AI Daily Engineering Brief for Tech Leads & CTOs."""
+    ensure_repo_data(repo, days=14)
     storage = get_storage()
     kpis = storage.get_kpi_summary(repo_name=repo, days=7)
     contributors = storage.get_contributor_leaderboard(repo_name=repo, days=7)

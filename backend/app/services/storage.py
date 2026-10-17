@@ -83,6 +83,18 @@ class DuckDBStorage:
             INSERT INTO github_events VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
         """, rows)
 
+    def has_repo_events(self, repo_name: str) -> bool:
+        """Checks if repository has any recorded events in DuckDB."""
+        repo_filter = repo_name.strip().lower()
+        try:
+            res = self.conn.execute(
+                "SELECT COUNT(*) FROM github_events WHERE repo_name = ?",
+                [repo_filter]
+            ).fetchone()
+            return bool(res and res[0] > 0)
+        except Exception:
+            return False
+
     def get_kpi_summary(self, repo_name: str = "vercel/next.js", days: int = 14) -> Dict[str, Any]:
         """Calculates GitHub repository KPIs (Commits, Velocity, PR Merge Rate, Stars)."""
         cutoff_date = datetime.now(timezone.utc).replace(tzinfo=None) - timedelta(days=days)
@@ -206,16 +218,28 @@ class DuckDBStorage:
             ORDER BY time_bucket ASC
         """, [repo_filter, repo_filter, cutoff_date]).fetchall()
 
-        timeline = []
+        # Build complete, continuous date map for all requested days
+        now_utc = datetime.now(timezone.utc).replace(tzinfo=None)
+        date_map = {}
+        for i in range(days):
+            d_str = (now_utc - timedelta(days=days - 1 - i)).strftime("%Y-%m-%d")
+            date_map[d_str] = {
+                "time_bucket": d_str,
+                "commits": 0,
+                "pull_requests": 0,
+                "issues": 0,
+                "stars": 0
+            }
+
         for r in rows:
-            timeline.append({
-                "time_bucket": r[0],
-                "commits": int(r[1] or 0),
-                "pull_requests": int(r[2] or 0),
-                "issues": int(r[3] or 0),
-                "stars": int(r[4] or 0)
-            })
-        return timeline
+            bucket = r[0]
+            if bucket in date_map:
+                date_map[bucket]["commits"] = int(r[1] or 0)
+                date_map[bucket]["pull_requests"] = int(r[2] or 0)
+                date_map[bucket]["issues"] = int(r[3] or 0)
+                date_map[bucket]["stars"] = int(r[4] or 0)
+
+        return list(date_map.values())
 
     def get_pr_funnel(self, repo_name: str = "vercel/next.js", days: int = 30) -> List[Dict[str, Any]]:
         """PR Review & Merge Funnel with Shopify-style drop-off diagnostics."""

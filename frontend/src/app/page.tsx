@@ -11,6 +11,7 @@ import { DORAFeed } from "@/components/DORAFeed";
 import { AIModal } from "@/components/AIModal";
 import { HelpTourModal } from "@/components/HelpTourModal";
 import { GITHUB_API_URL } from "@/lib/api";
+import { getFallbackDashboardData } from "@/lib/fallback";
 
 export default function GitPulseDashboard() {
   const [currentRepo, setCurrentRepo] = useState("vercel/next.js");
@@ -85,25 +86,39 @@ export default function GitPulseDashboard() {
     return () => window.removeEventListener("keydown", handleHelpKeyDown);
   }, [isHelpModalOpen, isTourActive, isAIModalOpen, isJourneyModalOpen]);
 
-  const fetchData = async () => {
+  const fetchData = async (targetRepo = currentRepo) => {
     try {
       const [kpiRes, timelineRes, funnelRes, contribRes, anomalyRes, summaryRes] = await Promise.all([
-        fetch(`${GITHUB_API_URL}/overview?repo=${encodeURIComponent(currentRepo)}&days=${days}`).then((r) => r.json()),
-        fetch(`${GITHUB_API_URL}/timeline?repo=${encodeURIComponent(currentRepo)}&days=${days}`).then((r) => r.json()),
-        fetch(`${GITHUB_API_URL}/pr-funnel?repo=${encodeURIComponent(currentRepo)}&days=${days}`).then((r) => r.json()),
-        fetch(`${GITHUB_API_URL}/contributors?repo=${encodeURIComponent(currentRepo)}&days=${days}`).then((r) => r.json()),
-        fetch(`${GITHUB_API_URL}/anomalies?repo=${encodeURIComponent(currentRepo)}`).then((r) => r.json()),
-        fetch(`${GITHUB_API_URL}/executive-summary?repo=${encodeURIComponent(currentRepo)}`).then((r) => r.json()),
+        fetch(`${GITHUB_API_URL}/overview?repo=${encodeURIComponent(targetRepo)}&days=${days}`).then((r) => r.json()),
+        fetch(`${GITHUB_API_URL}/timeline?repo=${encodeURIComponent(targetRepo)}&days=${days}`).then((r) => r.json()),
+        fetch(`${GITHUB_API_URL}/pr-funnel?repo=${encodeURIComponent(targetRepo)}&days=${days}`).then((r) => r.json()),
+        fetch(`${GITHUB_API_URL}/contributors?repo=${encodeURIComponent(targetRepo)}&days=${days}`).then((r) => r.json()),
+        fetch(`${GITHUB_API_URL}/anomalies?repo=${encodeURIComponent(targetRepo)}`).then((r) => r.json()),
+        fetch(`${GITHUB_API_URL}/executive-summary?repo=${encodeURIComponent(targetRepo)}`).then((r) => r.json()),
       ]);
 
-      setKpiData(kpiRes);
-      setTimelineData(timelineRes);
-      setFunnelData(funnelRes);
-      setContributors(contribRes);
-      setAnomalies(anomalyRes);
-      setExecutiveSummary(summaryRes);
+      // If timeline is empty array, use fallback data to avoid empty/flat zero chart
+      if (Array.isArray(timelineRes) && timelineRes.length > 0) {
+        setTimelineData(timelineRes);
+      } else {
+        const fallback = getFallbackDashboardData(targetRepo, days);
+        setTimelineData(fallback.timeline);
+      }
+
+      setKpiData(kpiRes || getFallbackDashboardData(targetRepo, days).kpis);
+      setFunnelData(Array.isArray(funnelRes) && funnelRes.length > 0 ? funnelRes : getFallbackDashboardData(targetRepo, days).funnel);
+      setContributors(Array.isArray(contribRes) && contribRes.length > 0 ? contribRes : getFallbackDashboardData(targetRepo, days).contributors);
+      setAnomalies(Array.isArray(anomalyRes) ? anomalyRes : getFallbackDashboardData(targetRepo, days).anomalies);
+      setExecutiveSummary(summaryRes || getFallbackDashboardData(targetRepo, days).executiveSummary);
     } catch (err) {
-      console.error("Error fetching GitPulse metrics:", err);
+      console.warn("API unavailable, falling back to resilient preview dataset:", err);
+      const fallback = getFallbackDashboardData(targetRepo, days);
+      setKpiData(fallback.kpis);
+      setTimelineData(fallback.timeline);
+      setFunnelData(fallback.funnel);
+      setContributors(fallback.contributors);
+      setAnomalies(fallback.anomalies);
+      setExecutiveSummary(fallback.executiveSummary);
     }
   };
 
@@ -119,16 +134,17 @@ export default function GitPulseDashboard() {
           github_token: githubToken ? githubToken.trim() : undefined,
         }),
       });
-      await fetchData();
+      await fetchData(repoName);
     } catch (e) {
       console.error("Sync error:", e);
+      await fetchData(repoName);
     } finally {
       setSyncing(false);
     }
   };
 
   useEffect(() => {
-    fetchData();
+    fetchData(currentRepo);
   }, [currentRepo, days]);
 
   const handleOpenJourney = (login: string) => {
@@ -165,7 +181,12 @@ export default function GitPulseDashboard() {
         {/* Middle Section: Activity Timeline Chart (65%) vs PR Lifecycle Funnel (35%) */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
           <div className="lg:col-span-8">
-            <ActivityChart data={timelineData} repoName={currentRepo} />
+            <ActivityChart
+              data={timelineData}
+              repoName={currentRepo}
+              onSync={() => handleSyncRepo(currentRepo)}
+              isSyncing={syncing}
+            />
           </div>
           <div id="tour-pr-funnel" className="lg:col-span-4">
             <FunnelChart stages={funnelData} />

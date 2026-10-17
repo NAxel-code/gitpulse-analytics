@@ -108,28 +108,29 @@ export function TrafficChart({ data }: { data: TrafficPoint[] }) {
                 fontSize: "12px",
               }}
             />
-            {metric === "traffic" ? (
-              <>
-                <Area
-                  type="monotone"
-                  dataKey="unique_visitors"
-                  name="Unique Visitors"
-                  stroke="#6366f1"
-                  strokeWidth={2}
-                  fillOpacity={1}
-                  fill="url(#colorVisitors)"
-                />
-                <Area
-                  type="monotone"
-                  dataKey="conversions"
-                  name="Conversions"
-                  stroke="#10b981"
-                  strokeWidth={2}
-                  fillOpacity={1}
-                  fill="url(#colorConversions)"
-                />
-              </>
-            ) : (
+            {metric === "traffic" && (
+              <Area
+                type="monotone"
+                dataKey="unique_visitors"
+                name="Unique Visitors"
+                stroke="#6366f1"
+                strokeWidth={2}
+                fillOpacity={1}
+                fill="url(#colorVisitors)"
+              />
+            )}
+            {metric === "traffic" && (
+              <Area
+                type="monotone"
+                dataKey="conversions"
+                name="Conversions"
+                stroke="#10b981"
+                strokeWidth={2}
+                fillOpacity={1}
+                fill="url(#colorConversions)"
+              />
+            )}
+            {metric === "revenue" && (
               <Area
                 type="monotone"
                 dataKey="conversion_value"

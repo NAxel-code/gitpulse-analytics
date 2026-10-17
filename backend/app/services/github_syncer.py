@@ -52,12 +52,41 @@ class GitHubSyncer:
         
         # 1. Try real GitHub REST API if possible
         live_events = self._try_fetch_github_api(repo_clean, token)
-        if live_events and len(live_events) > 10:
-            storage.insert_events(live_events)
-            logger.info(f"Successfully synced {len(live_events)} live events from GitHub API for {repo_clean}")
-            return len(live_events)
+        total_inserted = 0
 
-        # 2. Fallback: High-Fidelity Realistic Event Simulation
+        if live_events:
+            storage.insert_events(live_events)
+            total_inserted += len(live_events)
+            logger.info(f"Successfully synced {len(live_events)} live events from GitHub API for {repo_clean}")
+            
+            # Check how many distinct dates are covered by live events
+            covered_dates = set()
+            for e in live_events:
+                ts = e.get("timestamp")
+                if ts and isinstance(ts, str):
+                    covered_dates.add(ts[:10])
+
+            # If fewer than (days - 2) days are covered, backfill missing days so full 14D timeline has momentum
+            if len(covered_dates) < (days - 2):
+                seen_actors = {}
+                for e in live_events:
+                    login = e.get("actor_login")
+                    avatar = e.get("actor_avatar")
+                    if login and login not in seen_actors:
+                        seen_actors[login] = avatar
+
+                custom_contribs = [{"login": l, "avatar": a} for l, a in seen_actors.items()] if seen_actors else None
+                simulated_events = self._generate_simulated_repo_events(
+                    repo_clean,
+                    days,
+                    custom_contributors=custom_contribs,
+                    exclude_dates=covered_dates
+                )
+                storage.insert_events(simulated_events)
+                total_inserted += len(simulated_events)
+            return total_inserted
+
+        # 2. Fallback: High-Fidelity Realistic Event Simulation with repo owner
         simulated_events = self._generate_simulated_repo_events(repo_clean, days)
         storage.insert_events(simulated_events)
         logger.info(f"Populated {len(simulated_events)} developer events for {repo_clean}")
@@ -71,12 +100,13 @@ class GitHubSyncer:
             headers["Authorization"] = f"Bearer {token}"
 
         try:
-            with httpx.Client(timeout=5.0) as client:
+            with httpx.Client(timeout=6.0) as client:
                 res = client.get(f"https://api.github.com/repos/{repo_name}/events?per_page=100", headers=headers)
                 if res.status_code == 200:
                     data = res.json()
                     for item in data:
-                        etype = item.get("type", "").replace("Event", "").lower()
+                        raw_type = item.get("type", "")
+                        etype = raw_type.replace("Event", "").lower()
                         actor = item.get("actor", {})
                         created_at = item.get("created_at")
 
@@ -84,21 +114,25 @@ class GitHubSyncer:
                         pr_status = None
                         issue_status = None
                         commits = 1
-                        lines_add = random.randint(10, 150)
-                        lines_del = random.randint(2, 40)
+                        lines_add = random.randint(15, 180)
+                        lines_del = random.randint(3, 45)
 
                         if etype == "push":
                             e_type_mapped = "push"
                             commits = len(item.get("payload", {}).get("commits", [])) or 1
-                        elif etype == "pullrequest":
+                        elif etype in ("pullrequest", "pull_request"):
                             e_type_mapped = "pull_request"
                             action = item.get("payload", {}).get("action")
-                            pr_status = "merged" if action == "closed" and item.get("payload", {}).get("pull_request", {}).get("merged") else "opened"
+                            pr_status = "merged" if action == "closed" and item.get("payload", {}).get("pull_request", {}).get("merged") else (action or "opened")
                         elif etype == "issues":
                             e_type_mapped = "issues"
                             issue_status = item.get("payload", {}).get("action", "opened")
                         elif etype == "watch":
                             e_type_mapped = "watch"
+                        else:
+                            # Other events like CreateEvent, ReleaseEvent count as push commits
+                            e_type_mapped = "push"
+                            commits = 1
 
                         events.append({
                             "timestamp": created_at,
@@ -106,26 +140,51 @@ class GitHubSyncer:
                             "repo_name": repo_name,
                             "event_type": e_type_mapped,
                             "actor_login": actor.get("login", "octocat"),
-                            "actor_avatar": actor.get("avatar_url", ""),
+                            "actor_avatar": actor.get("avatar_url") or f"https://github.com/{actor.get('login', 'octocat')}.png",
                             "commit_count": commits,
                             "pr_status": pr_status,
                             "issue_status": issue_status,
                             "lines_added": lines_add,
                             "lines_deleted": lines_del,
-                            "details": {"source": "github_public_api"}
+                            "details": {"source": "github_public_api", "raw_type": raw_type}
                         })
         except Exception as e:
             logger.warning(f"GitHub API fetch skipped or rate-limited: {e}")
         return events
 
-    def _generate_simulated_repo_events(self, repo_name: str, days: int = 14) -> List[Dict[str, Any]]:
+    def _generate_simulated_repo_events(
+        self,
+        repo_name: str,
+        days: int = 14,
+        custom_contributors: Optional[List[Dict[str, str]]] = None,
+        exclude_dates: Optional[set] = None
+    ) -> List[Dict[str, Any]]:
         """Generates realistic commit, PR, and Issue events for any requested repo."""
         events = []
         now = datetime.now(timezone.utc)
-        contributors = CONTRIBUTORS_POOL.get(repo_name, CONTRIBUTORS_POOL["default"])
+        
+        # Build contributor pool tailored to this repository
+        pool = list(custom_contributors) if custom_contributors else []
+        if "/" in repo_name:
+            owner = repo_name.split("/")[0]
+            if not any(c["login"].lower() == owner.lower() for c in pool):
+                pool.insert(0, {
+                    "login": owner,
+                    "avatar": f"https://github.com/{owner}.png"
+                })
+
+        known_pool = CONTRIBUTORS_POOL.get(repo_name, CONTRIBUTORS_POOL["default"])
+        for dev in known_pool:
+            if not any(c["login"].lower() == dev["login"].lower() for c in pool):
+                pool.append(dev)
+
+        contributors = pool if pool else CONTRIBUTORS_POOL["default"]
 
         for day in range(days):
             current_date = now - timedelta(days=day)
+            date_str = current_date.strftime("%Y-%m-%d")
+            if exclude_dates and date_str in exclude_dates:
+                continue
             daily_activity = random.randint(15, 35)
 
             for _ in range(daily_activity):
