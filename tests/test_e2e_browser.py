@@ -116,7 +116,7 @@ def run_e2e_test(base_url="http://localhost:3000"):
 
         page.locator("button:has-text('Glosarium Metrik DORA')").click()
         page.wait_for_timeout(300)
-        assert page.locator("text=Lead Time to Merge").is_visible(), "DORA glossary tab content missing"
+        assert page.locator("text=Z-Score Deviation (σ)").is_visible(), "DORA glossary tab content missing"
         print("  [PASS] Documentation tabs switched and verified.")
 
         # Start interactive visual tour from modal
