@@ -15,6 +15,9 @@ import {
   Search,
   FolderGit2,
   Trophy,
+  Star,
+  Loader2,
+  Globe,
 } from "lucide-react";
 
 interface HeaderProps {
@@ -50,16 +53,65 @@ export function Header({
   const [customRepo, setCustomRepo] = useState("");
   const [repoError, setRepoError] = useState("");
   const [tempToken, setTempToken] = useState(githubToken);
+  const [searchResults, setSearchResults] = useState<any[]>([]);
+  const [isSearching, setIsSearching] = useState(false);
+  const [selectedCategoryPills, setSelectedCategoryPills] = useState<string>("all");
 
   useEffect(() => {
     setTempToken(githubToken);
   }, [githubToken]);
+
+  // Live GitHub search autocomplete
+  useEffect(() => {
+    const q = customRepo.trim();
+    if (q.length < 2) {
+      setSearchResults([]);
+      setIsSearching(false);
+      return;
+    }
+
+    const timer = setTimeout(async () => {
+      setIsSearching(true);
+      try {
+        const res = await fetch(`/api/github/search?q=${encodeURIComponent(q)}`, {
+          headers: githubToken ? { Authorization: `Bearer ${githubToken.trim()}` } : {},
+        });
+        if (res.ok) {
+          const data = await res.json();
+          setSearchResults(data.items || []);
+        }
+      } catch (err) {
+        console.warn("Search error:", err);
+      } finally {
+        setIsSearching(false);
+      }
+    }, 350);
+
+    return () => clearTimeout(timer);
+  }, [customRepo, githubToken]);
 
   const presets = [
     "vercel/next.js",
     "facebook/react",
     "tailwindlabs/tailwindcss",
     "NAxel-code/gitpulse-analytics",
+  ];
+
+  const universalPresets = [
+    { name: "NAxel-code/gitpulse-analytics", category: "personal", label: "GitPulse (Milik Anda)", lang: "TypeScript" },
+    { name: "vllm-project/vllm", category: "ai", label: "vLLM (AI Inference)", lang: "Python" },
+    { name: "huggingface/transformers", category: "ai", label: "Transformers", lang: "Python" },
+    { name: "ollama/ollama", category: "ai", label: "Ollama (Local LLM)", lang: "Go" },
+    { name: "astral-sh/uv", category: "systems", label: "uv (Fast Python)", lang: "Rust" },
+    { name: "torvalds/linux", category: "systems", label: "Linux Kernel", lang: "C" },
+    { name: "oven-sh/bun", category: "systems", label: "Bun Runtime", lang: "Zig" },
+    { name: "kubernetes/kubernetes", category: "devops", label: "Kubernetes", lang: "Go" },
+    { name: "prometheus/prometheus", category: "devops", label: "Prometheus", lang: "Go" },
+    { name: "flutter/flutter", category: "mobile", label: "Flutter", lang: "Dart" },
+    { name: "facebook/react-native", category: "mobile", label: "React Native", lang: "C++ / JS" },
+    { name: "vercel/next.js", category: "web", label: "Next.js", lang: "TypeScript" },
+    { name: "facebook/react", category: "web", label: "React", lang: "JavaScript" },
+    { name: "tailwindlabs/tailwindcss", category: "web", label: "Tailwind CSS", lang: "CSS" },
   ];
 
   const handleSelectPreset = (repo: string) => {
@@ -136,6 +188,7 @@ export function Header({
             ))}
             {/* Custom Repo Button */}
             <button
+              id="btn-ganti-repo"
               onClick={() => setShowRepoModal(true)}
               className="rounded-lg px-2 py-1 text-[11px] font-mono border border-dashed border-zinc-700 bg-zinc-900/60 text-zinc-300 hover:text-white hover:border-zinc-500 hover:bg-zinc-800 transition flex items-center gap-1 cursor-pointer focus-visible:ring-2 focus-visible:ring-zinc-400 focus-visible:outline-none"
               title="Analisis repositori publik GitHub apa saja di seluruh dunia"
@@ -344,76 +397,165 @@ export function Header({
             <form onSubmit={handleCustomRepoSubmit} className="mt-4 space-y-3">
               <div>
                 <label className="text-xs font-medium text-zinc-300 block mb-1">
-                  Nama Repositori GitHub:
+                  Nama Repositori GitHub (Universal):
                 </label>
                 <div className="relative">
                   <Search className="absolute left-3 top-2.5 h-3.5 w-3.5 text-zinc-500" />
                   <input
+                    id="input-custom-repo"
                     type="text"
                     autoFocus
-                    placeholder="Ketik owner/nama-repo (misal: NAxel-code/gitpulse-analytics)"
+                    placeholder="Ketik owner/nama-repo (contoh: astral-sh/uv, vllm-project/vllm, torvalds/linux)..."
                     value={customRepo}
                     onChange={(e) => {
                       setCustomRepo(e.target.value);
                       if (repoError) setRepoError("");
                     }}
-                    className="w-full rounded-xl border border-zinc-800 bg-zinc-900 pl-8 pr-3.5 py-2 text-xs font-mono text-zinc-100 placeholder-zinc-500 focus:border-zinc-600 focus:ring-1 focus:ring-zinc-600 focus:outline-none transition-colors"
+                    className="w-full rounded-xl border border-zinc-800 bg-zinc-900 pl-9 pr-8 py-2 text-xs font-mono text-zinc-100 placeholder-zinc-500 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 focus:outline-none transition-colors"
                   />
+                  {isSearching && (
+                    <Loader2 className="absolute right-3 top-2.5 h-3.5 w-3.5 text-indigo-400 animate-spin" />
+                  )}
                 </div>
                 {repoError && (
                   <p className="text-[11px] text-rose-400 mt-1">{repoError}</p>
                 )}
+
+                {/* Live Autocomplete Results from GitHub Search */}
+                {searchResults.length > 0 && (
+                  <div
+                    id="autocomplete-dropdown"
+                    className="mt-2 rounded-xl border border-zinc-800 bg-zinc-900/95 max-h-48 overflow-y-auto divide-y divide-zinc-800/80 shadow-lg"
+                  >
+                    {searchResults.map((sr) => (
+                      <button
+                        key={sr.full_name}
+                        type="button"
+                        onClick={() => {
+                          setCustomRepo(sr.full_name);
+                          setSearchResults([]);
+                          setRepoError("");
+                        }}
+                        className="w-full text-left p-2.5 hover:bg-zinc-800/80 transition flex items-start justify-between gap-3 cursor-pointer group"
+                      >
+                        <div className="min-w-0 flex-1">
+                          <div className="flex items-center gap-2">
+                            <span className="font-mono text-xs font-bold text-white group-hover:text-indigo-300">
+                              {sr.full_name}
+                            </span>
+                            <span className="text-[10px] font-mono text-zinc-400">
+                              {sr.language}
+                            </span>
+                          </div>
+                          <p className="text-[11px] text-zinc-400 truncate mt-0.5">
+                            {sr.description}
+                          </p>
+                        </div>
+                        <div className="flex items-center gap-1 text-[11px] font-mono font-bold text-amber-300 shrink-0">
+                          <Star className="h-3 w-3 fill-amber-400 text-amber-400" />
+                          <span>{sr.stars_formatted}</span>
+                        </div>
+                      </button>
+                    ))}
+                  </div>
+                )}
               </div>
 
-              {/* Popular & Suggested Repositories */}
+              {/* Multi-Sector Preset Selector */}
               <div className="pt-2">
-                <span className="text-[11px] font-mono text-zinc-400 block mb-1.5">
-                  Pilihan Populer / Cepat:
-                </span>
-                <div className="flex flex-wrap gap-1.5">
-                  {[
-                    "NAxel-code/gitpulse-analytics",
-                    "vercel/next.js",
-                    "facebook/react",
-                    "tailwindlabs/tailwindcss",
-                    "shadcn-ui/ui",
-                    "oven-sh/bun",
-                    "torvalds/linux",
-                  ].map((r) => (
-                    <button
-                      key={r}
-                      type="button"
-                      onClick={() => {
-                        setCustomRepo(r);
-                        setRepoError("");
-                      }}
-                      className={`rounded-md border px-2 py-1 text-[11px] font-mono transition ${
-                        r === currentRepo
-                          ? "border-indigo-500/50 bg-indigo-500/10 text-indigo-300"
-                          : "border-zinc-800 bg-zinc-900/80 text-zinc-300 hover:border-zinc-700 hover:text-white hover:bg-zinc-800"
-                      }`}
-                    >
-                      {r}
-                    </button>
-                  ))}
+                <div className="flex items-center justify-between mb-2">
+                  <span className="text-[11px] font-mono text-zinc-400">
+                    Pilihan Lintas Sektor &amp; Bahasa:
+                  </span>
+                  {/* Category Filter Mini Tabs */}
+                  <div className="flex items-center gap-1 text-[10px] font-mono">
+                    {[
+                      { id: "all", label: "Semua" },
+                      { id: "ai", label: "🤖 AI" },
+                      { id: "systems", label: "🦀 Systems" },
+                      { id: "devops", label: "⚙️ DevOps" },
+                      { id: "web", label: "🌐 Web" },
+                    ].map((cat) => (
+                      <button
+                        key={cat.id}
+                        type="button"
+                        onClick={() => setSelectedCategoryPills(cat.id)}
+                        className={`px-1.5 py-0.5 rounded transition ${
+                          selectedCategoryPills === cat.id
+                            ? "bg-zinc-800 text-zinc-100 font-semibold"
+                            : "text-zinc-500 hover:text-zinc-300"
+                        }`}
+                      >
+                        {cat.label}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                <div className="flex flex-wrap gap-1.5 max-h-32 overflow-y-auto">
+                  {universalPresets
+                    .filter((p) => selectedCategoryPills === "all" || p.category === selectedCategoryPills)
+                    .map((r) => (
+                      <button
+                        key={r.name}
+                        type="button"
+                        onClick={() => {
+                          setCustomRepo(r.name);
+                          setRepoError("");
+                          setSearchResults([]);
+                        }}
+                        className={`rounded-md border px-2 py-1 text-[11px] font-mono transition flex items-center gap-1 cursor-pointer ${
+                          r.name === currentRepo
+                            ? "border-emerald-500/50 bg-emerald-500/10 text-emerald-300 font-semibold"
+                            : "border-zinc-800 bg-zinc-900/80 text-zinc-300 hover:border-zinc-700 hover:text-white hover:bg-zinc-800"
+                        }`}
+                        title={`${r.label} (${r.lang})`}
+                      >
+                        <span>{r.name}</span>
+                        <span className="text-[9px] text-zinc-500">[{r.lang}]</span>
+                      </button>
+                    ))}
                 </div>
               </div>
 
-              <div className="mt-5 pt-3 border-t border-zinc-800 flex justify-end gap-2">
+              {/* Direct Leaderboard Banner */}
+              {onOpenLeaderboard && (
+                <div className="rounded-xl border border-amber-500/20 bg-amber-500/5 p-2.5 flex items-center justify-between gap-3 text-xs">
+                  <div className="flex items-center gap-2">
+                    <Trophy className="h-4 w-4 text-amber-400 shrink-0" />
+                    <span className="text-[11px] text-zinc-300">
+                      Ingin perbandingan stars, lisensi, &amp; velocity lengkap?
+                    </span>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setShowRepoModal(false);
+                      onOpenLeaderboard();
+                    }}
+                    className="font-semibold text-[11px] text-amber-400 hover:text-amber-300 hover:underline shrink-0 cursor-pointer"
+                  >
+                    Buka Leaderboard &rarr;
+                  </button>
+                </div>
+              )}
+
+              <div className="mt-4 pt-3 border-t border-zinc-800 flex justify-end gap-2">
                 <button
                   type="button"
                   onClick={() => {
                     setShowRepoModal(false);
                     setRepoError("");
+                    setSearchResults([]);
                   }}
-                  className="rounded-lg px-3 py-1.5 text-xs text-zinc-400 hover:bg-zinc-900"
+                  className="rounded-lg px-3 py-1.5 text-xs text-zinc-400 hover:bg-zinc-900 cursor-pointer"
                 >
                   Batal
                 </button>
                 <button
                   type="submit"
                   disabled={!customRepo.trim()}
-                  className="flex items-center gap-1.5 rounded-lg bg-zinc-100 px-4 py-1.5 text-xs font-semibold text-zinc-950 hover:bg-white disabled:opacity-40 transition-colors shadow-xs"
+                  className="flex items-center gap-1.5 rounded-lg bg-zinc-100 px-4 py-1.5 text-xs font-semibold text-zinc-950 hover:bg-white disabled:opacity-40 transition-colors shadow-xs cursor-pointer"
                 >
                   <Check className="h-3.5 w-3.5" />
                   <span>Muat &amp; Analisis Repositori</span>
