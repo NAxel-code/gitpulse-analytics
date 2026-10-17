@@ -69,18 +69,22 @@ class AIEngine:
                 }
             }
 
-        # 2. Command Palette: Switch repo shortcut
-        switch_match = re.match(r'^(?:switch|ganti|pindah)(?:\s+repo)?\s+([a-zA-Z0-9_\-\.\/]+)$', q, re.IGNORECASE)
+        # 2. Command Palette: Switch repo shortcut or direct "owner/repo" input
+        switch_match = re.match(r'^(?:(?:switch|ganti|pindah|analisis)(?:\s+repo)?\s+)?([a-zA-Z0-9_\-\.]+\/[a-zA-Z0-9_\-\.]+)$', q, re.IGNORECASE)
+        if not switch_match:
+            switch_match = re.match(r'^(?:switch|ganti|pindah)(?:\s+repo)?\s+([a-zA-Z0-9_\-\.\/]+)$', q, re.IGNORECASE)
+
         if switch_match:
             raw_target = switch_match.group(1).strip()
             # Normalize preset names
             target_repo = raw_target
-            if "next" in raw_target.lower():
-                target_repo = "vercel/next.js"
-            elif "react" in raw_target.lower():
-                target_repo = "facebook/react"
-            elif "tailwind" in raw_target.lower():
-                target_repo = "tailwindlabs/tailwindcss"
+            if "/" not in raw_target:
+                if "next" in raw_target.lower():
+                    target_repo = "vercel/next.js"
+                elif "react" in raw_target.lower():
+                    target_repo = "facebook/react"
+                elif "tailwind" in raw_target.lower():
+                    target_repo = "tailwindlabs/tailwindcss"
 
             return {
                 "generated_sql": f"-- COMMAND: SWITCH REPO TO {target_repo}",

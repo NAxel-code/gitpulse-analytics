@@ -1,7 +1,20 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { GitBranch, GitPullRequest, Sparkles, RefreshCw, Calendar, Key, Check, X, HelpCircle } from "lucide-react";
+import {
+  GitBranch,
+  GitPullRequest,
+  Sparkles,
+  RefreshCw,
+  Calendar,
+  Key,
+  Check,
+  X,
+  HelpCircle,
+  Plus,
+  Search,
+  FolderGit2,
+} from "lucide-react";
 
 interface HeaderProps {
   currentRepo: string;
@@ -30,17 +43,42 @@ export function Header({
 }: HeaderProps) {
   const [repoInput, setRepoInput] = useState(currentRepo);
   const [showTokenModal, setShowTokenModal] = useState(false);
+  const [showRepoModal, setShowRepoModal] = useState(false);
+  const [customRepo, setCustomRepo] = useState("");
+  const [repoError, setRepoError] = useState("");
   const [tempToken, setTempToken] = useState(githubToken);
 
   useEffect(() => {
     setTempToken(githubToken);
   }, [githubToken]);
 
-  const presets = ["vercel/next.js", "facebook/react", "tailwindlabs/tailwindcss"];
+  const presets = [
+    "vercel/next.js",
+    "facebook/react",
+    "tailwindlabs/tailwindcss",
+    "NAxel-code/gitpulse-analytics",
+  ];
 
   const handleSelectPreset = (repo: string) => {
     setRepoInput(repo);
     onRepoChange(repo);
+  };
+
+  const handleCustomRepoSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    const trimmed = customRepo
+      .trim()
+      .replace(/^https?:\/\/github\.com\//i, "")
+      .replace(/\/$/, "");
+    if (!trimmed.includes("/") || trimmed.split("/").length !== 2) {
+      setRepoError("Format repositori harus: owner/nama-repo (contoh: NAxel-code/gitpulse-analytics)");
+      return;
+    }
+    setRepoError("");
+    setRepoInput(trimmed);
+    onRepoChange(trimmed);
+    setShowRepoModal(false);
+    setCustomRepo("");
   };
 
   const handleSaveToken = () => {
@@ -66,7 +104,13 @@ export function Header({
             <div className="flex items-center gap-1.5 text-xs text-zinc-400">
               <GitBranch className="h-3.5 w-3.5 text-zinc-400" />
               <span>Target:</span>
-              <span className="font-mono text-zinc-200 font-semibold">{currentRepo}</span>
+              <button
+                onClick={() => setShowRepoModal(true)}
+                className="font-mono text-zinc-200 font-semibold hover:text-indigo-300 underline decoration-dotted underline-offset-2 transition cursor-pointer"
+                title="Klik untuk memilih atau mengganti repositori GitHub publik mana pun"
+              >
+                {currentRepo}
+              </button>
               <span className="inline-block h-2 w-2 rounded-full bg-emerald-500 ring-2 ring-emerald-500/20 ml-1" />
               <span className="text-[11px] font-medium text-emerald-400">Live</span>
             </div>
@@ -87,6 +131,15 @@ export function Header({
                 {p.split("/")[1]}
               </button>
             ))}
+            {/* Custom Repo Button */}
+            <button
+              onClick={() => setShowRepoModal(true)}
+              className="rounded-lg px-2 py-1 text-[11px] font-mono border border-dashed border-zinc-700 bg-zinc-900/60 text-zinc-300 hover:text-white hover:border-zinc-500 hover:bg-zinc-800 transition flex items-center gap-1 cursor-pointer focus-visible:ring-2 focus-visible:ring-zinc-400 focus-visible:outline-none"
+              title="Analisis repositori publik GitHub apa saja di seluruh dunia"
+            >
+              <Plus className="h-3 w-3 text-indigo-400" />
+              <span>Ganti Repo...</span>
+            </button>
           </div>
         </div>
 
@@ -222,12 +275,124 @@ export function Header({
               </button>
               <button
                 onClick={handleSaveToken}
-                className="flex items-center gap-1 rounded-lg bg-violet-600 px-4 py-1.5 text-xs font-semibold text-white hover:bg-violet-500"
+                className="flex items-center gap-1 rounded-lg bg-zinc-100 hover:bg-white text-zinc-950 px-4 py-1.5 text-xs font-semibold shadow-xs transition-colors"
               >
                 <Check className="h-3.5 w-3.5" />
                 <span>Simpan Token</span>
               </button>
             </div>
+          </div>
+        </div>
+      )}
+
+      {/* Custom Repository Switcher Modal */}
+      {showRepoModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4">
+          <div className="relative w-full max-w-lg rounded-2xl border border-zinc-800 bg-zinc-950 p-6 shadow-2xl">
+            <div className="flex items-center justify-between pb-3 border-b border-zinc-800">
+              <div className="flex items-center gap-2.5">
+                <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-zinc-900 border border-zinc-700/80 text-zinc-200">
+                  <FolderGit2 className="h-4 w-4 text-indigo-400" />
+                </div>
+                <div>
+                  <h3 className="font-semibold text-zinc-100 text-sm md:text-base">
+                    Ganti / Analisis Repositori GitHub
+                  </h3>
+                  <p className="text-[11px] text-zinc-400">
+                    GitPulse dapat menganalisis repositori publik GitHub apa pun di dunia
+                  </p>
+                </div>
+              </div>
+              <button
+                onClick={() => {
+                  setShowRepoModal(false);
+                  setRepoError("");
+                }}
+                className="rounded-lg p-1 text-zinc-400 hover:bg-zinc-900 hover:text-white transition"
+              >
+                <X className="h-4 w-4" />
+              </button>
+            </div>
+
+            <form onSubmit={handleCustomRepoSubmit} className="mt-4 space-y-3">
+              <div>
+                <label className="text-xs font-medium text-zinc-300 block mb-1">
+                  Nama Repositori GitHub:
+                </label>
+                <div className="relative">
+                  <Search className="absolute left-3 top-2.5 h-3.5 w-3.5 text-zinc-500" />
+                  <input
+                    type="text"
+                    autoFocus
+                    placeholder="Ketik owner/nama-repo (misal: NAxel-code/gitpulse-analytics)"
+                    value={customRepo}
+                    onChange={(e) => {
+                      setCustomRepo(e.target.value);
+                      if (repoError) setRepoError("");
+                    }}
+                    className="w-full rounded-xl border border-zinc-800 bg-zinc-900 pl-8 pr-3.5 py-2 text-xs font-mono text-zinc-100 placeholder-zinc-500 focus:border-zinc-600 focus:ring-1 focus:ring-zinc-600 focus:outline-none transition-colors"
+                  />
+                </div>
+                {repoError && (
+                  <p className="text-[11px] text-rose-400 mt-1">{repoError}</p>
+                )}
+              </div>
+
+              {/* Popular & Suggested Repositories */}
+              <div className="pt-2">
+                <span className="text-[11px] font-mono text-zinc-400 block mb-1.5">
+                  Pilihan Populer / Cepat:
+                </span>
+                <div className="flex flex-wrap gap-1.5">
+                  {[
+                    "NAxel-code/gitpulse-analytics",
+                    "vercel/next.js",
+                    "facebook/react",
+                    "tailwindlabs/tailwindcss",
+                    "shadcn-ui/ui",
+                    "oven-sh/bun",
+                    "torvalds/linux",
+                  ].map((r) => (
+                    <button
+                      key={r}
+                      type="button"
+                      onClick={() => {
+                        setCustomRepo(r);
+                        setRepoError("");
+                      }}
+                      className={`rounded-md border px-2 py-1 text-[11px] font-mono transition ${
+                        r === currentRepo
+                          ? "border-indigo-500/50 bg-indigo-500/10 text-indigo-300"
+                          : "border-zinc-800 bg-zinc-900/80 text-zinc-300 hover:border-zinc-700 hover:text-white hover:bg-zinc-800"
+                      }`}
+                    >
+                      {r}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              <div className="mt-5 pt-3 border-t border-zinc-800 flex justify-end gap-2">
+                <button
+                  type="button"
+                  onClick={() => {
+                    setShowRepoModal(false);
+                    setRepoError("");
+                  }}
+                  className="rounded-lg px-3 py-1.5 text-xs text-zinc-400 hover:bg-zinc-900"
+                >
+                  Batal
+                </button>
+                <button
+                  type="submit"
+                  disabled={!customRepo.trim()}
+                  className="flex items-center gap-1.5 rounded-lg bg-zinc-100 px-4 py-1.5 text-xs font-semibold text-zinc-950 hover:bg-white disabled:opacity-40 transition-colors shadow-xs"
+                >
+                  <Check className="h-3.5 w-3.5" />
+                  <span>Muat &amp; Analisis Repositori</span>
+                </button>
+              </div>
+            </form>
           </div>
         </div>
       )}
