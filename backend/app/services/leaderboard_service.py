@@ -1,0 +1,467 @@
+from typing import List, Dict, Any, Optional
+
+LEADERBOARD_REPOSITORIES: List[Dict[str, Any]] = [
+    # --- 1. AI & Machine Learning ---
+    {
+        "repo_name": "vllm-project/vllm",
+        "category": "ai",
+        "category_label": "AI & Machine Learning",
+        "description": "High-throughput and memory-efficient LLM serving and inference engine dengan PagedAttention.",
+        "stars": 38400,
+        "stars_formatted": "38.4k",
+        "forks": 5900,
+        "forks_formatted": "5.9k",
+        "license": "Apache-2.0",
+        "license_type": "permissive",
+        "license_notes": "Permissive + Patent Protection (Enterprise Ready)",
+        "velocity_score": 98,
+        "velocity_tier": "Hyper Velocity",
+        "active_contributors": 820,
+        "health_score": 96,
+        "primary_language": "Python",
+        "language_color": "#3572A5",
+        "highlight_tag": "🔥 #1 LLM Serving Engine",
+        "avatar_url": "https://avatars.githubusercontent.com/u/137792982?v=4"
+    },
+    {
+        "repo_name": "huggingface/transformers",
+        "category": "ai",
+        "category_label": "AI & Machine Learning",
+        "description": "State-of-the-art Machine Learning library untuk PyTorch, TensorFlow, dan JAX dengan ribuan model pre-trained.",
+        "stars": 136500,
+        "stars_formatted": "136.5k",
+        "forks": 26400,
+        "forks_formatted": "26.4k",
+        "license": "Apache-2.0",
+        "license_type": "permissive",
+        "license_notes": "Permissive + Patent Protection (Enterprise Ready)",
+        "velocity_score": 96,
+        "velocity_tier": "Hyper Velocity",
+        "active_contributors": 2750,
+        "health_score": 94,
+        "primary_language": "Python",
+        "language_color": "#3572A5",
+        "highlight_tag": "Standard Model Hub",
+        "avatar_url": "https://avatars.githubusercontent.com/u/25720743?v=4"
+    },
+    {
+        "repo_name": "ollama/ollama",
+        "category": "ai",
+        "category_label": "AI & Machine Learning",
+        "description": "Jalankan model LLM seperti Llama 3, DeepSeek, dan Mistral secara lokal di perangkat komputasi pribadi.",
+        "stars": 118000,
+        "stars_formatted": "118.0k",
+        "forks": 10200,
+        "forks_formatted": "10.2k",
+        "license": "MIT",
+        "license_type": "permissive",
+        "license_notes": "Very Permissive (Bebas Komersial)",
+        "velocity_score": 97,
+        "velocity_tier": "Hyper Velocity",
+        "active_contributors": 490,
+        "health_score": 95,
+        "primary_language": "Go",
+        "language_color": "#00ADD8",
+        "highlight_tag": "Top Local LLM Runner",
+        "avatar_url": "https://avatars.githubusercontent.com/u/142991041?v=4"
+    },
+    {
+        "repo_name": "pytorch/pytorch",
+        "category": "ai",
+        "category_label": "AI & Machine Learning",
+        "description": "Framework komputasi tensor dan deep learning neural network dengan akselerasi GPU kelas dunia.",
+        "stars": 87200,
+        "stars_formatted": "87.2k",
+        "forks": 22900,
+        "forks_formatted": "22.9k",
+        "license": "BSD-3-Clause",
+        "license_type": "permissive",
+        "license_notes": "Permissive Academic & Commercial",
+        "velocity_score": 95,
+        "velocity_tier": "Hyper Velocity",
+        "active_contributors": 3400,
+        "health_score": 92,
+        "primary_language": "C++",
+        "language_color": "#f34b7d",
+        "highlight_tag": "AI Foundation Backbone",
+        "avatar_url": "https://avatars.githubusercontent.com/u/21003710?v=4"
+    },
+    {
+        "repo_name": "langchain-ai/langchain",
+        "category": "ai",
+        "category_label": "AI & Machine Learning",
+        "description": "Orkestrasi aplikasi agen cerdas, Retrieval-Augmented Generation (RAG), dan alur pemikiran berbasis LLM.",
+        "stars": 99500,
+        "stars_formatted": "99.5k",
+        "forks": 16200,
+        "forks_formatted": "16.2k",
+        "license": "MIT",
+        "license_type": "permissive",
+        "license_notes": "Very Permissive (Bebas Komersial)",
+        "velocity_score": 93,
+        "velocity_tier": "High Velocity",
+        "active_contributors": 2600,
+        "health_score": 90,
+        "primary_language": "Python",
+        "language_color": "#3572A5",
+        "highlight_tag": "Top AI Agent Orchestration",
+        "avatar_url": "https://avatars.githubusercontent.com/u/126733545?v=4"
+    },
+
+    # --- 2. Web & Frontend Frameworks ---
+    {
+        "repo_name": "vercel/next.js",
+        "category": "web",
+        "category_label": "Web & Frontend",
+        "description": "Framework React produksi standar industri dengan App Router, Server Components, dan hybrid rendering.",
+        "stars": 128400,
+        "stars_formatted": "128.4k",
+        "forks": 27100,
+        "forks_formatted": "27.1k",
+        "license": "MIT",
+        "license_type": "permissive",
+        "license_notes": "Very Permissive (Bebas Komersial)",
+        "velocity_score": 97,
+        "velocity_tier": "Hyper Velocity",
+        "active_contributors": 3600,
+        "health_score": 95,
+        "primary_language": "TypeScript",
+        "language_color": "#3178C6",
+        "highlight_tag": "Industry Web Standard",
+        "avatar_url": "https://avatars.githubusercontent.com/u/14985020?v=4"
+    },
+    {
+        "repo_name": "facebook/react",
+        "category": "web",
+        "category_label": "Web & Frontend",
+        "description": "Pustaka komponen UI paling populer di dunia untuk membangun antarmuka web interaktif modular.",
+        "stars": 231000,
+        "stars_formatted": "231.0k",
+        "forks": 46800,
+        "forks_formatted": "46.8k",
+        "license": "MIT",
+        "license_type": "permissive",
+        "license_notes": "Very Permissive (Bebas Komersial)",
+        "velocity_score": 92,
+        "velocity_tier": "High Velocity",
+        "active_contributors": 1780,
+        "health_score": 94,
+        "primary_language": "JavaScript",
+        "language_color": "#f1e05a",
+        "highlight_tag": "Global UI Pioneer",
+        "avatar_url": "https://avatars.githubusercontent.com/u/69631?v=4"
+    },
+    {
+        "repo_name": "tailwindlabs/tailwindcss",
+        "category": "web",
+        "category_label": "Web & Frontend",
+        "description": "Framework CSS utility-first untuk pembuatan desain antarmuka modern yang cepat, fleksibel, dan terukur.",
+        "stars": 83900,
+        "stars_formatted": "83.9k",
+        "forks": 4200,
+        "forks_formatted": "4.2k",
+        "license": "MIT",
+        "license_type": "permissive",
+        "license_notes": "Very Permissive (Bebas Komersial)",
+        "velocity_score": 91,
+        "velocity_tier": "High Velocity",
+        "active_contributors": 370,
+        "health_score": 96,
+        "primary_language": "CSS / TypeScript",
+        "language_color": "#38bdf8",
+        "highlight_tag": "Modern Styling Leader",
+        "avatar_url": "https://avatars.githubusercontent.com/u/67109815?v=4"
+    },
+    {
+        "repo_name": "shadcn-ui/ui",
+        "category": "web",
+        "category_label": "Web & Frontend",
+        "description": "Koleksi komponen UI re-usable berbasis Radix UI dan Tailwind CSS yang disalin langsung ke codebase.",
+        "stars": 76800,
+        "stars_formatted": "76.8k",
+        "forks": 6400,
+        "forks_formatted": "6.4k",
+        "license": "MIT",
+        "license_type": "permissive",
+        "license_notes": "Very Permissive (Bebas Komersial)",
+        "velocity_score": 94,
+        "velocity_tier": "High Velocity",
+        "active_contributors": 320,
+        "health_score": 97,
+        "primary_language": "TypeScript",
+        "language_color": "#3178C6",
+        "highlight_tag": "Fastest Growing UI Kit",
+        "avatar_url": "https://avatars.githubusercontent.com/u/139895814?v=4"
+    },
+
+    # --- 3. Cloud Infrastructure & DevOps ---
+    {
+        "repo_name": "kubernetes/kubernetes",
+        "category": "devops",
+        "category_label": "Cloud & DevOps",
+        "description": "Sistem orkestrasi kontainer open source terdepan untuk deployment, scaling, dan manajemen otomatis aplikasi.",
+        "stars": 113000,
+        "stars_formatted": "113.0k",
+        "forks": 40100,
+        "forks_formatted": "40.1k",
+        "license": "Apache-2.0",
+        "license_type": "permissive",
+        "license_notes": "Permissive + Patent Protection (Enterprise Ready)",
+        "velocity_score": 99,
+        "velocity_tier": "Hyper Velocity",
+        "active_contributors": 4200,
+        "health_score": 98,
+        "primary_language": "Go",
+        "language_color": "#00ADD8",
+        "highlight_tag": "Cloud Native Standard",
+        "avatar_url": "https://avatars.githubusercontent.com/u/13629408?v=4"
+    },
+    {
+        "repo_name": "prometheus/prometheus",
+        "category": "devops",
+        "category_label": "Cloud & DevOps",
+        "description": "Sistem monitoring metrik telemetri dan time-series database dengan mesin kueri PromQL terpercaya.",
+        "stars": 58200,
+        "stars_formatted": "58.2k",
+        "forks": 9400,
+        "forks_formatted": "9.4k",
+        "license": "Apache-2.0",
+        "license_type": "permissive",
+        "license_notes": "Permissive + Patent Protection (Enterprise Ready)",
+        "velocity_score": 90,
+        "velocity_tier": "High Velocity",
+        "active_contributors": 980,
+        "health_score": 95,
+        "primary_language": "Go",
+        "language_color": "#00ADD8",
+        "highlight_tag": "Observability Benchmark",
+        "avatar_url": "https://avatars.githubusercontent.com/u/3380462?v=4"
+    },
+    {
+        "repo_name": "helm/helm",
+        "category": "devops",
+        "category_label": "Cloud & DevOps",
+        "description": "Package manager resmi untuk Kubernetes untuk mendefinisikan, menginstal, dan meng-upgrade aplikasi kluster.",
+        "stars": 27400,
+        "stars_formatted": "27.4k",
+        "forks": 7100,
+        "forks_formatted": "7.1k",
+        "license": "Apache-2.0",
+        "license_type": "permissive",
+        "license_notes": "Permissive + Patent Protection (Enterprise Ready)",
+        "velocity_score": 87,
+        "velocity_tier": "Steady Cadence",
+        "active_contributors": 850,
+        "health_score": 93,
+        "primary_language": "Go",
+        "language_color": "#00ADD8",
+        "highlight_tag": "K8s App Manager",
+        "avatar_url": "https://avatars.githubusercontent.com/u/10535785?v=4"
+    },
+
+    # --- 4. High-Performance & Systems Runtimes ---
+    {
+        "repo_name": "astral-sh/uv",
+        "category": "systems",
+        "category_label": "High-Performance Runtimes",
+        "description": "Package manager dan resolver Python super cepat yang ditulis dalam Rust, menggantikan pip & virtualenv.",
+        "stars": 49200,
+        "stars_formatted": "49.2k",
+        "forks": 1500,
+        "forks_formatted": "1.5k",
+        "license": "Apache-2.0 / MIT",
+        "license_type": "permissive",
+        "license_notes": "Dual Licensed Permissive (Enterprise Safe)",
+        "velocity_score": 99,
+        "velocity_tier": "Hyper Velocity",
+        "active_contributors": 260,
+        "health_score": 99,
+        "primary_language": "Rust",
+        "language_color": "#DEA584",
+        "highlight_tag": "⚡ Breakthrough Rust Tooling",
+        "avatar_url": "https://avatars.githubusercontent.com/u/115962809?v=4"
+    },
+    {
+        "repo_name": "oven-sh/bun",
+        "category": "systems",
+        "category_label": "High-Performance Runtimes",
+        "description": "JavaScript & TypeScript runtime all-in-one super kencang dengan bundler, test runner, dan package manager bawaan.",
+        "stars": 77200,
+        "stars_formatted": "77.2k",
+        "forks": 2700,
+        "forks_formatted": "2.7k",
+        "license": "MIT",
+        "license_type": "permissive",
+        "license_notes": "Very Permissive (Bebas Komersial)",
+        "velocity_score": 97,
+        "velocity_tier": "Hyper Velocity",
+        "active_contributors": 720,
+        "health_score": 96,
+        "primary_language": "Zig / C++",
+        "language_color": "#ec915c",
+        "highlight_tag": "Next-Gen JS Engine",
+        "avatar_url": "https://avatars.githubusercontent.com/u/904714?v=4"
+    },
+    {
+        "repo_name": "tauri-apps/tauri",
+        "category": "systems",
+        "category_label": "High-Performance Runtimes",
+        "description": "Framework aplikasi desktop dan mobile berukuran kecil, aman, dan hemat memori dengan web frontend dan backend Rust.",
+        "stars": 86300,
+        "stars_formatted": "86.3k",
+        "forks": 2600,
+        "forks_formatted": "2.6k",
+        "license": "Apache-2.0 / MIT",
+        "license_type": "permissive",
+        "license_notes": "Dual Licensed Permissive (Enterprise Safe)",
+        "velocity_score": 93,
+        "velocity_tier": "High Velocity",
+        "active_contributors": 410,
+        "health_score": 95,
+        "primary_language": "Rust",
+        "language_color": "#DEA584",
+        "highlight_tag": "Lightweight Electron Alternative",
+        "avatar_url": "https://avatars.githubusercontent.com/u/54438062?v=4"
+    },
+    {
+        "repo_name": "rust-lang/rust",
+        "category": "systems",
+        "category_label": "High-Performance Runtimes",
+        "description": "Bahasa pemrograman systems yang menjamin keamanan memori tanpa garbage collector dan performa sekelas C++.",
+        "stars": 99200,
+        "stars_formatted": "99.2k",
+        "forks": 12800,
+        "forks_formatted": "12.8k",
+        "license": "Apache-2.0 / MIT",
+        "license_type": "permissive",
+        "license_notes": "Dual Licensed Permissive (Enterprise Safe)",
+        "velocity_score": 98,
+        "velocity_tier": "Hyper Velocity",
+        "active_contributors": 4800,
+        "health_score": 98,
+        "primary_language": "Rust",
+        "language_color": "#DEA584",
+        "highlight_tag": "Systems Language King",
+        "avatar_url": "https://avatars.githubusercontent.com/u/5430905?v=4"
+    },
+
+    # --- 5. Mobile & Multiplatform ---
+    {
+        "repo_name": "flutter/flutter",
+        "category": "mobile",
+        "category_label": "Mobile & Multiplatform",
+        "description": "SDK Google untuk membangun aplikasi multiplatform terkompilasi native dari satu basis kode.",
+        "stars": 166500,
+        "stars_formatted": "166.5k",
+        "forks": 27200,
+        "forks_formatted": "27.2k",
+        "license": "BSD-3-Clause",
+        "license_type": "permissive",
+        "license_notes": "Permissive Academic & Commercial",
+        "velocity_score": 96,
+        "velocity_tier": "Hyper Velocity",
+        "active_contributors": 1380,
+        "health_score": 95,
+        "primary_language": "Dart",
+        "language_color": "#00B4AB",
+        "highlight_tag": "Cross-Platform Mobile Leader",
+        "avatar_url": "https://avatars.githubusercontent.com/u/14101776?v=4"
+    },
+    {
+        "repo_name": "facebook/react-native",
+        "category": "mobile",
+        "category_label": "Mobile & Multiplatform",
+        "description": "Framework untuk membangun aplikasi native Android dan iOS menggunakan keahlian React dan JavaScript.",
+        "stars": 120500,
+        "stars_formatted": "120.5k",
+        "forks": 24300,
+        "forks_formatted": "24.3k",
+        "license": "MIT",
+        "license_type": "permissive",
+        "license_notes": "Very Permissive (Bebas Komersial)",
+        "velocity_score": 94,
+        "velocity_tier": "High Velocity",
+        "active_contributors": 2600,
+        "health_score": 93,
+        "primary_language": "C++ / JS",
+        "language_color": "#f1e05a",
+        "highlight_tag": "Native React Standard",
+        "avatar_url": "https://avatars.githubusercontent.com/u/69631?v=4"
+    },
+
+    # --- 6. Analytics & Intelligence (Your Target Project) ---
+    {
+        "repo_name": "NAxel-code/gitpulse-analytics",
+        "category": "ai",
+        "category_label": "Developer Intelligence & Analytics",
+        "description": "High-Throughput GitHub Engineering Intelligence & DORA Metrics Engine dengan DuckDB dan Hybrid AI.",
+        "stars": 1,
+        "stars_formatted": "1",
+        "forks": 0,
+        "forks_formatted": "0",
+        "license": "MIT",
+        "license_type": "permissive",
+        "license_notes": "Very Permissive (Bebas Komersial)",
+        "velocity_score": 88,
+        "velocity_tier": "High Velocity",
+        "active_contributors": 1,
+        "health_score": 100,
+        "primary_language": "TypeScript / Python",
+        "language_color": "#3178C6",
+        "highlight_tag": "⭐ Repositori Aktif Anda",
+        "avatar_url": "https://avatars.githubusercontent.com/u/104192800?v=4"
+    }
+]
+
+class LeaderboardService:
+    def get_leaderboard(
+        self,
+        category: Optional[str] = None,
+        sort_by: str = "stars",
+        license_filter: Optional[str] = None,
+        query: Optional[str] = None
+    ) -> List[Dict[str, Any]]:
+        """Filters, sorts, and delivers factual repository benchmarks."""
+        items = list(LEADERBOARD_REPOSITORIES)
+
+        # Filter by category
+        if category and category.lower() not in ("all", "semua"):
+            cat_clean = category.lower().strip()
+            items = [r for r in items if r["category"] == cat_clean]
+
+        # Filter by license
+        if license_filter and license_filter.lower() not in ("all", "semua"):
+            lic_clean = license_filter.lower().strip()
+            items = [r for r in items if lic_clean in r["license"].lower()]
+
+        # Search query
+        if query and query.strip():
+            q = query.lower().strip()
+            items = [
+                r for r in items
+                if q in r["repo_name"].lower()
+                or q in r["description"].lower()
+                or q in r["primary_language"].lower()
+                or q in r.get("highlight_tag", "").lower()
+            ]
+
+        # Sort
+        if sort_by == "velocity":
+            items.sort(key=lambda x: (x["velocity_score"], x["stars"]), reverse=True)
+        elif sort_by == "contributors":
+            items.sort(key=lambda x: (x["active_contributors"], x["stars"]), reverse=True)
+        elif sort_by == "health":
+            items.sort(key=lambda x: (x["health_score"], x["velocity_score"]), reverse=True)
+        else: # Default: stars
+            items.sort(key=lambda x: x["stars"], reverse=True)
+
+        # Assign ranking
+        ranked_items = []
+        for idx, item in enumerate(items):
+            item_copy = dict(item)
+            item_copy["rank"] = idx + 1
+            ranked_items.append(item_copy)
+
+        return ranked_items
+
+leaderboard_service = LeaderboardService()

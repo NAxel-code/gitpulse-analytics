@@ -165,3 +165,19 @@ async def get_executive_summary(repo: str = Query("vercel/next.js")) -> Dict[str
             "Rasio Mean Time to Merge (MTTR) berada dalam standar DORA High Performer"
         ]
     }
+
+@router.get("/leaderboard")
+async def get_repo_leaderboard(
+    category: Optional[str] = Query(None, description="Category filter (ai, web, devops, systems, mobile)"),
+    sort_by: str = Query("stars", description="Sort by (stars, velocity, contributors, health)"),
+    license_filter: Optional[str] = Query(None, description="License filter (mit, apache, bsd, all)"),
+    query: Optional[str] = Query(None, description="Search query")
+) -> List[Dict[str, Any]]:
+    """Sector Benchmark Repository Leaderboard (Stars, Enterprise License, Velocity, and Community)."""
+    from app.services.leaderboard_service import leaderboard_service
+    return leaderboard_service.get_leaderboard(
+        category=category,
+        sort_by=sort_by,
+        license_filter=license_filter,
+        query=query
+    )

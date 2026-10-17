@@ -10,6 +10,7 @@ import { ContributorJourneyModal } from "@/components/ContributorJourneyModal";
 import { DORAFeed } from "@/components/DORAFeed";
 import { AIModal } from "@/components/AIModal";
 import { HelpTourModal } from "@/components/HelpTourModal";
+import { RepoLeaderboardModal } from "@/components/RepoLeaderboardModal";
 import { GITHUB_API_URL } from "@/lib/api";
 import { getFallbackDashboardData } from "@/lib/fallback";
 
@@ -27,6 +28,7 @@ export default function GitPulseDashboard() {
   const [selectedContributor, setSelectedContributor] = useState<string | null>(null);
   const [isJourneyModalOpen, setIsJourneyModalOpen] = useState(false);
   const [isHelpModalOpen, setIsHelpModalOpen] = useState(false);
+  const [isLeaderboardOpen, setIsLeaderboardOpen] = useState(false);
   const [isTourActive, setIsTourActive] = useState(false);
   const [syncing, setSyncing] = useState(false);
 
@@ -175,6 +177,7 @@ export default function GitPulseDashboard() {
         githubToken={githubToken}
         onTokenChange={handleTokenChange}
         onOpenHelp={() => setIsHelpModalOpen(true)}
+        onOpenLeaderboard={() => setIsLeaderboardOpen(true)}
       />
 
       {/* Main Content Bento Grid */}
@@ -246,6 +249,17 @@ export default function GitPulseDashboard() {
           handleSyncRepo(r);
         }}
         onOpenAI={() => setIsAIModalOpen(true)}
+      />
+
+      {/* Benchmark Repository Leaderboard Modal */}
+      <RepoLeaderboardModal
+        isOpen={isLeaderboardOpen}
+        onClose={() => setIsLeaderboardOpen(false)}
+        currentRepo={currentRepo}
+        onSelectRepo={(r) => {
+          setCurrentRepo(r);
+          handleSyncRepo(r);
+        }}
       />
     </div>
   );

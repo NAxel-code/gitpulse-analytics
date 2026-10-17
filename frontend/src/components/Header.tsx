@@ -14,6 +14,7 @@ import {
   Plus,
   Search,
   FolderGit2,
+  Trophy,
 } from "lucide-react";
 
 interface HeaderProps {
@@ -27,6 +28,7 @@ interface HeaderProps {
   githubToken: string;
   onTokenChange: (token: string) => void;
   onOpenHelp?: () => void;
+  onOpenLeaderboard?: () => void;
 }
 
 export function Header({
@@ -40,6 +42,7 @@ export function Header({
   githubToken,
   onTokenChange,
   onOpenHelp,
+  onOpenLeaderboard,
 }: HeaderProps) {
   const [repoInput, setRepoInput] = useState(currentRepo);
   const [showTokenModal, setShowTokenModal] = useState(false);
@@ -140,6 +143,16 @@ export function Header({
               <Plus className="h-3 w-3 text-indigo-400" />
               <span>Ganti Repo...</span>
             </button>
+
+            {/* Leaderboard Button */}
+            <button
+              onClick={onOpenLeaderboard}
+              className="rounded-lg px-2.5 py-1 text-[11px] font-mono border border-amber-500/40 bg-amber-500/10 text-amber-300 hover:text-white hover:border-amber-400 hover:bg-amber-500/20 transition flex items-center gap-1.5 cursor-pointer focus-visible:ring-2 focus-visible:ring-amber-400 focus-visible:outline-none"
+              title="Lihat Benchmark Leaderboard Repositori berdasarkan Bintang, Lisensi, dan Velocity"
+            >
+              <Trophy className="h-3 w-3 text-amber-400" />
+              <span>Leaderboard</span>
+            </button>
           </div>
         </div>
 
@@ -211,6 +224,16 @@ export function Header({
               </button>
             ))}
           </div>
+
+          {/* Leaderboard Action Button */}
+          <button
+            onClick={onOpenLeaderboard}
+            title="Buka Benchmark Leaderboard Repositori"
+            className="flex items-center gap-1.5 rounded-xl border border-amber-500/30 bg-amber-500/10 px-2.5 py-1.5 text-xs font-semibold text-amber-300 hover:text-amber-200 hover:bg-amber-500/20 hover:border-amber-500/50 transition cursor-pointer focus-visible:ring-2 focus-visible:ring-amber-400 focus-visible:outline-none"
+          >
+            <Trophy className="h-3.5 w-3.5 text-amber-400" />
+            <span className="hidden sm:inline">Leaderboard</span>
+          </button>
 
           {/* Help & Guide Button */}
           <button
