@@ -98,7 +98,50 @@ def run_e2e_test(base_url="http://localhost:3000"):
             page.keyboard.press("Escape")
             page.wait_for_timeout(500)
 
-        # 7. Capture Verification Screenshot
+        # 7. Test Help Modal & Interactive Spotlight Tour
+        print("[7] Testing Panduan & Documentation Modal and Tour flow...")
+        help_btn = page.locator("button:has-text('Panduan')")
+        assert help_btn.is_visible(), "Panduan button in header is not visible"
+        help_btn.click()
+        page.wait_for_timeout(600)
+        
+        help_modal_header = page.locator("text=Panduan & Dokumentasi GitPulse")
+        assert help_modal_header.is_visible(), "Help modal did not open"
+        print("  [PASS] Help & Documentation modal opened successfully.")
+
+        # Test tab switching
+        page.locator("button:has-text('Cheat Sheet AI & Command')").click()
+        page.wait_for_timeout(300)
+        assert page.locator("text=Pencarian AI Berbasis Text-to-SQL").is_visible(), "AI cheat sheet tab content missing"
+
+        page.locator("button:has-text('Glosarium Metrik DORA')").click()
+        page.wait_for_timeout(300)
+        assert page.locator("text=Lead Time to Merge").is_visible(), "DORA glossary tab content missing"
+        print("  [PASS] Documentation tabs switched and verified.")
+
+        # Start interactive visual tour from modal
+        tour_launch_btn = page.locator("button:has-text('Buka Tur Visual')")
+        tour_launch_btn.click()
+        page.wait_for_timeout(600)
+
+        step1 = page.locator("text=Langkah 1 dari 5")
+        assert step1.is_visible(), "Tour Step 1 did not appear"
+        print("  [PASS] Interactive Spotlight Tour launched (Step 1).")
+
+        # Step forward
+        next_btn = page.locator("button:has-text('Selanjutnya')")
+        next_btn.click()
+        page.wait_for_timeout(500)
+        step2 = page.locator("text=Langkah 2 dari 5")
+        assert step2.is_visible(), "Tour Step 2 did not appear"
+        print("  [PASS] Tour navigation forward verified (Step 2).")
+
+        # Close tour with ESC
+        page.keyboard.press("Escape")
+        page.wait_for_timeout(400)
+        print("  [PASS] Tour closed successfully via Escape.")
+
+        # 8. Capture Verification Screenshot
         screenshot_path = os.path.join(os.path.dirname(__file__), "e2e_verification.png")
         page.screenshot(path=screenshot_path, full_page=True)
         print(f"  [PASS] Full page verification screenshot saved: {screenshot_path}")

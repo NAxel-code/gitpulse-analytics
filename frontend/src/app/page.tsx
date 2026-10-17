@@ -9,6 +9,7 @@ import { ContributorTable } from "@/components/ContributorTable";
 import { ContributorJourneyModal } from "@/components/ContributorJourneyModal";
 import { DORAFeed } from "@/components/DORAFeed";
 import { AIModal } from "@/components/AIModal";
+import { HelpTourModal } from "@/components/HelpTourModal";
 import { GITHUB_API_URL } from "@/lib/api";
 
 export default function GitPulseDashboard() {
@@ -24,6 +25,8 @@ export default function GitPulseDashboard() {
   const [isAIModalOpen, setIsAIModalOpen] = useState(false);
   const [selectedContributor, setSelectedContributor] = useState<string | null>(null);
   const [isJourneyModalOpen, setIsJourneyModalOpen] = useState(false);
+  const [isHelpModalOpen, setIsHelpModalOpen] = useState(false);
+  const [isTourActive, setIsTourActive] = useState(false);
   const [syncing, setSyncing] = useState(false);
 
   // Load saved GitHub PAT from localStorage
@@ -62,6 +65,25 @@ export default function GitPulseDashboard() {
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, []);
+
+  // Global shortcut '?' for Help & Documentation modal
+  useEffect(() => {
+    const handleHelpKeyDown = (e: KeyboardEvent) => {
+      if (
+        e.key === "?" &&
+        !isHelpModalOpen &&
+        !isTourActive &&
+        !isAIModalOpen &&
+        !isJourneyModalOpen &&
+        !(e.target instanceof HTMLInputElement || e.target instanceof HTMLTextAreaElement)
+      ) {
+        e.preventDefault();
+        setIsHelpModalOpen(true);
+      }
+    };
+    window.addEventListener("keydown", handleHelpKeyDown);
+    return () => window.removeEventListener("keydown", handleHelpKeyDown);
+  }, [isHelpModalOpen, isTourActive, isAIModalOpen, isJourneyModalOpen]);
 
   const fetchData = async () => {
     try {
@@ -116,7 +138,7 @@ export default function GitPulseDashboard() {
 
   return (
     <div className="min-h-screen bg-zinc-950 text-zinc-100 flex flex-col font-sans">
-      {/* Sticky Header with Token & Sync controls */}
+      {/* Sticky Header with Token, Sync & Help controls */}
       <Header
         currentRepo={currentRepo}
         onRepoChange={(r) => {
@@ -130,26 +152,29 @@ export default function GitPulseDashboard() {
         onOpenAI={() => setIsAIModalOpen(true)}
         githubToken={githubToken}
         onTokenChange={handleTokenChange}
+        onOpenHelp={() => setIsHelpModalOpen(true)}
       />
 
       {/* Main Content Bento Grid */}
       <main className="flex-1 p-4 md:p-6 max-w-7xl w-full mx-auto space-y-6">
         {/* Top: Bento KPI Cards with Number Ticker & DORA Velocity */}
-        <KPICards data={kpiData} />
+        <div id="tour-kpi-cards">
+          <KPICards data={kpiData} />
+        </div>
 
         {/* Middle Section: Activity Timeline Chart (65%) vs PR Lifecycle Funnel (35%) */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
           <div className="lg:col-span-8">
             <ActivityChart data={timelineData} repoName={currentRepo} />
           </div>
-          <div className="lg:col-span-4">
+          <div id="tour-pr-funnel" className="lg:col-span-4">
             <FunnelChart stages={funnelData} />
           </div>
         </div>
 
         {/* Bottom Section: Contributor Velocity Table (60%) vs DORA Feed (40%) */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
-          <div className="lg:col-span-7">
+          <div id="tour-contributors" className="lg:col-span-7">
             <ContributorTable
               data={contributors}
               onSelectContributor={handleOpenJourney}
@@ -161,7 +186,7 @@ export default function GitPulseDashboard() {
         </div>
       </main>
 
-      {/* Woopra-style Contributor Journey Modal */}
+      {/* Contributor Action Stream Journey Modal */}
       <ContributorJourneyModal
         isOpen={isJourneyModalOpen}
         onClose={() => setIsJourneyModalOpen(false)}
@@ -180,6 +205,20 @@ export default function GitPulseDashboard() {
           handleSyncRepo(r);
         }}
         onSyncRepo={handleSyncRepo}
+      />
+
+      {/* Interactive Guided Tour & Feature Help Modal */}
+      <HelpTourModal
+        isHelpOpen={isHelpModalOpen}
+        onCloseHelp={() => setIsHelpModalOpen(false)}
+        isTourActive={isTourActive}
+        onStartTour={() => setIsTourActive(true)}
+        onCloseTour={() => setIsTourActive(false)}
+        onSelectRepo={(r) => {
+          setCurrentRepo(r);
+          handleSyncRepo(r);
+        }}
+        onOpenAI={() => setIsAIModalOpen(true)}
       />
     </div>
   );

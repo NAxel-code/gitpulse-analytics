@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { GitBranch, GitPullRequest, Sparkles, RefreshCw, Calendar, Key, Check, X } from "lucide-react";
+import { GitBranch, GitPullRequest, Sparkles, RefreshCw, Calendar, Key, Check, X, HelpCircle } from "lucide-react";
 
 interface HeaderProps {
   currentRepo: string;
@@ -13,6 +13,7 @@ interface HeaderProps {
   onOpenAI: () => void;
   githubToken: string;
   onTokenChange: (token: string) => void;
+  onOpenHelp?: () => void;
 }
 
 export function Header({
@@ -25,6 +26,7 @@ export function Header({
   onOpenAI,
   githubToken,
   onTokenChange,
+  onOpenHelp,
 }: HeaderProps) {
   const [repoInput, setRepoInput] = useState(currentRepo);
   const [showTokenModal, setShowTokenModal] = useState(false);
@@ -50,7 +52,7 @@ export function Header({
     <>
       <header className="sticky top-0 z-30 flex flex-col lg:flex-row items-start lg:items-center justify-between gap-3 border-b border-zinc-800/80 bg-zinc-950/90 px-6 py-3 backdrop-blur-md">
         {/* Brand & Repository Switcher */}
-        <div className="flex flex-wrap items-center gap-3">
+        <div id="tour-repo-sync" className="flex flex-wrap items-center gap-3">
           <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-zinc-900 border border-zinc-700/80 text-zinc-100 shadow-sm">
             <GitPullRequest className="h-4 w-4 text-zinc-200" />
           </div>
@@ -91,6 +93,7 @@ export function Header({
         {/* Center Search / AI Query Box */}
         <div className="w-full lg:w-auto flex-1 max-w-md mx-auto">
           <button
+            id="tour-ai-search"
             onClick={onOpenAI}
             className="group flex w-full items-center justify-between rounded-xl border border-zinc-800 bg-zinc-900/70 px-3.5 py-1.5 text-sm text-zinc-400 shadow-xs transition hover:border-zinc-700 hover:bg-zinc-900 hover:text-zinc-200 cursor-pointer focus-visible:ring-2 focus-visible:ring-zinc-400 focus-visible:outline-none"
           >
@@ -104,7 +107,7 @@ export function Header({
           </button>
         </div>
 
-        {/* Actions: PAT Token, Sync Button & Date Range */}
+        {/* Actions: PAT Token, Sync Button, Date Range & Guide */}
         <div className="flex flex-wrap items-center gap-2 w-full lg:w-auto justify-end">
           {/* GitHub Token / PAT Button */}
           <button
@@ -151,6 +154,16 @@ export function Header({
               </button>
             ))}
           </div>
+
+          {/* Help & Guide Button */}
+          <button
+            onClick={onOpenHelp}
+            title="Panduan & Tutorial GitPulse (Tekan '?')"
+            className="flex items-center gap-1.5 rounded-xl border border-zinc-800 bg-zinc-900 px-2.5 py-1.5 text-xs font-medium text-zinc-300 hover:text-white hover:bg-zinc-850 hover:border-zinc-700 transition cursor-pointer focus-visible:ring-2 focus-visible:ring-zinc-400 focus-visible:outline-none"
+          >
+            <HelpCircle className="h-3.5 w-3.5 text-indigo-400" />
+            <span className="hidden sm:inline">Panduan</span>
+          </button>
         </div>
       </header>
 
