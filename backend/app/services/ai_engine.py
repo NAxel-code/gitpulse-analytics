@@ -168,7 +168,55 @@ class AIEngine:
                     }
                 }
             else:
-                # Active developers recommendation for better UX
+                # 1. Check if this developer has events in another repository in DuckDB
+                other_repo_sql = f"""
+                    SELECT repo_name, COUNT(*) as cnt
+                    FROM github_events
+                    WHERE LOWER(actor_login) = '{clean_login}'
+                    GROUP BY repo_name
+                    ORDER BY cnt DESC
+                    LIMIT 1
+                """
+                other_rows = storage.execute_readonly_sql(other_repo_sql)
+                if other_rows:
+                    other_repo = other_rows[0]["repo_name"]
+                    summary = (
+                        f"Pengguna '@{target_login}' tidak tercatat di repositori '{repo_name}', "
+                        f"namun ditemukan aktif di repositori '{other_repo}' ({other_rows[0]['cnt']} event)."
+                    )
+                    return {
+                        "generated_sql": other_repo_sql.strip(),
+                        "summary": summary,
+                        "chart_type": "not_found",
+                        "chart_data": [],
+                        "action": {
+                            "type": "switch_repo",
+                            "target": other_repo,
+                            "label": f"Beralih ke {other_repo}"
+                        }
+                    }
+
+                # 2. Check if developer matches project author (e.g. NAxel-code)
+                if clean_login in ["naxel-code", "naxel", "naxelcode"]:
+                    target_repo_suggestion = "NAxel-code/gitpulse-analytics"
+                    summary = (
+                        f"Pengguna '@{target_login}' adalah pemilik project GitPulse, "
+                        f"namun target repositori yang sedang dianalisis di atas adalah '{repo_name}'. "
+                        f"Klik tombol di bawah untuk beralih dan menyinkronkan repositori '{target_repo_suggestion}'."
+                    )
+                    return {
+                        "generated_sql": sql.strip(),
+                        "summary": summary,
+                        "chart_type": "not_found",
+                        "chart_data": [],
+                        "action": {
+                            "type": "switch_repo",
+                            "target": target_repo_suggestion,
+                            "label": f"Analisis {target_repo_suggestion}"
+                        }
+                    }
+
+                # 3. Active developers recommendation for better UX
                 active_devs_sql = f"""
                     SELECT DISTINCT actor_login
                     FROM github_events
