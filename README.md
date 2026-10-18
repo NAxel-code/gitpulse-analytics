@@ -36,14 +36,16 @@ Users can search, switch, and analyze any open-source repository globally by sim
   <img src="docs/images/live-autocomplete.png" width="48%" alt="Live GitHub Autocomplete Search" />
 </p>
 
-### 2. 🏆 Cross-Sector Repository Benchmark Leaderboard
-A strategic engineering instrument to benchmark repository velocity and community momentum against world-class open-source projects.
-* **Sector & License Filtering:** Comparative analytics across standard open-source licenses (*MIT*, *Apache-2.0*, *BSD-3*, *GPL-2.0*).
+### 2. 🏆 Live GitHub Trending & Global Benchmark Leaderboard
+A strategic engineering instrument to benchmark repository velocity and community momentum against world-class open-source projects, powered by live scraping from `github.com/trending` and dynamic GitHub Search API queries.
+* **🔥 Real-Time GitHub Trending:** Live scraped feeds from `https://github.com/trending` featuring *Daily Trending* (with exact `+X stars today` metrics) and *Weekly Trending* momentum rankings.
+* **⚡ Universal Search Across All GitHub Repositories:** Real-time debounced search powered by the GitHub Search API, discovering and evaluating any public repository with instantaneous zero-latency ranking.
+* **Multi-Sector & License Categorization:** Filter across sectors (*🤖 AI & ML*, *⚡ Web*, *⚙️ Cloud & DevOps*, *🦀 Systems*, *📱 Mobile*) and standard enterprise licenses (*MIT*, *Apache-2.0*, *BSD-3*, *GPL*).
 * **Momentum & Health Signals:** Tracks *Community Stars*, *Health Scores* (0–100), and *Velocity Ratings* (*Hyper Velocity*, *High Momentum*, *Steady*).
 * **1-Click Deep Dive:** Instantly load and inspect any benchmarked repository directly on the primary analytics dashboard.
 
 <p align="center">
-  <img src="docs/images/benchmark-leaderboard.png" width="75%" alt="Benchmark Leaderboard Modal" />
+  <img src="docs/images/benchmark-leaderboard.png" width="75%" alt="Live GitHub Trending & Benchmark Leaderboard Modal" />
 </p>
 
 ### 3. ⏱️ DORA Metrics & Engineering Speed

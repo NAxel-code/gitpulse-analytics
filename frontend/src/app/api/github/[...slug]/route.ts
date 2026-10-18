@@ -9,6 +9,11 @@ import {
   computeExecutiveSummary,
   KNOWN_REPOS,
 } from "@/lib/github-serverless";
+import {
+  fetchGitHubTrending,
+  fetchGitHubSearchLeaderboard,
+  RepoLeaderboardItem,
+} from "@/lib/leaderboard-engine";
 
 export async function GET(
   request: NextRequest,
@@ -66,7 +71,7 @@ export async function GET(
       const data = await ghRes.json();
       const items = (data.items || []).map((r: any) => ({
         full_name: r.full_name,
-        description: r.description || "Tidak ada deskripsi",
+        description: r.description || "No description provided",
         stars: r.stargazers_count,
         stars_formatted: r.stargazers_count > 1000 ? `${(r.stargazers_count / 1000).toFixed(1)}k` : `${r.stargazers_count}`,
         language: r.language || "Unknown",
@@ -76,10 +81,57 @@ export async function GET(
       return NextResponse.json({ items });
     }
 
-    // 2. Fetch raw data from GitHub API / Cache
+    // 2. Dynamic Benchmark Leaderboard (Live GitHub Trending & GitHub Search API)
+    if (endpoint === "leaderboard") {
+      const category = searchParams.get("category") || "all";
+      const timeframe = (searchParams.get("timeframe") || "daily") as "daily" | "weekly" | "monthly";
+      const q = searchParams.get("query") || "";
+      const license = searchParams.get("license_filter") || "all";
+      const sortBy = searchParams.get("sort_by") || "stars";
+
+      let items: RepoLeaderboardItem[] = [];
+
+      try {
+        if (q && q.trim()) {
+          // Live query across all repositories from GitHub Search API
+          items = await fetchGitHubSearchLeaderboard({
+            category,
+            query: q.trim(),
+            licenseFilter: license,
+            sortBy,
+            token,
+          });
+        } else if (category === "trending" || (timeframe === "daily" && category === "all")) {
+          // Live trending from https://github.com/trending
+          items = await fetchGitHubTrending("daily");
+        } else if (category === "trending_weekly" || (timeframe === "weekly" && category === "all")) {
+          items = await fetchGitHubTrending("weekly");
+        } else {
+          // Live query from GitHub Search API
+          items = await fetchGitHubSearchLeaderboard({
+            category,
+            query: "",
+            licenseFilter: license,
+            sortBy,
+            token,
+          });
+        }
+      } catch (err) {
+        console.warn("[Leaderboard Engine Warning]:", err);
+        try {
+          items = await fetchGitHubTrending("daily");
+        } catch (trendingErr) {
+          console.error("[Leaderboard Engine Error]:", trendingErr);
+        }
+      }
+
+      return NextResponse.json(items);
+    }
+
+    // 3. Fetch raw data from GitHub API / Cache
     const rawData = await fetchRawGitHubData(repo, days, token);
 
-    // 3. Dispatch to specific sub-endpoint
+    // 4. Dispatch to specific sub-endpoint
     if (endpoint === "overview") {
       const kpis = computeKPISummary(rawData, days);
       return NextResponse.json(kpis);

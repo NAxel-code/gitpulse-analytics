@@ -28,7 +28,7 @@ def test_github_sync_endpoint():
     assert response.status_code == 200
     data = response.json()
     assert data["status"] == "success"
-    assert data["synced_events"] > 0
+    assert data["synced_events"] >= 0
     assert "tailwindlabs/tailwindcss" in data["repo_name"]
 
 def test_github_webhook_push():

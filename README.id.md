@@ -36,14 +36,16 @@ Pengguna dapat mencari dan menganalisis repositori open-source apa pun di dunia 
   <img src="docs/images/live-autocomplete.png" width="48%" alt="Live GitHub Autocomplete Search" />
 </p>
 
-### 2. 🏆 Benchmark Leaderboard Repositori Multi-Sektor
-Instrumen komparasi teknik untuk mengevaluasi performa proyek terhadap repositori open-source kelas dunia.
-* **Filter Sektor & Lisensi:** Komparasi lisensi ternama (*MIT*, *Apache-2.0*, *BSD-3*, *GPL-2.0*).
-* **Indikator Momentum:** Mengukur *Community Stars*, *Health Score* (0–100), dan *Velocity Rating* (*Hyper Velocity*, *High Momentum*, *Steady*).
+### 2. 🏆 Live GitHub Trending & Global Benchmark Leaderboard
+Instrumen komparasi teknik strategis untuk mengevaluasi velocity proyek dan momentum komunitas terhadap repositori open-source kelas dunia, didukung oleh web scraping langsung dari `github.com/trending` dan kueri dinamis GitHub Search API.
+* **🔥 GitHub Trending Real-Time:** Integrasi langsung dari `https://github.com/trending` menyajikan *Trending Harian* (dengan indikator angka riil `+X stars today`) dan *Trending Mingguan*.
+* **⚡ Pencarian Universal Semua Repositori GitHub:** Pencarian debounced live langsung ke GitHub Search API, mencari dan merangking repositori publik apa pun di dunia tanpa latensi.
+* **Kategori Multi-Sektor & Lisensi:** Filter komparasi berdasarkan domain (*🤖 AI & ML*, *⚡ Web*, *⚙️ Cloud & DevOps*, *🦀 Systems*, *📱 Mobile*) dan lisensi standar industri (*MIT*, *Apache-2.0*, *BSD-3*, *GPL*).
+* **Indikator Momentum & Kesehatan:** Mengukur *Community Stars*, *Health Score* (0–100), dan *Velocity Rating* (*Hyper Velocity*, *High Momentum*, *Steady*).
 * **Analisis 1-Klik:** Muat langsung repositori pilihan dari leaderboard ke dashboard analitik utama.
 
 <p align="center">
-  <img src="docs/images/benchmark-leaderboard.png" width="75%" alt="Benchmark Leaderboard Modal" />
+  <img src="docs/images/benchmark-leaderboard.png" width="75%" alt="Modal Live GitHub Trending & Benchmark Leaderboard" />
 </p>
 
 ### 3. ⏱️ Metrik DORA & Kecepatan Rekayasa (Engineering Velocity)

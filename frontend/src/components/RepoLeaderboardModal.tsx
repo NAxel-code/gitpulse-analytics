@@ -46,6 +46,8 @@ export interface RepoLeaderboardItem {
   highlight_tag?: string;
   avatar_url: string;
   rank?: number;
+  stars_today?: string;
+  source?: "trending" | "search" | "fallback";
 }
 
 // Built-in benchmark fallback dataset for instant zero-latency rendering
@@ -381,11 +383,20 @@ export function RepoLeaderboardModal({
   onSelectRepo,
 }: RepoLeaderboardModalProps) {
   const [items, setItems] = useState<RepoLeaderboardItem[]>(FALLBACK_LEADERBOARD);
-  const [activeCategory, setActiveCategory] = useState<string>("all");
+  const [activeCategory, setActiveCategory] = useState<string>("trending");
   const [sortBy, setSortBy] = useState<"stars" | "velocity" | "contributors" | "health">("stars");
   const [licenseFilter, setLicenseFilter] = useState<string>("all");
   const [searchQuery, setSearchQuery] = useState<string>("");
+  const [debouncedQuery, setDebouncedQuery] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
+
+  // Debounce search query input by 350ms to query live GitHub Search API smoothly
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      setDebouncedQuery(searchQuery);
+    }, 350);
+    return () => clearTimeout(handler);
+  }, [searchQuery]);
 
   // Keyboard shortcut ESC to close
   useEffect(() => {
@@ -398,7 +409,7 @@ export function RepoLeaderboardModal({
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [isOpen, onClose]);
 
-  // Fetch live benchmark leaderboard from backend API
+  // Fetch live benchmark leaderboard from GitHub Trending & GitHub Search API
   useEffect(() => {
     if (!isOpen) return;
 
@@ -408,9 +419,11 @@ export function RepoLeaderboardModal({
       try {
         const params = new URLSearchParams();
         if (activeCategory !== "all") params.append("category", activeCategory);
+        if (activeCategory === "trending") params.append("timeframe", "daily");
+        if (activeCategory === "trending_weekly") params.append("timeframe", "weekly");
         params.append("sort_by", sortBy);
         if (licenseFilter !== "all") params.append("license_filter", licenseFilter);
-        if (searchQuery.trim()) params.append("query", searchQuery.trim());
+        if (debouncedQuery.trim()) params.append("query", debouncedQuery.trim());
 
         const res = await fetch(`${LEADERBOARD_API_URL}?${params.toString()}`);
         if (res.ok) {
@@ -430,14 +443,16 @@ export function RepoLeaderboardModal({
     return () => {
       isMounted = false;
     };
-  }, [isOpen, activeCategory, sortBy, licenseFilter, searchQuery]);
+  }, [isOpen, activeCategory, sortBy, licenseFilter, debouncedQuery]);
 
-  // Client-side fallback filtering & sorting if API is unreachable
+  // Client-side fallback filtering & sorting
   const filteredItems = useMemo(() => {
     let result = [...items];
 
-    if (activeCategory !== "all") {
-      result = result.filter((r) => r.category === activeCategory);
+    if (!debouncedQuery.trim() && !activeCategory.startsWith("trending") && activeCategory !== "all") {
+      result = result.filter(
+        (r) => r.category === activeCategory || r.category === "general"
+      );
     }
 
     if (licenseFilter !== "all") {
@@ -446,8 +461,8 @@ export function RepoLeaderboardModal({
       );
     }
 
-    if (searchQuery.trim()) {
-      const q = searchQuery.toLowerCase().trim();
+    if (debouncedQuery.trim() && items[0]?.source !== "search") {
+      const q = debouncedQuery.toLowerCase().trim();
       result = result.filter(
         (r) =>
           r.repo_name.toLowerCase().includes(q) ||
@@ -468,10 +483,12 @@ export function RepoLeaderboardModal({
     }
 
     return result.map((item, idx) => ({ ...item, rank: idx + 1 }));
-  }, [items, activeCategory, licenseFilter, searchQuery, sortBy]);
+  }, [items, activeCategory, licenseFilter, debouncedQuery, sortBy]);
 
   const categories = [
-    { id: "all", label: "🌟 All Sectors", icon: Layers },
+    { id: "trending", label: "🔥 Trending Today", icon: Flame },
+    { id: "trending_weekly", label: "📅 Trending This Week", icon: TrendingUp },
+    { id: "all", label: "🌟 All Starred", icon: Layers },
     { id: "ai", label: "🤖 AI & Machine Learning", icon: Cpu },
     { id: "web", label: "⚡ Web & Frontend", icon: Sparkles },
     { id: "devops", label: "⚙️ Cloud & DevOps", icon: Cloud },
@@ -492,16 +509,29 @@ export function RepoLeaderboardModal({
               <Trophy className="h-5 w-5" />
             </div>
             <div>
-              <div className="flex items-center gap-2">
+              <div className="flex flex-wrap items-center gap-2">
                 <h2 className="text-base sm:text-lg font-bold text-white tracking-tight">
                   Open Source Benchmark Leaderboard
                 </h2>
-                <span className="rounded-full bg-amber-500/10 px-2 py-0.5 text-[10px] font-mono font-semibold text-amber-300 border border-amber-500/30">
-                  Verified Factual
-                </span>
+                {debouncedQuery.trim() ? (
+                  <span className="rounded-full bg-emerald-500/10 px-2.5 py-0.5 text-[10px] font-mono font-semibold text-emerald-300 border border-emerald-500/30 flex items-center gap-1">
+                    <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                    Live GitHub Search API
+                  </span>
+                ) : activeCategory.startsWith("trending") ? (
+                  <span className="rounded-full bg-amber-500/10 px-2.5 py-0.5 text-[10px] font-mono font-semibold text-amber-300 border border-amber-500/30 flex items-center gap-1">
+                    <Flame className="h-3 w-3 text-amber-400" />
+                    Live Scraped from github.com/trending
+                  </span>
+                ) : (
+                  <span className="rounded-full bg-indigo-500/10 px-2.5 py-0.5 text-[10px] font-mono font-semibold text-indigo-300 border border-indigo-500/30 flex items-center gap-1">
+                    <Sparkles className="h-3 w-3 text-indigo-400" />
+                    Live GitHub Search API
+                  </span>
+                )}
               </div>
               <p className="text-xs text-zinc-400 mt-0.5">
-                Compare essential open-source metrics: Community Stars, Enterprise Licenses, Engineering Velocity &amp; Community Scale.
+                Displaying {filteredItems.length} repositories across trending velocity and global GitHub search.
               </p>
             </div>
           </div>
@@ -545,7 +575,7 @@ export function RepoLeaderboardModal({
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder="Search repository, license, or technology (e.g., vllm, Rust, MIT)..."
+              placeholder="Search across all GitHub repositories (e.g., deepseek, transformers, linux, uv)..."
               className="w-full rounded-xl border border-zinc-800 bg-zinc-900/90 pl-9 pr-3 py-1.5 text-xs text-white placeholder-zinc-500 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 focus:outline-none transition"
             />
           </div>
@@ -565,6 +595,7 @@ export function RepoLeaderboardModal({
                 <option value="apache" className="bg-zinc-900">Apache-2.0 (Enterprise Patent)</option>
                 <option value="mit" className="bg-zinc-900">MIT (Commercial Friendly)</option>
                 <option value="bsd" className="bg-zinc-900">BSD-3-Clause</option>
+                <option value="gpl" className="bg-zinc-900">GPL-2.0 / GPL-3.0</option>
               </select>
             </div>
 
@@ -594,7 +625,26 @@ export function RepoLeaderboardModal({
 
         {/* Content Area: Repository List */}
         <div className="flex-1 overflow-y-auto p-4 sm:p-6 space-y-3">
-          {filteredItems.length === 0 ? (
+          {loading ? (
+            <div className="space-y-3 py-2">
+              {[1, 2, 3, 4, 5].map((i) => (
+                <div
+                  key={i}
+                  className="rounded-xl border border-zinc-800/80 bg-zinc-900/40 p-4 animate-pulse flex items-center justify-between gap-4"
+                >
+                  <div className="flex items-center gap-3.5 flex-1">
+                    <div className="h-8 w-8 rounded-xl bg-zinc-800" />
+                    <div className="h-10 w-10 rounded-xl bg-zinc-800" />
+                    <div className="space-y-2 flex-1">
+                      <div className="h-4 w-44 rounded bg-zinc-800" />
+                      <div className="h-3 w-72 rounded bg-zinc-800/60" />
+                    </div>
+                  </div>
+                  <div className="h-8 w-24 rounded-xl bg-zinc-800" />
+                </div>
+              ))}
+            </div>
+          ) : filteredItems.length === 0 ? (
             <div className="text-center py-16 text-zinc-500">
               <Filter className="h-8 w-8 mx-auto mb-2 text-zinc-600" />
               <p className="text-sm font-medium text-zinc-400">No repositories match your active filters.</p>
