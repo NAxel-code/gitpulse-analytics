@@ -113,7 +113,7 @@ export function ContributorTable({ data, onSelectContributor }: ContributorTable
             </h3>
           </div>
           <p className="text-xs text-zinc-400 mt-0.5">
-            Peringkat kecepatan developer dan linimasa riwayat kontribusi
+            Developer velocity rankings and contribution timeline insights
           </p>
         </div>
 
@@ -122,7 +122,7 @@ export function ContributorTable({ data, onSelectContributor }: ContributorTable
           <Search className="absolute left-3 top-2.5 h-3.5 w-3.5 text-zinc-500" />
           <input
             type="text"
-            placeholder="Cari kontributor..."
+            placeholder="Search contributor..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             className="w-full rounded-lg border border-zinc-800 bg-zinc-950/80 pl-8 pr-3 py-1.5 text-xs text-zinc-200 placeholder-zinc-500 focus:border-zinc-700 focus:ring-1 focus:ring-zinc-700 focus:outline-none transition-colors"
@@ -181,13 +181,13 @@ export function ContributorTable({ data, onSelectContributor }: ContributorTable
                 <td colSpan={7} className="py-8 text-center">
                   <p className="text-xs font-medium text-zinc-300">
                     {search
-                      ? `Tidak ditemukan kontributor yang cocok dengan "${search}".`
-                      : "Belum ada data kontributor untuk repositori ini."}
+                      ? `No contributors found matching "${search}".`
+                      : "No contributor data recorded for this repository."}
                   </p>
                   <p className="text-[11px] text-zinc-500 mt-1">
                     {search
-                      ? "Periksa kembali ejaan username atau hapus filter pencarian."
-                      : "Klik tombol 'Sync Live Repo' di navigasi atas untuk memuat data GitHub."}
+                      ? "Check the username spelling or clear the search filter."
+                      : "Click 'Sync Live Repo' in the top navigation to fetch GitHub data."}
                   </p>
                   {search && (
                     <button
@@ -206,7 +206,7 @@ export function ContributorTable({ data, onSelectContributor }: ContributorTable
                     key={idx}
                     onClick={() => onSelectContributor?.(dev.login)}
                     className="hover:bg-zinc-850/60 cursor-pointer transition-colors group border-b border-zinc-800/40"
-                    title={`Klik untuk melihat riwayat aktivitas @${dev.login}`}
+                    title={`Click to view activity journey for @${dev.login}`}
                   >
                     <td className="py-2.5 px-3 whitespace-nowrap">
                       {getRankBadgeDisplay(dev.rank_badge, dev.rank ?? idx + 1)}

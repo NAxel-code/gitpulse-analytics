@@ -98,7 +98,7 @@ export function Header({
   ];
 
   const universalPresets = [
-    { name: "NAxel-code/gitpulse-analytics", category: "personal", label: "GitPulse (Milik Anda)", lang: "TypeScript" },
+    { name: "NAxel-code/gitpulse-analytics", category: "personal", label: "GitPulse (Your Repo)", lang: "TypeScript" },
     { name: "vllm-project/vllm", category: "ai", label: "vLLM (AI Inference)", lang: "Python" },
     { name: "huggingface/transformers", category: "ai", label: "Transformers", lang: "Python" },
     { name: "ollama/ollama", category: "ai", label: "Ollama (Local LLM)", lang: "Go" },
@@ -126,7 +126,7 @@ export function Header({
       .replace(/^https?:\/\/github\.com\//i, "")
       .replace(/\/$/, "");
     if (!trimmed.includes("/") || trimmed.split("/").length !== 2) {
-      setRepoError("Format repositori harus: owner/nama-repo (contoh: NAxel-code/gitpulse-analytics)");
+      setRepoError("Repository format must be: owner/repo-name (e.g. NAxel-code/gitpulse-analytics)");
       return;
     }
     setRepoError("");
@@ -162,7 +162,7 @@ export function Header({
               <button
                 onClick={() => setShowRepoModal(true)}
                 className="font-mono text-zinc-200 font-semibold hover:text-indigo-300 underline decoration-dotted underline-offset-2 transition cursor-pointer"
-                title="Klik untuk memilih atau mengganti repositori GitHub publik mana pun"
+                title="Click to select or switch to any public GitHub repository"
               >
                 {currentRepo}
               </button>
@@ -191,17 +191,17 @@ export function Header({
               id="btn-ganti-repo"
               onClick={() => setShowRepoModal(true)}
               className="rounded-lg px-2 py-1 text-[11px] font-mono border border-dashed border-zinc-700 bg-zinc-900/60 text-zinc-300 hover:text-white hover:border-zinc-500 hover:bg-zinc-800 transition flex items-center gap-1 cursor-pointer focus-visible:ring-2 focus-visible:ring-zinc-400 focus-visible:outline-none"
-              title="Analisis repositori publik GitHub apa saja di seluruh dunia"
+              title="Analyze any public GitHub repository in the world"
             >
               <Plus className="h-3 w-3 text-indigo-400" />
-              <span>Ganti Repo...</span>
+              <span>Switch Repo...</span>
             </button>
 
             {/* Leaderboard Button */}
             <button
               onClick={onOpenLeaderboard}
               className="rounded-lg px-2.5 py-1 text-[11px] font-mono border border-amber-500/40 bg-amber-500/10 text-amber-300 hover:text-white hover:border-amber-400 hover:bg-amber-500/20 transition flex items-center gap-1.5 cursor-pointer focus-visible:ring-2 focus-visible:ring-amber-400 focus-visible:outline-none"
-              title="Lihat Benchmark Leaderboard Repositori berdasarkan Bintang, Lisensi, dan Velocity"
+              title="View Repository Benchmark Leaderboard by Stars, License, and Velocity"
             >
               <Trophy className="h-3 w-3 text-amber-400" />
               <span>Leaderboard</span>
@@ -219,8 +219,8 @@ export function Header({
             <div className="flex items-center gap-2 min-w-0 flex-1">
               <Sparkles className="h-4 w-4 shrink-0 text-indigo-400 transition group-hover:rotate-6" />
               <span className="truncate whitespace-nowrap text-zinc-300 text-left">
-                <span className="font-semibold text-indigo-300">Tanya AI:</span>{" "}
-                <span className="text-zinc-400 hidden md:inline">&quot;Top contributor dengan PR merge terbanyak&quot;</span>
+                <span className="font-semibold text-indigo-300">Ask AI:</span>{" "}
+                <span className="text-zinc-400 hidden md:inline">&quot;Top contributor with most merged PRs&quot;</span>
                 <span className="text-zinc-400 md:hidden">&quot;Top contributor...&quot;</span>
               </span>
             </div>
@@ -235,7 +235,7 @@ export function Header({
           {/* GitHub Token / PAT Button */}
           <button
             onClick={() => setShowTokenModal(true)}
-            title={githubToken ? "GitHub Token Aktif (5.000 req/jam)" : "Atur Personal Access Token untuk bypass rate limit 60 req/jam"}
+            title={githubToken ? "GitHub Token Active (5,000 req/hr)" : "Set Personal Access Token to bypass 60 req/hr limit"}
             className={`flex items-center gap-1.5 rounded-xl border px-2.5 py-1.5 text-xs font-medium transition cursor-pointer focus-visible:ring-2 focus-visible:ring-zinc-400 focus-visible:outline-none ${
               githubToken
                 ? "border-emerald-500/30 bg-emerald-500/10 text-emerald-400 hover:bg-emerald-500/20"
@@ -281,7 +281,7 @@ export function Header({
           {/* Leaderboard Action Button */}
           <button
             onClick={onOpenLeaderboard}
-            title="Buka Benchmark Leaderboard Repositori"
+            title="Open Repository Benchmark Leaderboard"
             className="flex items-center gap-1.5 rounded-xl border border-amber-500/30 bg-amber-500/10 px-2.5 py-1.5 text-xs font-semibold text-amber-300 hover:text-amber-200 hover:bg-amber-500/20 hover:border-amber-500/50 transition cursor-pointer focus-visible:ring-2 focus-visible:ring-amber-400 focus-visible:outline-none"
           >
             <Trophy className="h-3.5 w-3.5 text-amber-400" />
@@ -291,11 +291,11 @@ export function Header({
           {/* Help & Guide Button */}
           <button
             onClick={onOpenHelp}
-            title="Panduan & Tutorial GitPulse (Tekan '?')"
+            title="GitPulse Documentation & Guide (Press '?')"
             className="flex items-center gap-1.5 rounded-xl border border-zinc-800 bg-zinc-900 px-2.5 py-1.5 text-xs font-medium text-zinc-300 hover:text-white hover:bg-zinc-850 hover:border-zinc-700 transition cursor-pointer focus-visible:ring-2 focus-visible:ring-zinc-400 focus-visible:outline-none"
           >
             <HelpCircle className="h-3.5 w-3.5 text-indigo-400" />
-            <span className="hidden sm:inline">Panduan</span>
+            <span className="hidden sm:inline">Guide</span>
           </button>
         </div>
       </header>
@@ -318,7 +318,7 @@ export function Header({
             </div>
 
             <p className="text-xs text-zinc-400 mt-3 leading-relaxed">
-              Secara default GitHub membatasi <strong>60 request/jam</strong> tanpa token. Masukkan token GitHub Anda (read-only) untuk menaikkan limit hingga <strong>5.000 request/jam</strong>.
+              By default GitHub limits unauthenticated requests to <strong>60 requests/hour</strong>. Enter your personal GitHub token (read-only) to increase your quota up to <strong>5,000 requests/hour</strong>.
             </p>
 
             <div className="mt-4 space-y-3">
@@ -330,7 +330,7 @@ export function Header({
                 className="w-full rounded-xl border border-zinc-800 bg-zinc-900 px-3.5 py-2 text-xs font-mono text-white placeholder-zinc-500 focus:border-violet-500 focus:outline-none"
               />
               <div className="flex justify-between items-center text-[11px] text-zinc-500">
-                <span>Tersimpan lokal di browser (localStorage)</span>
+                <span>Stored locally in your browser (localStorage)</span>
                 {githubToken && (
                   <button
                     onClick={() => {
@@ -340,7 +340,7 @@ export function Header({
                     }}
                     className="text-rose-400 hover:underline"
                   >
-                    Hapus Token
+                    Remove Token
                   </button>
                 )}
               </div>
@@ -351,14 +351,14 @@ export function Header({
                 onClick={() => setShowTokenModal(false)}
                 className="rounded-lg px-3 py-1.5 text-xs text-zinc-400 hover:bg-zinc-900"
               >
-                Batal
+                Cancel
               </button>
               <button
                 onClick={handleSaveToken}
                 className="flex items-center gap-1 rounded-lg bg-zinc-100 hover:bg-white text-zinc-950 px-4 py-1.5 text-xs font-semibold shadow-xs transition-colors"
               >
                 <Check className="h-3.5 w-3.5" />
-                <span>Simpan Token</span>
+                <span>Save Token</span>
               </button>
             </div>
           </div>
@@ -376,10 +376,10 @@ export function Header({
                 </div>
                 <div>
                   <h3 className="font-semibold text-zinc-100 text-sm md:text-base">
-                    Ganti / Analisis Repositori GitHub
+                    Switch / Analyze GitHub Repository
                   </h3>
                   <p className="text-[11px] text-zinc-400">
-                    GitPulse dapat menganalisis repositori publik GitHub apa pun di dunia
+                    GitPulse can analyze any public GitHub repository worldwide
                   </p>
                 </div>
               </div>
@@ -397,7 +397,7 @@ export function Header({
             <form onSubmit={handleCustomRepoSubmit} className="mt-4 space-y-3">
               <div>
                 <label className="text-xs font-medium text-zinc-300 block mb-1">
-                  Nama Repositori GitHub (Universal):
+                  GitHub Repository Name (Universal):
                 </label>
                 <div className="relative">
                   <Search className="absolute left-3 top-2.5 h-3.5 w-3.5 text-zinc-500" />
@@ -405,7 +405,7 @@ export function Header({
                     id="input-custom-repo"
                     type="text"
                     autoFocus
-                    placeholder="Ketik owner/nama-repo (contoh: astral-sh/uv, vllm-project/vllm, torvalds/linux)..."
+                    placeholder="Type owner/repo-name (e.g., astral-sh/uv, vllm-project/vllm, torvalds/linux)..."
                     value={customRepo}
                     onChange={(e) => {
                       setCustomRepo(e.target.value);
@@ -465,12 +465,12 @@ export function Header({
               <div className="pt-2">
                 <div className="flex items-center justify-between mb-2">
                   <span className="text-[11px] font-mono text-zinc-400">
-                    Pilihan Lintas Sektor &amp; Bahasa:
+                    Multi-Sector &amp; Language Presets:
                   </span>
                   {/* Category Filter Mini Tabs */}
                   <div className="flex items-center gap-1 text-[10px] font-mono">
                     {[
-                      { id: "all", label: "Semua" },
+                      { id: "all", label: "All" },
                       { id: "ai", label: "🤖 AI" },
                       { id: "systems", label: "🦀 Systems" },
                       { id: "devops", label: "⚙️ DevOps" },
@@ -524,7 +524,7 @@ export function Header({
                   <div className="flex items-center gap-2">
                     <Trophy className="h-4 w-4 text-amber-400 shrink-0" />
                     <span className="text-[11px] text-zinc-300">
-                      Ingin perbandingan stars, lisensi, &amp; velocity lengkap?
+                      Want full comparison of stars, licenses, &amp; velocity?
                     </span>
                   </div>
                   <button
@@ -535,7 +535,7 @@ export function Header({
                     }}
                     className="font-semibold text-[11px] text-amber-400 hover:text-amber-300 hover:underline shrink-0 cursor-pointer"
                   >
-                    Buka Leaderboard &rarr;
+                    Open Leaderboard &rarr;
                   </button>
                 </div>
               )}
@@ -550,7 +550,7 @@ export function Header({
                   }}
                   className="rounded-lg px-3 py-1.5 text-xs text-zinc-400 hover:bg-zinc-900 cursor-pointer"
                 >
-                  Batal
+                  Cancel
                 </button>
                 <button
                   type="submit"
@@ -558,7 +558,7 @@ export function Header({
                   className="flex items-center gap-1.5 rounded-lg bg-zinc-100 px-4 py-1.5 text-xs font-semibold text-zinc-950 hover:bg-white disabled:opacity-40 transition-colors shadow-xs cursor-pointer"
                 >
                   <Check className="h-3.5 w-3.5" />
-                  <span>Muat &amp; Analisis Repositori</span>
+                  <span>Load &amp; Analyze Repository</span>
                 </button>
               </div>
             </form>

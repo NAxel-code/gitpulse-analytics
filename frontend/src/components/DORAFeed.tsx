@@ -51,7 +51,7 @@ export function DORAFeed({
 
           <div className="space-y-2 border-t border-zinc-800/80 pt-3">
             <h4 className="text-xs font-medium text-zinc-300">
-              Sorotan DORA & Rekomendasi
+              DORA Highlights & Recommendations
             </h4>
             {summary.key_takeaways.map((point, idx) => (
               <div key={idx} className="flex items-start gap-2 text-xs text-zinc-300">
@@ -121,7 +121,7 @@ export function DORAFeed({
 
                 <div className="flex items-center justify-between mt-2.5 text-[11px] text-zinc-400 font-mono tabular-nums">
                   <span>{item.timestamp}</span>
-                  <span className="text-zinc-500">Deviasi: {item.z_score > 0 ? `+${item.z_score}` : item.z_score}σ</span>
+                  <span className="text-zinc-500">Deviation: {item.z_score > 0 ? `+${item.z_score}` : item.z_score}σ</span>
                 </div>
               </div>
             );

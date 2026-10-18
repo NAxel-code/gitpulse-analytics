@@ -158,21 +158,21 @@ export function getFallbackDashboardData(repoName: string, days: number = 14) {
     {
       metric: "PR Review Latency",
       severity: "low",
-      message: `Kecepatan merge ${name} stabil pada rata-rata 14.8 jam dengan 78.4% PR terselesaikan tanpa hambatan.`,
+      message: `Merge velocity for ${name} is stable at an average of 14.8 hours with 78.4% PR completion rate without bottlenecks.`,
       detected_at: "Today at 08:30 AM",
-      recommended_action: "Pertahankan jadwal review harian.",
+      recommended_action: "Maintain current daily code review cadence.",
     },
   ];
 
   const executiveSummary = {
     status: "success",
     generated_at: "Today at 09:00 AM",
-    executive_summary: `Dalam 14 hari terakhir pada repository ${cleanRepo}, tim telah menghasilkan total 462 commits dengan PR Merge Rate mencapai 78.4% (40 PR berhasil di-merge). Kontributor paling produktif adalah '@${owner}'. Rasio MTTR berada dalam standar DORA High Performer.`,
+    executive_summary: `Over the past 14 days on repository ${cleanRepo}, the engineering team recorded 462 commits with a PR Merge Rate of 78.4% (40 PRs successfully merged). Top contributor is '@${owner}'. Lead Time to Merge aligns with DORA High Performer benchmarks.`,
     key_takeaways: [
-      `Kecepatan Merge PR stabil di 78.4%`,
-      `Total volume kode: +48,920 baris ditambahkan, -14,210 baris dihapus`,
+      `PR Merge Velocity is stable at 78.4%`,
+      `Total code volume: +48,920 lines added, -14,210 lines removed`,
       `Lead contributor: @${owner}`,
-      "Rasio Mean Time to Merge (MTTR) berada dalam standar DORA High Performer",
+      "Lead Time to Merge aligns with DORA High Performer benchmarks",
     ],
   };
 

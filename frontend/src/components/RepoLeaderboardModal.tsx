@@ -54,7 +54,7 @@ const FALLBACK_LEADERBOARD: RepoLeaderboardItem[] = [
     repo_name: "vllm-project/vllm",
     category: "ai",
     category_label: "AI & Machine Learning",
-    description: "High-throughput and memory-efficient LLM serving and inference engine dengan PagedAttention.",
+    description: "High-throughput and memory-efficient LLM serving and inference engine with PagedAttention.",
     stars: 38400,
     stars_formatted: "38.4k",
     forks: 5900,
@@ -75,7 +75,7 @@ const FALLBACK_LEADERBOARD: RepoLeaderboardItem[] = [
     repo_name: "huggingface/transformers",
     category: "ai",
     category_label: "AI & Machine Learning",
-    description: "State-of-the-art Machine Learning library untuk PyTorch, TensorFlow, dan JAX dengan ribuan model pre-trained.",
+    description: "State-of-the-art Machine Learning library for PyTorch, TensorFlow, and JAX with thousands of pre-trained models.",
     stars: 136500,
     stars_formatted: "136.5k",
     forks: 26400,
@@ -96,14 +96,14 @@ const FALLBACK_LEADERBOARD: RepoLeaderboardItem[] = [
     repo_name: "ollama/ollama",
     category: "ai",
     category_label: "AI & Machine Learning",
-    description: "Jalankan model LLM seperti Llama 3, DeepSeek, dan Mistral secara lokal di perangkat komputasi pribadi.",
+    description: "Run local LLM models like Llama 3, DeepSeek, and Mistral directly on personal computers.",
     stars: 118000,
     stars_formatted: "118.0k",
     forks: 10200,
     forks_formatted: "10.2k",
     license: "MIT",
     license_type: "permissive",
-    license_notes: "Very Permissive (Bebas Komersial)",
+    license_notes: "Very Permissive (Commercial Friendly)",
     velocity_score: 97,
     velocity_tier: "Hyper Velocity",
     active_contributors: 490,
@@ -117,7 +117,7 @@ const FALLBACK_LEADERBOARD: RepoLeaderboardItem[] = [
     repo_name: "pytorch/pytorch",
     category: "ai",
     category_label: "AI & Machine Learning",
-    description: "Framework komputasi tensor dan deep learning neural network dengan akselerasi GPU kelas dunia.",
+    description: "World-class tensor computation and deep learning neural network framework with GPU acceleration.",
     stars: 87200,
     stars_formatted: "87.2k",
     forks: 22900,
@@ -138,14 +138,14 @@ const FALLBACK_LEADERBOARD: RepoLeaderboardItem[] = [
     repo_name: "langchain-ai/langchain",
     category: "ai",
     category_label: "AI & Machine Learning",
-    description: "Orkestrasi aplikasi agen cerdas, Retrieval-Augmented Generation (RAG), dan alur pemikiran berbasis LLM.",
+    description: "Orchestration for intelligent agent applications, Retrieval-Augmented Generation (RAG), and LLM reasoning workflows.",
     stars: 99500,
     stars_formatted: "99.5k",
     forks: 16200,
     forks_formatted: "16.2k",
     license: "MIT",
     license_type: "permissive",
-    license_notes: "Very Permissive (Bebas Komersial)",
+    license_notes: "Very Permissive (Commercial Friendly)",
     velocity_score: 93,
     velocity_tier: "High Velocity",
     active_contributors: 2600,
@@ -159,14 +159,14 @@ const FALLBACK_LEADERBOARD: RepoLeaderboardItem[] = [
     repo_name: "vercel/next.js",
     category: "web",
     category_label: "Web & Frontend",
-    description: "Framework React produksi standar industri dengan App Router, Server Components, dan hybrid rendering.",
+    description: "Industry standard production React framework with App Router, Server Components, and hybrid rendering.",
     stars: 128400,
     stars_formatted: "128.4k",
     forks: 27100,
     forks_formatted: "27.1k",
     license: "MIT",
     license_type: "permissive",
-    license_notes: "Very Permissive (Bebas Komersial)",
+    license_notes: "Very Permissive (Commercial Friendly)",
     velocity_score: 97,
     velocity_tier: "Hyper Velocity",
     active_contributors: 3600,
@@ -180,14 +180,14 @@ const FALLBACK_LEADERBOARD: RepoLeaderboardItem[] = [
     repo_name: "facebook/react",
     category: "web",
     category_label: "Web & Frontend",
-    description: "Pustaka komponen UI paling populer di dunia untuk membangun antarmuka web interaktif modular.",
+    description: "The world's most popular UI component library for building modular, interactive web interfaces.",
     stars: 231000,
     stars_formatted: "231.0k",
     forks: 46800,
     forks_formatted: "46.8k",
     license: "MIT",
     license_type: "permissive",
-    license_notes: "Very Permissive (Bebas Komersial)",
+    license_notes: "Very Permissive (Commercial Friendly)",
     velocity_score: 92,
     velocity_tier: "High Velocity",
     active_contributors: 1780,
@@ -201,14 +201,14 @@ const FALLBACK_LEADERBOARD: RepoLeaderboardItem[] = [
     repo_name: "tailwindlabs/tailwindcss",
     category: "web",
     category_label: "Web & Frontend",
-    description: "Framework CSS utility-first untuk pembuatan desain antarmuka modern yang cepat, fleksibel, dan terukur.",
+    description: "Utility-first CSS framework for rapid, flexible, and scalable modern interface design.",
     stars: 83900,
     stars_formatted: "83.9k",
     forks: 4200,
     forks_formatted: "4.2k",
     license: "MIT",
     license_type: "permissive",
-    license_notes: "Very Permissive (Bebas Komersial)",
+    license_notes: "Very Permissive (Commercial Friendly)",
     velocity_score: 91,
     velocity_tier: "High Velocity",
     active_contributors: 370,
@@ -222,14 +222,14 @@ const FALLBACK_LEADERBOARD: RepoLeaderboardItem[] = [
     repo_name: "shadcn-ui/ui",
     category: "web",
     category_label: "Web & Frontend",
-    description: "Koleksi komponen UI re-usable berbasis Radix UI dan Tailwind CSS yang disalin langsung ke codebase.",
+    description: "Re-usable UI component collection built on Radix UI and Tailwind CSS, copy-pasted directly into codebases.",
     stars: 76800,
     stars_formatted: "76.8k",
     forks: 6400,
     forks_formatted: "6.4k",
     license: "MIT",
     license_type: "permissive",
-    license_notes: "Very Permissive (Bebas Komersial)",
+    license_notes: "Very Permissive (Commercial Friendly)",
     velocity_score: 94,
     velocity_tier: "High Velocity",
     active_contributors: 320,
@@ -243,7 +243,7 @@ const FALLBACK_LEADERBOARD: RepoLeaderboardItem[] = [
     repo_name: "kubernetes/kubernetes",
     category: "devops",
     category_label: "Cloud & DevOps",
-    description: "Sistem orkestrasi kontainer open source terdepan untuk deployment, scaling, dan manajemen otomatis aplikasi.",
+    description: "Production-grade container orchestration system for automated deployment, scaling, and application management.",
     stars: 113000,
     stars_formatted: "113.0k",
     forks: 40100,
@@ -264,7 +264,7 @@ const FALLBACK_LEADERBOARD: RepoLeaderboardItem[] = [
     repo_name: "prometheus/prometheus",
     category: "devops",
     category_label: "Cloud & DevOps",
-    description: "Sistem monitoring metrik telemetri dan time-series database dengan mesin kueri PromQL terpercaya.",
+    description: "Industry standard telemetry monitoring and time-series database with reliable PromQL query engine.",
     stars: 58200,
     stars_formatted: "58.2k",
     forks: 9400,
@@ -285,7 +285,7 @@ const FALLBACK_LEADERBOARD: RepoLeaderboardItem[] = [
     repo_name: "astral-sh/uv",
     category: "systems",
     category_label: "High-Performance Runtimes",
-    description: "Package manager dan resolver Python super cepat yang ditulis dalam Rust, menggantikan pip & virtualenv.",
+    description: "Extremely fast Python package manager and resolver written in Rust, replacing pip & virtualenv.",
     stars: 49200,
     stars_formatted: "49.2k",
     forks: 1500,
@@ -306,14 +306,14 @@ const FALLBACK_LEADERBOARD: RepoLeaderboardItem[] = [
     repo_name: "oven-sh/bun",
     category: "systems",
     category_label: "High-Performance Runtimes",
-    description: "JavaScript & TypeScript runtime all-in-one super kencang dengan bundler, test runner, dan package manager bawaan.",
+    description: "Incredibly fast all-in-one JavaScript & TypeScript runtime with built-in bundler, test runner, and package manager.",
     stars: 77200,
     stars_formatted: "77.2k",
     forks: 2700,
     forks_formatted: "2.7k",
     license: "MIT",
     license_type: "permissive",
-    license_notes: "Very Permissive (Bebas Komersial)",
+    license_notes: "Very Permissive (Commercial Friendly)",
     velocity_score: 97,
     velocity_tier: "Hyper Velocity",
     active_contributors: 720,
@@ -327,7 +327,7 @@ const FALLBACK_LEADERBOARD: RepoLeaderboardItem[] = [
     repo_name: "flutter/flutter",
     category: "mobile",
     category_label: "Mobile & Multiplatform",
-    description: "SDK Google untuk membangun aplikasi multiplatform terkompilasi native dari satu basis kode.",
+    description: "Google's multiplatform SDK for building natively compiled applications from a single codebase.",
     stars: 166500,
     stars_formatted: "166.5k",
     forks: 27200,
@@ -348,21 +348,21 @@ const FALLBACK_LEADERBOARD: RepoLeaderboardItem[] = [
     repo_name: "NAxel-code/gitpulse-analytics",
     category: "ai",
     category_label: "Developer Intelligence & Analytics",
-    description: "High-Throughput GitHub Engineering Intelligence & DORA Metrics Engine dengan DuckDB dan Hybrid AI.",
+    description: "High-throughput GitHub developer intelligence & DORA metrics engine with DuckDB and Hybrid AI.",
     stars: 1,
     stars_formatted: "1",
     forks: 0,
     forks_formatted: "0",
     license: "MIT",
     license_type: "permissive",
-    license_notes: "Very Permissive (Bebas Komersial)",
+    license_notes: "Very Permissive (Commercial Friendly)",
     velocity_score: 88,
     velocity_tier: "High Velocity",
     active_contributors: 1,
     health_score: 100,
     primary_language: "TypeScript / Python",
     language_color: "#3178C6",
-    highlight_tag: "⭐ Repositori Aktif Anda",
+    highlight_tag: "⭐ Your Active Repository",
     avatar_url: "https://avatars.githubusercontent.com/u/104192800?v=4"
   }
 ];
@@ -471,7 +471,7 @@ export function RepoLeaderboardModal({
   }, [items, activeCategory, licenseFilter, searchQuery, sortBy]);
 
   const categories = [
-    { id: "all", label: "🌟 Semua Sektor", icon: Layers },
+    { id: "all", label: "🌟 All Sectors", icon: Layers },
     { id: "ai", label: "🤖 AI & Machine Learning", icon: Cpu },
     { id: "web", label: "⚡ Web & Frontend", icon: Sparkles },
     { id: "devops", label: "⚙️ Cloud & DevOps", icon: Cloud },
@@ -497,18 +497,18 @@ export function RepoLeaderboardModal({
                   Open Source Benchmark Leaderboard
                 </h2>
                 <span className="rounded-full bg-amber-500/10 px-2 py-0.5 text-[10px] font-mono font-semibold text-amber-300 border border-amber-500/30">
-                  Faktual & Nyata
+                  Verified Factual
                 </span>
               </div>
               <p className="text-xs text-zinc-400 mt-0.5">
-                Bandingkan metrik open source esensial: Community Stars, Enterprise License, Engineering Velocity & Community Scale.
+                Compare essential open-source metrics: Community Stars, Enterprise Licenses, Engineering Velocity &amp; Community Scale.
               </p>
             </div>
           </div>
           <button
             onClick={onClose}
             className="rounded-lg p-1.5 text-zinc-400 hover:text-white hover:bg-zinc-800 transition cursor-pointer"
-            aria-label="Tutup"
+            aria-label="Close"
           >
             <X className="h-5 w-5" />
           </button>
@@ -545,7 +545,7 @@ export function RepoLeaderboardModal({
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder="Cari repositori, lisensi, atau teknologi (contoh: vllm, Rust, MIT)..."
+              placeholder="Search repository, license, or technology (e.g., vllm, Rust, MIT)..."
               className="w-full rounded-xl border border-zinc-800 bg-zinc-900/90 pl-9 pr-3 py-1.5 text-xs text-white placeholder-zinc-500 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 focus:outline-none transition"
             />
           </div>
@@ -558,12 +558,12 @@ export function RepoLeaderboardModal({
               <select
                 value={licenseFilter}
                 onChange={(e) => setLicenseFilter(e.target.value)}
-                aria-label="Filter Lisensi"
+                aria-label="Filter License"
                 className="bg-transparent text-xs text-zinc-300 focus:outline-none cursor-pointer"
               >
-                <option value="all" className="bg-zinc-900">Semua Lisensi</option>
+                <option value="all" className="bg-zinc-900">All Licenses</option>
                 <option value="apache" className="bg-zinc-900">Apache-2.0 (Enterprise Patent)</option>
-                <option value="mit" className="bg-zinc-900">MIT (Bebas Komersial)</option>
+                <option value="mit" className="bg-zinc-900">MIT (Commercial Friendly)</option>
                 <option value="bsd" className="bg-zinc-900">BSD-3-Clause</option>
               </select>
             </div>
@@ -573,7 +573,7 @@ export function RepoLeaderboardModal({
               {[
                 { id: "stars", label: "⭐ Stars", icon: Star },
                 { id: "velocity", label: "⚡ Velocity", icon: Zap },
-                { id: "contributors", label: "👥 Kontributor", icon: Users },
+                { id: "contributors", label: "👥 Contributors", icon: Users },
                 { id: "health", label: "🛡️ Health", icon: CheckCircle2 },
               ].map((s) => (
                 <button
@@ -597,7 +597,7 @@ export function RepoLeaderboardModal({
           {filteredItems.length === 0 ? (
             <div className="text-center py-16 text-zinc-500">
               <Filter className="h-8 w-8 mx-auto mb-2 text-zinc-600" />
-              <p className="text-sm font-medium text-zinc-400">Tidak ada repositori yang cocok dengan filter Anda.</p>
+              <p className="text-sm font-medium text-zinc-400">No repositories match your active filters.</p>
               <button
                 onClick={() => {
                   setSearchQuery("");
@@ -606,7 +606,7 @@ export function RepoLeaderboardModal({
                 }}
                 className="mt-3 text-xs text-indigo-400 hover:text-indigo-300 underline underline-offset-2"
               >
-                Reset Semua Filter
+                Reset All Filters
               </button>
             </div>
           ) : (
@@ -662,7 +662,7 @@ export function RepoLeaderboardModal({
                             target="_blank"
                             rel="noopener noreferrer"
                             className="font-mono text-sm font-bold text-white hover:text-indigo-400 transition flex items-center gap-1 group-hover:underline"
-                            title="Buka repositori di GitHub"
+                            title="Open repository on GitHub"
                           >
                             <span>{item.repo_name}</span>
                             <ExternalLink className="h-3 w-3 text-zinc-500 opacity-0 group-hover:opacity-100 transition" />
@@ -750,7 +750,7 @@ export function RepoLeaderboardModal({
                         {isSelected ? (
                           <div className="flex items-center gap-1.5 rounded-xl border border-emerald-500/30 bg-emerald-500/10 px-3 py-1.5 text-xs font-medium text-emerald-400">
                             <span className="h-2 w-2 rounded-full bg-emerald-400 animate-pulse" />
-                            <span>Sedang Dianalisis</span>
+                            <span>Currently Active</span>
                           </div>
                         ) : (
                           <button
@@ -760,7 +760,7 @@ export function RepoLeaderboardModal({
                             }}
                             className="flex items-center gap-1.5 rounded-xl border border-zinc-700 bg-zinc-800 hover:bg-indigo-600 hover:border-indigo-500 px-3 py-1.5 text-xs font-semibold text-white shadow-sm transition cursor-pointer group/btn"
                           >
-                            <span>Analisis Repo</span>
+                            <span>Analyze Repo</span>
                             <ArrowRight className="h-3.5 w-3.5 transition group-hover/btn:translate-x-0.5" />
                           </button>
                         )}
@@ -777,13 +777,13 @@ export function RepoLeaderboardModal({
         <div className="flex items-center justify-between border-t border-zinc-800/80 px-6 py-3 bg-zinc-900/60 text-xs text-zinc-400">
           <div className="flex items-center gap-2">
             <span className="h-1.5 w-1.5 rounded-full bg-amber-400" />
-            <span>Klik <strong>&quot;Analisis Repo&quot;</strong> untuk memuat data GitHub riil repositori pilihan Anda langsung ke dashboard.</span>
+            <span>Click <strong>&quot;Analyze Repo&quot;</strong> to load real-time GitHub data for your selected repository directly into the dashboard.</span>
           </div>
           <button
             onClick={onClose}
             className="rounded-lg px-3 py-1 text-xs font-medium text-zinc-400 hover:text-white hover:bg-zinc-800 transition cursor-pointer"
           >
-            Tutup (Esc)
+            Close (Esc)
           </button>
         </div>
 

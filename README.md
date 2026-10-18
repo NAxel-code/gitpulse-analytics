@@ -1,7 +1,11 @@
 # ⚡ GitPulse Analytics
 
+<p align="center">
+  <b>🌐 <a href="README.md">English</a> | <a href="README.id.md">Bahasa Indonesia</a></b>
+</p>
+
 > **High-Performance GitHub Developer & Repository Intelligence Platform**  
-> Menganalisis metrik DORA, kecepatan rekayasa perangkat lunak, dan linimasa kontributor secara universal untuk repositori publik GitHub apa pun di dunia.
+> Universal DORA metrics, software engineering velocity tracking, and contributor journey timelines for any public GitHub repository worldwide.
 
 [![Live Demo](https://img.shields.io/badge/Live%20Demo-Vercel%20Production-black?style=for-the-badge&logo=vercel)](https://frontend-theta-beige-69.vercel.app)
 [![Next.js 15](https://img.shields.io/badge/Next.js%2015-App%20Router-black?style=for-the-badge&logo=next.js)](https://nextjs.org)
@@ -11,132 +15,136 @@
 
 ---
 
-## 📸 Antarmuka Dashboard Produksi (Live Preview)
+## 📸 Production Dashboard Interface (Live Preview)
 
 ![GitPulse Analytics Live Production Dashboard](docs/images/dashboard-preview.png)
-*Tampilan dashboard analitik live di Vercel Production (`https://frontend-theta-beige-69.vercel.app`) menampilkan metrik DORA real-time, grafik kecepatan aktivitas kode, corong konversi PR, dan perankingan kontributor.*
+*Live production analytics dashboard deployed on Vercel (`https://frontend-theta-beige-69.vercel.app`) rendering real-time DORA indicators, code velocity trends, PR conversion funnel, and contributor leaderboards.*
 
 ---
 
-## 🌐 Arsitektur Universal & Fitur Utama
+## 🌐 Universal Architecture & Core Features
 
-GitPulse Analytics dirancang dengan arsitektur **Universal Serverless + Hybrid Columnar Engine**, memungkinkan analisis repositori publik GitHub apa pun secara instan lintas berbagai sektor (AI/ML, Systems, DevOps, Web, Mobile) tanpa perlu konfigurasi database manual yang kompleks.
+GitPulse Analytics is engineered with a **Universal Serverless + Hybrid Columnar Engine** architecture, delivering instant analytical insights for any public repository across various domains (AI/ML, Systems, DevOps, Web, Mobile) without requiring complex database configurations.
 
 ### 1. 🔍 Live GitHub Search Autocomplete & Universal Switcher
-Pengguna dapat mencari dan menganalisis repositori open-source apa pun di dunia hanya dengan mengetik nama atau organisasi GitHub.
-* **Debounced Live Autocomplete:** Rekomendasi repositori instan lengkap dengan jumlah bintang (*stars*), bahasa utama, dan deskripsi proyek.
-* **Kategori Multi-Sektor:** Tab filter cepat untuk repositori unggulan lintas domain (*🤖 AI*, *🦀 Systems*, *⚙️ DevOps*, *🌐 Web*, *📱 Mobile*).
+Users can search, switch, and analyze any open-source repository globally by simply typing an owner/repository name or GitHub organization.
+* **Debounced Live Autocomplete:** Instant repository discovery with live GitHub star counts, primary programming languages, and project descriptions.
+* **Multi-Sector Categorization:** Rapid preset filtering across ecosystem domains (*🤖 AI & ML*, *🦀 Systems*, *⚙️ Cloud & DevOps*, *🌐 Web & Frontend*, *📱 Mobile*).
 
 <p align="center">
   <img src="docs/images/universal-switcher.png" width="48%" alt="Universal Repository Switcher Modal" />
   <img src="docs/images/live-autocomplete.png" width="48%" alt="Live GitHub Autocomplete Search" />
 </p>
 
-### 2. 🏆 Benchmark Leaderboard Repositori Multi-Sektor
-Instrumen komparasi teknik untuk mengevaluasi performa proyek terhadap repositori open-source kelas dunia.
-* **Filter Sektor & Lisensi:** Komparasi lisensi ternama (*MIT*, *Apache-2.0*, *BSD-3*, *GPL-2.0*).
-* **Indikator Momentum:** Mengukur *Community Stars*, *Health Score* (0–100), dan *Velocity Rating* (*Hyper Velocity*, *High Momentum*, *Steady*).
-* **Analisis 1-Klik:** Muat langsung repositori pilihan dari leaderboard ke dashboard analitik utama.
+### 2. 🏆 Cross-Sector Repository Benchmark Leaderboard
+A strategic engineering instrument to benchmark repository velocity and community momentum against world-class open-source projects.
+* **Sector & License Filtering:** Comparative analytics across standard open-source licenses (*MIT*, *Apache-2.0*, *BSD-3*, *GPL-2.0*).
+* **Momentum & Health Signals:** Tracks *Community Stars*, *Health Scores* (0–100), and *Velocity Ratings* (*Hyper Velocity*, *High Momentum*, *Steady*).
+* **1-Click Deep Dive:** Instantly load and inspect any benchmarked repository directly on the primary analytics dashboard.
 
 <p align="center">
   <img src="docs/images/benchmark-leaderboard.png" width="75%" alt="Benchmark Leaderboard Modal" />
 </p>
 
 ### 3. ⏱️ DORA Metrics & Engineering Speed
-* **Lead Time to Merge & Time to First Review (TTFR):** Memantau durasi sejak commit pertama hingga merge, serta respon awal reviewer.
-* **PR Size Hygiene:** Menganalisis distribusi ukuran PR (Small <200 LoC, Medium, Large) untuk mencegah bottleneck code review.
-* **DORA Anomaly Watcher:** Mendeteksi anomali pipeline (*stale PRs*, lonjakan issue, penurunan ritme deploy) menggunakan kalkulasi deviasi *Z-score*.
+* **Lead Time to Merge & Time to First Review (TTFR):** Tracks elapsed duration from the initial commit to default branch merge, alongside initial reviewer response latency.
+* **PR Size Hygiene:** Analyzes pull request size distribution (Small <200 LoC, Medium, Large) to prevent code review gridlocks and maintain clean delivery pipelines.
+* **DORA Anomaly Watcher:** Automatically detects development anomalies (*stale PRs*, bug report surges, deployment cadence dips) using statistical *Z-score* deviation modeling.
 
-### 4. 📉 PR Lifecycle Funnel & Deteksi Bottleneck
-Corong konversi analitik 4 tahap (*PRs Created* $\rightarrow$ *Code Review Active* $\rightarrow$ *Changes Approved* $\rightarrow$ *Merged to Main*) yang secara proaktif menandai tahap drop-off kritis (>25%) beserta rekomendasi perbaikan workflow.
+### 4. 📉 PR Lifecycle Funnel & Bottleneck Detection
+A 4-stage conversion analytics stream (*PRs Created* $\rightarrow$ *Code Review Active* $\rightarrow$ *Changes Approved* $\rightarrow$ *Merged to Main*) that proactively flags critical drop-offs (>25%) and surfaces actionable pipeline optimization guidance.
 
 ### 5. 🧭 Interactive Guided Spotlight Tour & DORA Cheatsheet
-* **Zero-Blur SVG Cutout Mask:** Panduan visual interaktif 5 tahap yang menyorot komponen utama secara tajam dan jernih tanpa mengaburkan elemen target.
-* **Pusat Dokumentasi Cepat (`?`):** Tekan tombol keyboard `?` kapan saja untuk membuka glosarium DORA, panduan kueri AI, dan daftar tombol pintas.
+* **Zero-Blur SVG Cutout Mask:** An interactive 5-step onboarding walkthrough highlighting core controls crisply without obscuring or blurring target DOM elements.
+* **Quick Documentation Center (`?`):** Press `?` anytime to open the DORA glossary, AI natural language syntax cheatsheet, and global keyboard shortcuts.
 
 <p align="center">
   <img src="docs/images/spotlight-tour.png" width="75%" alt="Interactive Guided Tour with SVG Cutout" />
 </p>
 
-### 6. 💬 Hybrid AI Text-to-Insight (`⌘K` / `Ctrl+K`)
-Kueri analitik dalam bahasa alami (misal: *"Siapa top contributor dengan PR merge terbanyak?"* atau *"Bagaimana velocity vllm-project/vllm?"*) yang dilindungi oleh validasi AST SQL (*sqlglot*) dan sistem intent detection otomatis.
+### 6. 💬 Natural Language Code Analytics (`⌘K` / `Ctrl+K`)
+Query development analytics using plain conversational English (e.g., *"Top human contributors"*, *"PR status distribution"*, or *"Daily commit activity trend"*), secured by AST SQL sanitization (*sqlglot*) and automatic intent detection.
+
+<p align="center">
+  <img src="docs/images/vllm-analysis.png" width="75%" alt="Live Repository Analysis" />
+</p>
 
 ### 7. 🔌 Model Context Protocol (MCP) Server
-Integrasi native dengan Claude Desktop, Cursor, dan AI coding assistant lainnya melalui protokol MCP untuk membaca metrik DORA, linimasa developer, dan bottleneck PR langsung via LLM function calling.
+Native integration with Claude Desktop, Cursor, and agentic coding workflows via standard MCP tools to query DORA metrics, developer velocity journeys, and PR bottlenecks directly inside LLM tool-calling loops.
 
 ---
 
-## 📋 Catatan Masalah & Perbaikan (GitHub Issues Traceability)
+## 📋 Resolved GitHub Issues & Fixes Traceability
 
-Semua perbaikan dan peningkatan fitur terdokumentasi secara transparan pada issue tracker repositori:
+All feature implementations, UX refinements, and bug fixes are transparently tracked in the repository issue tracker:
 
-| Issue | Kategori | Judul Masalah & Solusi | Commit | Status |
+| Issue | Type | Title & Architectural Solution | Commit | Status |
 | :---: | :---: | :--- | :---: | :---: |
-| [#1](https://github.com/NAxel-code/gitpulse-analytics/issues/1) | `feat` | **Interactive Guided Walkthrough Tour & DORA Cheatsheet:** Panduan onboarding 5 langkah dengan shortcut `?` dan popover pengenalan. | [`25bbff9`](https://github.com/NAxel-code/gitpulse-analytics/commit/25bbff9) | `CLOSED` |
-| [#2](https://github.com/NAxel-code/gitpulse-analytics/issues/2) | `feat` | **Arbitrary Repository Switcher & AI Routing:** Menghilangkan batasan preset dan mendukung repositori publik apa saja di dunia. | [`a2fa8b7`](https://github.com/NAxel-code/gitpulse-analytics/commit/a2fa8b7) | `CLOSED` |
-| [#3](https://github.com/NAxel-code/gitpulse-analytics/issues/3) | `fix` | **Activity Timeline Blank Chart Fix:** Mengatasi bug JSX fragment Recharts dan distorsi axis melalui gap filling time-series. | [`541a674`](https://github.com/NAxel-code/gitpulse-analytics/commit/541a674) | `CLOSED` |
-| [#4](https://github.com/NAxel-code/gitpulse-analytics/issues/4) | `fix` | **Spotlight Backdrop Blur Cutout:** Mengganti CSS radial blur dengan dual-layer SVG cutout mask agar elemen yang disorot tetap tajam. | [`9d58db8`](https://github.com/NAxel-code/gitpulse-analytics/commit/9d58db8) | `CLOSED` |
-| [#5](https://github.com/NAxel-code/gitpulse-analytics/issues/5) | `fix` | **100% Factual GitHub Data & Responsive Search Layout:** Menghapus data simulasi tiruan dan memperbaiki overflow kotak pencarian AI di viewport medium. | [`0862280`](https://github.com/NAxel-code/gitpulse-analytics/commit/0862280) | `CLOSED` |
-| [#6](https://github.com/NAxel-code/gitpulse-analytics/issues/6) | `feat` | **Sector Benchmark Leaderboard:** Modal komparasi lintas sektor (AI, Systems, Cloud, Web, Mobile) dengan indikator stars, lisensi, dan velocity. | [`05af35e`](https://github.com/NAxel-code/gitpulse-analytics/commit/05af35e) | `CLOSED` |
-| [#7](https://github.com/NAxel-code/gitpulse-analytics/issues/7) | `feat` | **Pure Next.js Universal Serverless Architecture & Live Autocomplete:** Migrasi engine DORA ke serverless route handlers Next.js dan live search. | [`72900f6`](https://github.com/NAxel-code/gitpulse-analytics/commit/72900f6) | `CLOSED` |
+| [#1](https://github.com/NAxel-code/gitpulse-analytics/issues/1) | `feat` | **Interactive Guided Walkthrough Tour & DORA Cheatsheet:** 5-step onboarding tour with `?` shortcut trigger and interactive welcome banner. | [`25bbff9`](https://github.com/NAxel-code/gitpulse-analytics/commit/25bbff9) | `CLOSED` |
+| [#2](https://github.com/NAxel-code/gitpulse-analytics/issues/2) | `feat` | **Arbitrary Repository Switcher & AI Routing:** Removed preset limitations to support analyzing any public GitHub repository worldwide. | [`a2fa8b7`](https://github.com/NAxel-code/gitpulse-analytics/commit/a2fa8b7) | `CLOSED` |
+| [#3](https://github.com/NAxel-code/gitpulse-analytics/issues/3) | `fix` | **Activity Timeline Blank Chart Fix:** Resolved Recharts JSX fragment errors and axis domain clipping with automated date gap-filling. | [`541a674`](https://github.com/NAxel-code/gitpulse-analytics/commit/541a674) | `CLOSED` |
+| [#4](https://github.com/NAxel-code/gitpulse-analytics/issues/4) | `fix` | **Spotlight Backdrop Blur Cutout:** Replaced CSS radial blur with a dual-layer SVG cutout mask so highlighted elements remain sharp. | [`9d58db8`](https://github.com/NAxel-code/gitpulse-analytics/commit/9d58db8) | `CLOSED` |
+| [#5](https://github.com/NAxel-code/gitpulse-analytics/issues/5) | `fix` | **100% Factual GitHub Data & Responsive Search Layout:** Stripped synthetic mock data and corrected AI search input overflow on medium viewports. | [`0862280`](https://github.com/NAxel-code/gitpulse-analytics/commit/0862280) | `CLOSED` |
+| [#6](https://github.com/NAxel-code/gitpulse-analytics/issues/6) | `feat` | **Sector Benchmark Leaderboard:** Multi-sector comparative modal (AI, Systems, Cloud, Web, Mobile) with star ratings, licenses, and velocity scores. | [`05af35e`](https://github.com/NAxel-code/gitpulse-analytics/commit/05af35e) | `CLOSED` |
+| [#7](https://github.com/NAxel-code/gitpulse-analytics/issues/7) | `feat` | **Pure Next.js Universal Serverless Architecture & Live Autocomplete:** Ported DORA engine to Next.js route handlers with live debounced search. | [`72900f6`](https://github.com/NAxel-code/gitpulse-analytics/commit/72900f6) | `CLOSED` |
 
 ---
 
-## 🛠️ Tech Stack
+## 🛠️ Tech Stack & Architecture
 
-* **Frontend:** Next.js 15 (App Router, Serverless Edge Functions), TypeScript, Tailwind CSS, Lucide Icons, Recharts, Magic UI.
-* **Serverless Intelligence Engine:** Native TypeScript GitHub Ingestor & DORA Calculator (`frontend/src/lib/github-serverless.ts`).
-* **Backend Alternatif (Lokal/Self-Hosted):** FastAPI, Python 3.12, DuckDB Columnar OLAP, Pydantic, sqlglot AST Parser.
-* **Integrasi AI:** Model Context Protocol (MCP) Server (`backend/app/mcp/server.py`).
-* **Infrastruktur & Deployment:** Vercel Production Serverless ([Live URL](https://frontend-theta-beige-69.vercel.app)), Docker Multi-stage Builds (~95 MB).
+* **Frontend:** Next.js 15 (App Router, Serverless Route Handlers), TypeScript, Tailwind CSS, Lucide Icons, Recharts, Magic UI.
+* **Serverless Intelligence Engine:** Native TypeScript GitHub Ingestion & DORA Calculation Engine (`frontend/src/lib/github-serverless.ts`).
+* **Alternative Local/Self-Hosted Backend:** FastAPI, Python 3.12, DuckDB Columnar OLAP, Pydantic, sqlglot AST Validator.
+* **AI Agent Integration:** Model Context Protocol (MCP) Server (`backend/app/mcp/server.py`).
+* **Deployment & Cloud Infrastructure:** Vercel Production Serverless ([Live Preview](https://frontend-theta-beige-69.vercel.app)), Docker Multi-stage Builds (~95 MB).
 
 ---
 
-## 🚀 Panduan Menjalankan
+## 🚀 Getting Started
 
-### Opsi 1: Menjalankan Frontend Serverless (Paling Ringkas)
-Tidak memerlukan Python atau server database terpisah. Cukup Node.js 20+:
+### Option 1: Run Serverless Frontend (Fastest)
+Requires zero Python or separate database setup. Simply run with Node.js 20+:
 
 ```bash
 cd frontend
 npm install
 npm run dev
 ```
-Buka browser di [http://localhost:3000](http://localhost:3000).
+Open your browser at [http://localhost:3000](http://localhost:3000).
 
-### Opsi 2: Menjalankan Fullstack Lokal (Next.js + FastAPI + DuckDB)
+### Option 2: Fullstack Local Environment (Next.js + FastAPI + DuckDB)
 ```powershell
-# Jalankan script otomasi PowerShell:
+# Execute the automated PowerShell bootstrap script:
 .\start_dev.ps1
 ```
-* **Frontend:** [http://localhost:3000](http://localhost:3000)
-* **Backend API Docs (Swagger):** [http://localhost:8000/docs](http://localhost:8000/docs)
+* **Frontend Application:** [http://localhost:3000](http://localhost:3000)
+* **Backend OpenAPI Documentation:** [http://localhost:8000/docs](http://localhost:8000/docs)
 
-### Opsi 3: Menggunakan Docker Compose
+### Option 3: Docker Compose
 ```bash
 docker compose up -d --build
 ```
 
 ---
 
-## 🧪 Pengujian & Verifikasi Kualitas
+## 🧪 Testing & Verification
 
-Proyek ini dilengkapi test suite terotomasi dari unit level hingga Browser E2E:
+GitPulse is backed by automated test suites ranging from unit specifications to Browser E2E validation:
 
 ```bash
-# 1. Jalankan automated E2E browser tests (Playwright):
+# 1. Run automated Playwright E2E browser tests:
 python tests/test_universal_repo_switch.py
 python tests/test_leaderboard_flow.py
 
-# 2. Jalankan test suite backend (pytest):
+# 2. Run backend test suite (pytest):
 pytest -v backend/tests
 
-# 3. Jalankan test suite frontend:
+# 3. Run frontend unit tests:
 cd frontend && npm test
 ```
 
 ---
 
-## 📄 Lisensi & Kontribusi
+## 📄 License & Contributing
 
-Proyek ini dilisensikan di bawah lisensi **MIT**. Kontribusi, pelaporan isu, dan saran perbaikan fitur sangat disambut melalui [GitHub Issues](https://github.com/NAxel-code/gitpulse-analytics/issues).
+Distributed under the **MIT License**. Contributions, feature ideas, and issue submissions are warmly welcomed via [GitHub Issues](https://github.com/NAxel-code/gitpulse-analytics/issues).

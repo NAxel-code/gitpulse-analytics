@@ -267,8 +267,8 @@ export function computePRFunnel(data: RawGitHubEventCache) {
 
   return [
     { stage_name: "1. PRs Created", count: total, conversion_from_previous_pct: 100.0, drop_off_pct: 0.0, is_bottleneck: false, diagnostic_tip: null },
-    { stage_name: "2. Code Review Active", count: inReview, conversion_from_previous_pct: convReview, drop_off_pct: Number((100 - convReview).toFixed(1)), is_bottleneck: convReview < 70, diagnostic_tip: convReview < 70 ? "Alokasikan reviewer otomatis via CODEOWNERS" : null },
-    { stage_name: "3. Changes Approved", count: approved, conversion_from_previous_pct: convApproved, drop_off_pct: Number((100 - convApproved).toFixed(1)), is_bottleneck: convApproved < 60, diagnostic_tip: convApproved < 60 ? "Revisi berulang: automasi CI linter untuk mendeteksi formatting" : null },
+    { stage_name: "2. Code Review Active", count: inReview, conversion_from_previous_pct: convReview, drop_off_pct: Number((100 - convReview).toFixed(1)), is_bottleneck: convReview < 70, diagnostic_tip: convReview < 70 ? "Assign automated code reviewers via CODEOWNERS" : null },
+    { stage_name: "3. Changes Approved", count: approved, conversion_from_previous_pct: convApproved, drop_off_pct: Number((100 - convApproved).toFixed(1)), is_bottleneck: convApproved < 60, diagnostic_tip: convApproved < 60 ? "Recurring review churn: automate CI linters to catch formatting before review" : null },
     { stage_name: "4. Merged to Main", count: merged, conversion_from_previous_pct: convMerged, drop_off_pct: Number((100 - convMerged).toFixed(1)), is_bottleneck: false, diagnostic_tip: null },
   ];
 }
@@ -356,7 +356,7 @@ export function computeAnomalies(data: RawGitHubEventCache) {
       metric: "PR Review Velocity",
       anomaly_type: "warning",
       severity: "warning",
-      description: `Ditemukan ${pendingPRs} Pull Request yang masih menunggu review aktif lebih dari 48 jam.`,
+      description: `Identified ${pendingPRs} Pull Requests awaiting active review for more than 48 hours.`,
       z_score: Number((1.5 + pendingPRs * 0.2).toFixed(2)),
     });
   } else {
@@ -366,7 +366,7 @@ export function computeAnomalies(data: RawGitHubEventCache) {
       metric: "PR Review Velocity",
       anomaly_type: "healthy",
       severity: "info",
-      description: "Tidak ada Pull Request tertunda (>48 jam). Pipeline review dalam kondisi optimal.",
+      description: "No stagnant Pull Requests (>48 hrs). The review pipeline is operating optimally.",
       z_score: 0.0,
     });
   }
@@ -379,7 +379,7 @@ export function computeAnomalies(data: RawGitHubEventCache) {
       metric: "Issue Report Inflow",
       anomaly_type: "spike",
       severity: "info",
-      description: `Tercatat ${recentIssues} issue aktif baru dalam periode monitoring ini.`,
+      description: `Recorded ${recentIssues} new active issues within this monitoring timeframe.`,
       z_score: 1.25,
     });
   } else {
@@ -389,7 +389,7 @@ export function computeAnomalies(data: RawGitHubEventCache) {
       metric: "Issue Report Inflow",
       anomaly_type: "healthy",
       severity: "info",
-      description: `${recentIssues} issue baru dilaporkan dalam periode monitoring. Kestabilan terjaga.`,
+      description: `${recentIssues} new issues reported during this monitoring window. Stability is well-maintained.`,
       z_score: 0.0,
     });
   }
@@ -403,7 +403,7 @@ export function computeAnomalies(data: RawGitHubEventCache) {
       metric: "Deployment Frequency (DORA)",
       anomaly_type: dailyRate >= 2.0 ? "spike" : "normal",
       severity: "info",
-      description: `Ritme merge PR ke branch utama rata-rata ${dailyRate} merge/hari (${mergedPRs} PR berhasil di-merge).`,
+      description: `PR merge cadence into default branch averaged ${dailyRate} merges/day (${mergedPRs} PRs successfully merged).`,
       z_score: Number(Math.min(2.5, dailyRate * 0.4).toFixed(2)),
     });
   } else if (totalCommits > 0) {
@@ -414,7 +414,7 @@ export function computeAnomalies(data: RawGitHubEventCache) {
       metric: "Commit Push Velocity",
       anomaly_type: "normal",
       severity: "info",
-      description: `Pengembangan aktif via direct commit rata-rata ${dailyCommits} commit/hari (${totalCommits} commit tercatat).`,
+      description: `Active development via direct commits averaged ${dailyCommits} commits/day (${totalCommits} commits recorded).`,
       z_score: Number(Math.min(2.0, dailyCommits * 0.3).toFixed(2)),
     });
   }
@@ -431,12 +431,12 @@ export function computeExecutiveSummary(data: RawGitHubEventCache, kpis: any) {
   return {
     status: "success",
     generated_at: "Today at 09:00 AM",
-    executive_summary: `Pada repositori ${data.repo}, tim telah mencatatkan total ${kpis.total_commits} commits dengan PR Merge Rate mencapai ${kpis.pr_merge_rate}% (${kpis.merged_prs} PR berhasil di-merge). Tingkat resolusi issue berada di ${kpis.issue_resolution_rate}%. Kontributor paling aktif adalah '${topDev}'. Rekomendasi DORA: Pertahankan ritme review untuk meminimalkan waktu tunggu PR.`,
+    executive_summary: `For repository ${data.repo}, the engineering team recorded a total of ${kpis.total_commits} commits with a PR Merge Rate of ${kpis.pr_merge_rate}% (${kpis.merged_prs} PRs successfully merged). Issue resolution rate is at ${kpis.issue_resolution_rate}%. Most active contributor is '${topDev}'. DORA Recommendation: Maintain consistent review cadences to keep PR lead times low.`,
     key_takeaways: [
-      `Kecepatan Merge PR berada di ${kpis.pr_merge_rate}%`,
-      `Total volume kode: +${kpis.lines_added_total.toLocaleString()} baris ditambahkan, -${kpis.lines_deleted_total.toLocaleString()} baris dihapus`,
+      `PR Merge Velocity is at ${kpis.pr_merge_rate}%`,
+      `Total code volume: +${kpis.lines_added_total.toLocaleString()} lines added, -${kpis.lines_deleted_total.toLocaleString()} lines deleted`,
       `Lead contributor: @${topDev}`,
-      "Rasio Mean Time to Merge (MTTR) terpantau stabil",
+      "Lead Time to Merge (MTTR) ratio remains healthy and stable",
     ],
   };
 }

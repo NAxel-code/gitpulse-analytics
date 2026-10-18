@@ -81,13 +81,13 @@ export function ContributorJourneyModal({
                 </span>
               </div>
               <p className="text-xs text-zinc-400 mt-0.5">
-                Linimasa aktivitas dan riwayat kontribusi di <span className="font-mono text-zinc-300">{repoName}</span>
+                Activity timeline and contribution history in <span className="font-mono text-zinc-300">{repoName}</span>
               </p>
             </div>
           </div>
           <button
             onClick={onClose}
-            aria-label="Tutup modal"
+            aria-label="Close modal"
             className="rounded-lg p-1.5 text-zinc-400 hover:bg-zinc-900 hover:text-zinc-100 focus-visible:ring-2 focus-visible:ring-zinc-700 focus:outline-none transition-colors"
           >
             <X className="h-5 w-5" />
@@ -116,7 +116,7 @@ export function ContributorJourneyModal({
         <div className="flex-1 overflow-y-auto pr-1 space-y-3 mt-1">
           <div className="flex items-center gap-1.5 text-xs font-medium text-zinc-300 mb-2">
             <Clock className="h-3.5 w-3.5 text-zinc-400" />
-            <span>Linimasa Aktivitas Kronologis</span>
+            <span>Chronological Activity Timeline</span>
           </div>
 
           {loading ? (
@@ -163,7 +163,7 @@ export function ContributorJourneyModal({
               ))}
             </div>
           ) : (
-            <p className="text-xs text-zinc-400 text-center py-6">Tidak ada riwayat aktivitas ditemukan.</p>
+            <p className="text-xs text-zinc-400 text-center py-6">No activity history recorded.</p>
           )}
         </div>
       </div>

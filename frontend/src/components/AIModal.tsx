@@ -126,10 +126,10 @@ export function AIModal({
   };
 
   const sampleQueries = [
-    "Top kontributor manusia",
-    "Distribusi status Pull Request",
-    "Tren harian aktivitas commit",
-    "Volume churn baris kode",
+    "Top human contributors",
+    "Pull Request status distribution",
+    "Daily commit activity trend",
+    "Code churn line volume",
     "@sokra",
     "sync",
   ];
@@ -155,7 +155,7 @@ export function AIModal({
           </div>
           <button
             onClick={onClose}
-            aria-label="Tutup modal"
+            aria-label="Close modal"
             className="rounded-lg p-1.5 text-zinc-400 hover:bg-zinc-900 hover:text-zinc-100 focus-visible:ring-2 focus-visible:ring-zinc-700 focus:outline-none transition-colors"
           >
             <X className="h-5 w-5" />
@@ -173,7 +173,7 @@ export function AIModal({
           >
             <input
               type="text"
-              placeholder="Tanya metriks dev, cari @username, atau perintah 'sync' / 'switch react'..."
+              placeholder="Ask dev metrics, search @username, or command 'sync' / 'switch react'..."
               value={prompt}
               onChange={(e) => setPrompt(e.target.value)}
               className="flex-1 bg-transparent px-3 py-1.5 text-sm text-zinc-100 placeholder-zinc-500 focus:outline-none"
@@ -188,7 +188,7 @@ export function AIModal({
               ) : (
                 <Send className="h-3.5 w-3.5 text-zinc-950" />
               )}
-              <span>Tanya</span>
+              <span>Ask</span>
             </button>
           </form>
 
@@ -215,7 +215,7 @@ export function AIModal({
             {/* Business / Engineering Summary */}
             <div className="rounded-xl border border-zinc-800 bg-zinc-900/70 p-3.5">
               <div className="flex items-center justify-between text-xs text-zinc-200 font-medium mb-1.5">
-                <span>Insight Engineering</span>
+                <span>Engineering Insights</span>
                 <span className="font-mono text-[10px] tabular-nums text-zinc-400 bg-zinc-800 px-1.5 py-0.5 rounded border border-zinc-700/60">
                   {result.execution_time_ms}ms · Conf: {Math.round(result.confidence * 100)}%
                 </span>
@@ -262,7 +262,7 @@ export function AIModal({
                           </span>
                         </div>
                         <span className="text-[11px] text-zinc-400">
-                          Repositori target: {currentRepo}
+                          Target repository: {currentRepo}
                         </span>
                       </div>
                     </div>
@@ -303,10 +303,10 @@ export function AIModal({
               <div className="rounded-xl border border-zinc-800 bg-zinc-900/40 p-4 text-center">
                 <AlertCircle className="h-6 w-6 text-zinc-500 mx-auto mb-1.5" />
                 <span className="text-xs font-semibold text-zinc-300 block">
-                  Tidak Ditemukan Aktivitas Langsung
+                  No Direct Activity Recorded
                 </span>
                 <span className="text-[11px] text-zinc-500 mt-1 block">
-                  Data analitik DuckDB merekam 14 hari riwayat event repositori{" "}
+                  DuckDB analytics indexed 14 days of event history for{" "}
                   <code className="text-zinc-400">{currentRepo}</code>.
                 </span>
               </div>
@@ -320,7 +320,7 @@ export function AIModal({
               result.chart_data.length > 0 && (
                 <div className="rounded-xl border border-zinc-800 bg-zinc-900/60 p-4">
                   <span className="text-xs font-semibold text-zinc-400 mb-2 block">
-                    Grafik Visualisasi Hasil
+                    Query Result Visualization
                   </span>
                   <div className="h-[180px] w-full">
                     <ResponsiveContainer width="100%" height="100%">

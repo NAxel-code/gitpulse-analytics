@@ -39,43 +39,43 @@ interface TourStep {
 const TOUR_STEPS: TourStep[] = [
   {
     targetId: "tour-repo-sync",
-    badge: "Langkah 1 dari 5",
-    title: "Pilih Repositori & Sinkronisasi Live",
+    badge: "Step 1 of 5",
+    title: "Select Repository & Live Sync",
     description:
-      "Ketik nama repositori GitHub publik mana pun (format: 'owner/repo', contoh: 'vercel/next.js') atau gunakan tombol preset cepat. Klik 'Sync Live Repo' untuk mengambil aktivitas commit & PR terkini ke database DuckDB.",
-    hint: "💡 Pasang GitHub Token (PAT) gratis melalui tombol 'Set PAT' agar batas request melonjak dari 60 menjadi 5.000 req/jam.",
+      "Type any public GitHub repository name (format: 'owner/repo', e.g. 'vercel/next.js') or use quick presets. Click 'Sync Live Repo' to ingest the latest commits & PRs into DuckDB columnar storage.",
+    hint: "💡 Set a free GitHub Personal Access Token (PAT) via 'Set PAT' to increase your quota from 60 to 5,000 req/hr.",
   },
   {
     targetId: "tour-ai-search",
-    badge: "Langkah 2 dari 5",
-    title: "Pencarian AI & Analitik Bahasa Alami",
+    badge: "Step 2 of 5",
+    title: "AI Natural Language Search",
     description:
-      "Gunakan shortcut ⌘K atau Ctrl+K untuk mengajukan pertanyaan teknis dalam bahasa sehari-hari. AI menerjemahkan pertanyaan menjadi kueri SQL DuckDB berkecepatan tinggi yang aman (AST-sanitized).",
-    hint: "💡 Ketik '@username' (misal: '@sokra') untuk melihat kartu profil kontributor, atau ketik 'sync' untuk perintah instan.",
+      "Press ⌘K or Ctrl+K to ask engineering questions in plain English. The AI translates inquiries into high-speed, read-only AST-sanitized DuckDB SQL queries.",
+    hint: "💡 Type '@username' (e.g., '@sokra') to inspect a contributor profile card, or type 'sync' for instant synchronization.",
   },
   {
     targetId: "tour-kpi-cards",
-    badge: "Langkah 3 dari 5",
-    title: "Metrik Eksekutif & Sub-Strip DORA",
+    badge: "Step 3 of 5",
+    title: "Executive KPIs & DORA Sub-Strip",
     description:
-      "Pantau kesehatan engineering tim: Active Contributors, Total Commits, PR Merge Velocity, Lead Time to Merge, Time to First Review (TTFR), dan rasio distribusi PR Size Hygiene.",
-    hint: "💡 PR berukuran <200 baris kode (Small) terbukti 2x lebih cepat direview dan minim risiko regresi bug.",
+      "Monitor team engineering health: Active Contributors, Total Commits, PR Merge Velocity, Lead Time to Merge, Time to First Review (TTFR), and PR Size Hygiene distribution.",
+    hint: "💡 PRs sized <200 LoC (Small) are proven to be reviewed 2x faster with minimal risk of regression.",
   },
   {
     targetId: "tour-pr-funnel",
-    badge: "Langkah 4 dari 5",
-    title: "Corong Siklus Hidup Pull Request (Funnel)",
+    badge: "Step 4 of 5",
+    title: "PR Lifecycle Funnel & Bottlenecks",
     description:
-      "Visualisasi alur 4 tahap PR dari pembukaan hingga merge. Sistem menandai secara visual tahap mana yang mengalami bottleneck review (amber) dan menyajikan rekomendasi aksi mitigasi.",
-    hint: "💡 Angka persentase dan drop-off rate disajikan dengan format monospace tabular-nums agar mudah dibandingkan.",
+      "Visualize the 4-stage PR journey from creation to merge. The system visually highlights review bottlenecks (amber) and suggests actionable mitigation steps.",
+    hint: "💡 Percentage and drop-off rates are presented in monospace tabular numbers for easy comparison.",
   },
   {
     targetId: "tour-contributors",
-    badge: "Langkah 5 dari 5",
-    title: "Kecepatan Kontributor & Action Stream",
+    badge: "Step 5 of 5",
+    title: "Contributor Velocity & Action Stream",
     description:
-      "Peringkat kontributor berdasarkan velocity score, medali (Gold, Silver, Bronze), dan momentum tag. Klik pada baris developer mana pun untuk membuka linimasa aktivitas kronologis (Action Stream).",
-    hint: "💡 Anda dapat mengurutkan tabel berdasarkan commits, PRs merged, lines +/- atau velocity score.",
+      "Rank contributors by velocity scores, podium medals (Gold, Silver, Bronze), and momentum tags. Click any developer row to open their chronological contribution journey (Action Stream).",
+    hint: "💡 Sort the table by commits, PRs merged, lines added/deleted, or velocity score.",
   },
 ];
 
@@ -233,30 +233,30 @@ export function HelpTourModal({
             </div>
             <div className="flex-1">
               <h4 className="text-xs font-semibold text-zinc-100">
-                Selamat Datang di GitPulse Analytics!
+                Welcome to GitPulse Analytics!
               </h4>
               <p className="mt-1 text-xs text-zinc-400 leading-relaxed">
-                Ingin tur interaktif 1 menit untuk memahami fitur analitik DORA, pencarian AI, dan alur kontributor?
+                Take a 1-minute interactive tour to understand DORA metrics, natural language AI search, and contributor velocity?
               </p>
               <div className="mt-3 flex items-center gap-2">
                 <button
                   onClick={handleStartTourFromBanner}
                   className="rounded-lg bg-zinc-100 hover:bg-white text-zinc-950 px-3 py-1.5 text-xs font-semibold shadow-xs transition-colors flex items-center gap-1.5 focus-visible:ring-2 focus-visible:ring-zinc-400 focus:outline-none"
                 >
-                  <span>Mulai Tur</span>
+                  <span>Start Tour</span>
                   <ArrowRight className="h-3.5 w-3.5" />
                 </button>
                 <button
                   onClick={handleDismissBanner}
                   className="rounded-lg border border-zinc-800 bg-zinc-900/80 hover:bg-zinc-800 text-zinc-300 px-2.5 py-1.5 text-xs font-medium transition-colors focus-visible:ring-2 focus-visible:ring-zinc-700 focus:outline-none"
                 >
-                  Nanti Saja
+                  Maybe Later
                 </button>
               </div>
             </div>
             <button
               onClick={handleDismissBanner}
-              aria-label="Tutup banner"
+              aria-label="Close banner"
               className="text-zinc-500 hover:text-zinc-300 p-1 rounded-lg transition-colors"
             >
               <X className="h-4 w-4" />
@@ -347,7 +347,7 @@ export function HelpTourModal({
                   </span>
                   <button
                     onClick={onCloseTour}
-                    aria-label="Tutup tur"
+                    aria-label="Close tour"
                     className="p-1 rounded-lg text-zinc-400 hover:text-zinc-200 hover:bg-zinc-900 transition-colors"
                   >
                     <X className="h-4 w-4" />
@@ -373,23 +373,23 @@ export function HelpTourModal({
                   onClick={onCloseTour}
                   className="text-xs text-zinc-400 hover:text-zinc-200 transition-colors font-medium px-2 py-1"
                 >
-                  Lewati Tur
+                  Skip Tour
                 </button>
 
                 <div className="flex items-center gap-2">
                   <button
                     onClick={handlePrevStep}
                     disabled={currentStep === 0}
-                    className="flex items-center gap-1 rounded-lg border border-zinc-800 bg-zinc-900 px-3 py-1.5 text-xs font-medium text-zinc-300 hover:bg-zinc-850 hover:text-white disabled:opacity-30 disabled:pointer-events-none transition-colors"
+                    className="flex items-center gap-1 rounded-lg border border-zinc-800 bg-zinc-900 px-3 py-1.5 text-xs font-medium text-zinc-300 hover:bg-zinc-855 hover:text-white disabled:opacity-30 disabled:pointer-events-none transition-colors"
                   >
                     <ChevronLeft className="h-3.5 w-3.5" />
-                    <span>Sebelumnya</span>
+                    <span>Previous</span>
                   </button>
                   <button
                     onClick={handleNextStep}
                     className="flex items-center gap-1 rounded-lg bg-zinc-100 hover:bg-white text-zinc-950 px-3.5 py-1.5 text-xs font-semibold shadow-xs transition-colors focus-visible:ring-2 focus-visible:ring-zinc-400 focus:outline-none"
                   >
-                    <span>{currentStep === TOUR_STEPS.length - 1 ? "Selesai" : "Selanjutnya"}</span>
+                    <span>{currentStep === TOUR_STEPS.length - 1 ? "Finish" : "Next"}</span>
                     <ChevronRight className="h-3.5 w-3.5" />
                   </button>
                 </div>
@@ -412,20 +412,20 @@ export function HelpTourModal({
                 <div>
                   <div className="flex items-center gap-2">
                     <h3 className="font-semibold text-zinc-100 text-base md:text-lg">
-                      Panduan &amp; Dokumentasi GitPulse
+                      GitPulse Documentation &amp; Guide
                     </h3>
                     <span className="rounded bg-zinc-800 px-2 py-0.5 text-[10px] font-mono text-zinc-400 border border-zinc-700/60">
                       v1.1
                     </span>
                   </div>
                   <p className="text-xs text-zinc-400 mt-0.5">
-                    Petunjuk operasional, sintaks pencarian AI, dan glosarium metrik DORA
+                    Operational instructions, AI search syntax, and DORA metrics glossary
                   </p>
                 </div>
               </div>
               <button
                 onClick={onCloseHelp}
-                aria-label="Tutup panduan"
+                aria-label="Close guide"
                 className="rounded-lg p-1.5 text-zinc-400 hover:bg-zinc-900 hover:text-zinc-100 focus-visible:ring-2 focus-visible:ring-zinc-700 focus:outline-none transition-colors"
               >
                 <X className="h-5 w-5" />
@@ -442,7 +442,7 @@ export function HelpTourModal({
                     : "text-zinc-400 hover:text-zinc-200 hover:bg-zinc-900"
                 }`}
               >
-                🚀 Mulai Cepat &amp; PAT
+                🚀 Quickstart &amp; PAT
               </button>
               <button
                 onClick={() => setActiveTab("cheatsheet")}
@@ -452,7 +452,7 @@ export function HelpTourModal({
                     : "text-zinc-400 hover:text-zinc-200 hover:bg-zinc-900"
                 }`}
               >
-                ⚡ Cheat Sheet AI &amp; Command
+                ⚡ AI &amp; Command Cheatsheet
               </button>
               <button
                 onClick={() => setActiveTab("dora")}
@@ -462,7 +462,7 @@ export function HelpTourModal({
                     : "text-zinc-400 hover:text-zinc-200 hover:bg-zinc-900"
                 }`}
               >
-                📊 Glosarium Metrik DORA
+                📊 DORA Metrics Glossary
               </button>
 
               <button
@@ -474,7 +474,7 @@ export function HelpTourModal({
                 className="ml-auto flex items-center gap-1.5 rounded-lg border border-indigo-500/30 bg-indigo-500/10 px-2.5 py-1 text-xs font-medium text-indigo-300 hover:bg-indigo-500/20 transition-colors"
               >
                 <Compass className="h-3.5 w-3.5" />
-                <span>Buka Tur Visual</span>
+                <span>Open Visual Tour</span>
               </button>
             </div>
 
@@ -486,15 +486,15 @@ export function HelpTourModal({
                   <div className="rounded-xl border border-zinc-800/80 bg-zinc-900/60 p-4">
                     <div className="flex items-center gap-2 mb-2 font-semibold text-zinc-100 text-sm">
                       <Key className="h-4 w-4 text-emerald-400" />
-                      <h4>1. Mengapa Perlu GitHub Personal Access Token (PAT)?</h4>
+                      <h4>1. Why do you need a GitHub Personal Access Token (PAT)?</h4>
                     </div>
                     <p className="leading-relaxed text-zinc-300">
-                      GitHub memberlakukan batas rate-limit ketat: hanya <strong>60 request/jam</strong> untuk panggilan tanpa autentikasi. Dengan memasang Personal Access Token (PAT) gratis:
+                      GitHub imposes strict unauthenticated rate limits: only <strong>60 requests/hour</strong>. By setting a free Personal Access Token (PAT):
                     </p>
                     <ul className="mt-2 list-disc list-inside space-y-1 text-zinc-400">
-                      <li>Batas meningkat hingga <strong>5.000 request/jam</strong>.</li>
-                      <li>Token tersimpan aman hanya di penyimpanan lokal browser Anda (<code className="font-mono text-zinc-300">localStorage</code>).</li>
-                      <li>Cukup gunakan token *Classic* dengan scope minimal: <code className="font-mono text-zinc-300">public_repo</code>.</li>
+                      <li>Rate limit increases up to <strong>5,000 requests/hour</strong>.</li>
+                      <li>Tokens are stored securely only in your browser&apos;s local storage (<code className="font-mono text-zinc-300">localStorage</code>).</li>
+                      <li>A *Classic* token with minimal scope (<code className="font-mono text-zinc-300">public_repo</code>) is all that&apos;s required.</li>
                     </ul>
                     <div className="mt-3">
                       <a
@@ -503,7 +503,7 @@ export function HelpTourModal({
                         rel="noreferrer"
                         className="inline-flex items-center gap-1.5 rounded-lg border border-zinc-700 bg-zinc-800 px-3 py-1.5 text-xs text-zinc-200 hover:bg-zinc-700 transition"
                       >
-                        <span>Buat Token di GitHub Settings</span>
+                        <span>Generate Token in GitHub Settings</span>
                         <ExternalLink className="h-3 w-3" />
                       </a>
                     </div>
@@ -513,10 +513,10 @@ export function HelpTourModal({
                   <div className="rounded-xl border border-zinc-800/80 bg-zinc-900/60 p-4">
                     <div className="flex items-center gap-2 mb-2 font-semibold text-zinc-100 text-sm">
                       <Terminal className="h-4 w-4 text-indigo-400" />
-                      <h4>2. Cara Menganalisis Repositori Kustom</h4>
+                      <h4>2. How to Analyze Any Repository</h4>
                     </div>
                     <p className="leading-relaxed text-zinc-300">
-                      Masukkan format <code className="font-mono text-zinc-200">owner/nama-repo</code> pada bilah atas (contoh: <code className="font-mono text-zinc-200">facebook/react</code> atau <code className="font-mono text-zinc-200">tailwindlabs/tailwindcss</code>). Klik tombol <strong>Sync Live Repo</strong> untuk memuat data GitHub secara real-time ke mesin analitik lokal DuckDB.
+                      Enter the <code className="font-mono text-zinc-200">owner/repo-name</code> in the top navigation bar (e.g. <code className="font-mono text-zinc-200">astral-sh/uv</code>, <code className="font-mono text-zinc-200">vllm-project/vllm</code>, or <code className="font-mono text-zinc-200">facebook/react</code>). Click <strong>Sync Live Repo</strong> to ingest real-time GitHub data into the high-performance columnar engine.
                     </p>
                   </div>
                 </div>
@@ -527,37 +527,37 @@ export function HelpTourModal({
                   <div className="rounded-xl border border-zinc-800/80 bg-zinc-900/60 p-4">
                     <div className="flex items-center gap-2 mb-1.5 font-semibold text-zinc-100 text-sm">
                       <Sparkles className="h-4 w-4 text-indigo-400" />
-                      <h4>Pencarian AI Berbasis Text-to-SQL AST Sanitized</h4>
+                      <h4>Text-to-SQL AST-Sanitized AI Search</h4>
                     </div>
                     <p className="leading-relaxed text-zinc-400 mb-3">
-                      Tekan <kbd className="font-mono bg-zinc-800 px-1 py-0.5 rounded border border-zinc-700 text-zinc-200">⌘K</kbd> atau <kbd className="font-mono bg-zinc-800 px-1 py-0.5 rounded border border-zinc-700 text-zinc-200">Ctrl+K</kbd> di mana saja untuk memanggil bilah pencarian AI. Berikut contoh pertanyaan analitik yang dapat langsung Anda tanyakan:
+                      Press <kbd className="font-mono bg-zinc-800 px-1 py-0.5 rounded border border-zinc-700 text-zinc-200">⌘K</kbd> or <kbd className="font-mono bg-zinc-800 px-1 py-0.5 rounded border border-zinc-700 text-zinc-200">Ctrl+K</kbd> anywhere to open AI search. Here are example queries you can try:
                     </p>
 
                     <div className="divide-y divide-zinc-800/80">
                       {[
                         {
-                          query: "Top kontributor manusia",
-                          desc: "Menampilkan kontributor aktif tanpa bot GitHub Actions",
+                          query: "Top human contributors",
+                          desc: "Display active contributors excluding GitHub Actions automated bots",
                         },
                         {
-                          query: "Distribusi status Pull Request",
-                          desc: "Visualisasi perbandingan PR yang merged, closed, dan open",
+                          query: "Pull Request status distribution",
+                          desc: "Visualize ratio of merged, closed, and open PRs",
                         },
                         {
-                          query: "Tren harian aktivitas commit",
-                          desc: "Menghasilkan grafik time-series volume commit 14 hari terakhir",
+                          query: "Daily commit activity trend",
+                          desc: "Generate 14-day time-series volume of daily commits",
                         },
                         {
-                          query: "Volume churn baris kode",
-                          desc: "Menampilkan rasio penambahan vs penghapusan baris kode",
+                          query: "Code churn and lines delta",
+                          desc: "Display ratio of lines added vs lines deleted",
                         },
                         {
                           query: "@sokra",
-                          desc: "Membuka langsung kartu profil developer, total commits, dan PR",
+                          desc: "Open developer profile card, commits count, and merged PRs",
                         },
                         {
                           query: "sync",
-                          desc: "Perintah pintas untuk menyinkronkan repositori aktif seketika",
+                          desc: "Instant command shortcut to synchronize active repository",
                         },
                       ].map((item, idx) => (
                         <div key={idx} className="py-2.5 flex items-start justify-between gap-3">
@@ -574,7 +574,7 @@ export function HelpTourModal({
                             }}
                             className="shrink-0 rounded bg-zinc-800 px-2 py-1 text-[11px] font-mono text-indigo-300 hover:bg-zinc-700 border border-zinc-700/50 transition"
                           >
-                            Tanya Ini ↵
+                            Ask This ↵
                           </button>
                         </div>
                       ))}
@@ -589,22 +589,22 @@ export function HelpTourModal({
                     {
                       name: "Lead Time to Merge",
                       badge: "DORA Metric",
-                      desc: "Mengukur durasi sejak commit pertama dibuat oleh developer hingga PR berhasil di-merge ke branch utama. Semakin rendah angkanya, semakin cepat tim Anda memvalidasi dan merilis kode ke produksi.",
+                      desc: "Measures the duration from a developer's first commit until the PR is merged into the main branch. Lower values indicate faster code validation and deployment to production.",
                     },
                     {
                       name: "Time to First Review (TTFR)",
                       badge: "Speed Metric",
-                      desc: "Waktu respon awal dari reviewer sejak PR dibuka. Respon di bawah 4 jam meminimalisir penumpukan context-switching bagi author PR.",
+                      desc: "Initial response time from a reviewer once a PR is opened. A response under 4 hours minimizes context switching for the PR author.",
                     },
                     {
                       name: "PR Size Hygiene",
                       badge: "Code Quality",
-                      desc: "Distribusi ukuran PR: Small (<200 LoC), Medium (200-500 LoC), Large (>500 LoC). PR berukuran kecil memiliki tingkat penemuan bug 3x lebih tinggi saat proses review.",
+                      desc: "Distribution of PR sizes: Small (<200 LoC), Medium (200-500 LoC), Large (>500 LoC). Small PRs yield a 3x higher bug detection rate during review.",
                     },
                     {
                       name: "Z-Score Deviation (σ)",
                       badge: "Anomaly Watcher",
-                      desc: "Pendeteksi anomali statistik DuckDB. Deviasi di atas +2.0σ menandakan lonjakan abnormal (misal penumpukan review PR >48 jam) yang memerlukan perhatian tim.",
+                      desc: "Statistical anomaly detector. Deviations above +2.0σ signal abnormal spikes (e.g. PR reviews waiting >48h) that require team attention.",
                     },
                   ].map((m, idx) => (
                     <div key={idx} className="rounded-xl border border-zinc-800/80 bg-zinc-900/60 p-3.5">
@@ -624,13 +624,13 @@ export function HelpTourModal({
             {/* Modal Footer */}
             <div className="mt-4 pt-3 border-t border-zinc-800 flex items-center justify-between shrink-0">
               <span className="text-[11px] text-zinc-500 font-mono">
-                Tekan <kbd className="bg-zinc-900 px-1.5 py-0.5 rounded border border-zinc-800 text-zinc-400">Esc</kbd> untuk menutup
+                Press <kbd className="bg-zinc-900 px-1.5 py-0.5 rounded border border-zinc-800 text-zinc-400">Esc</kbd> to close
               </span>
               <button
                 onClick={onCloseHelp}
                 className="rounded-lg bg-zinc-800 hover:bg-zinc-700 text-zinc-200 border border-zinc-700 px-4 py-1.5 text-xs font-medium transition-colors"
               >
-                Tutup Panduan
+                Close Guide
               </button>
             </div>
           </div>

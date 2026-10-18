@@ -52,7 +52,7 @@ def gitpulse_get_developer_velocity(
             suggested = [d["login"] for d in top_devs[:5]]
             return {
                 "status": "not_found",
-                "message": f"Pengembang '{username}' tidak ditemukan pada repository '{repo}'.",
+                "message": f"Developer '{username}' was not found in repository '{repo}'.",
                 "suggested_developers": suggested,
                 "repo": repo
             }

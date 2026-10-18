@@ -27,7 +27,7 @@ export async function POST(
           status: "success",
           type: "contributor_spotlight",
           contributor_login: top.login,
-          direct_answer: `Kontributor paling aktif pada ${repo} adalah @${top.login} dengan total ${top.commits} commits dan skor velocity ${top.velocity_score} pts.`,
+          direct_answer: `Top active contributor on ${repo} is @${top.login} with ${top.commits} commits and a velocity score of ${top.velocity_score} pts.`,
           sql_executed: "SELECT actor_login, COUNT(*) FROM github_events GROUP BY actor_login ORDER BY count DESC LIMIT 1",
           confidence_score: 0.98,
           execution_time_ms: 12.4,
@@ -40,7 +40,7 @@ export async function POST(
         return NextResponse.json({
           status: "success",
           type: "metric_aggregation",
-          direct_answer: `PR Merge Velocity saat ini berada di ${kpis.pr_merge_rate}% (${kpis.merged_prs} dari ${kpis.total_prs} PR berhasil di-merge). Rata-rata waktu merge: ${kpis.lead_time_hours} jam.`,
+          direct_answer: `Current PR Merge Velocity is at ${kpis.pr_merge_rate}% (${kpis.merged_prs} of ${kpis.total_prs} PRs successfully merged). Average lead time to merge: ${kpis.lead_time_hours} hours.`,
           sql_executed: "SELECT COUNT(CASE WHEN pr_status = 'merged' THEN 1 END) / COUNT(*) FROM github_events WHERE event_type = 'pull_request'",
           confidence_score: 0.95,
           execution_time_ms: 8.7,
@@ -52,7 +52,7 @@ export async function POST(
       return NextResponse.json({
         status: "success",
         type: "general_insight",
-        direct_answer: `Analisis untuk ${repo}: Tercatat ${kpis.total_commits} commits dari ${kpis.active_contributors} kontributor aktif dalam 14 hari terakhir dengan ${kpis.total_stars.toLocaleString()} total bintang di GitHub.`,
+        direct_answer: `Repository analysis for ${repo}: ${kpis.total_commits} commits recorded from ${kpis.active_contributors} active contributors over the past 14 days with ${kpis.total_stars.toLocaleString()} stargazers on GitHub.`,
         sql_executed: "SELECT COUNT(*), COUNT(DISTINCT actor_login) FROM github_events",
         confidence_score: 0.92,
         execution_time_ms: 15.2,

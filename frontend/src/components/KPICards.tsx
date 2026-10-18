@@ -172,7 +172,7 @@ export function KPICards({ data }: { data: RepoKPIData | null }) {
             </div>
             <div>
               <div className="text-xs font-semibold text-zinc-200">Lead Time to Merge</div>
-              <p className="text-[11px] text-zinc-400 mt-0.5">Waktu dari commit pertama hingga main merge</p>
+              <p className="text-[11px] text-zinc-400 mt-0.5">Time from initial commit to default branch merge</p>
             </div>
           </div>
           <div className="text-right">
@@ -180,7 +180,7 @@ export function KPICards({ data }: { data: RepoKPIData | null }) {
               {hasPRs ? `${leadTime.toFixed(1)} hrs` : "-"}
             </div>
             <div className={`text-[10px] font-mono font-semibold ${hasPRs ? (leadTimeDelta <= 0 ? "text-emerald-400" : "text-rose-400") : "text-zinc-500"}`}>
-              {hasPRs ? (leadTimeDelta <= 0 ? `▼ ${Math.abs(leadTimeDelta)}% faster` : `▲ ${leadTimeDelta}% slower`) : "Belum ada PR"}
+              {hasPRs ? (leadTimeDelta <= 0 ? `▼ ${Math.abs(leadTimeDelta)}% faster` : `▲ ${leadTimeDelta}% slower`) : "No PRs recorded"}
             </div>
           </div>
         </div>
@@ -193,7 +193,7 @@ export function KPICards({ data }: { data: RepoKPIData | null }) {
             </div>
             <div>
               <div className="text-xs font-semibold text-zinc-200">Time to First Review (TTFR)</div>
-              <p className="text-[11px] text-zinc-400 mt-0.5">Respon reviewer awal sejak PR dibuka</p>
+              <p className="text-[11px] text-zinc-400 mt-0.5">Initial reviewer response latency after PR creation</p>
             </div>
           </div>
           <div className="text-right">
@@ -201,7 +201,7 @@ export function KPICards({ data }: { data: RepoKPIData | null }) {
               {hasPRs ? `${ttfr.toFixed(1)} hrs` : "-"}
             </div>
             <div className={`text-[10px] font-mono font-semibold ${hasPRs ? (ttfrDelta <= 0 ? "text-emerald-400" : "text-rose-400") : "text-zinc-500"}`}>
-              {hasPRs ? (ttfrDelta <= 0 ? `▼ ${Math.abs(ttfrDelta)}% faster` : `▲ ${ttfrDelta}% slower`) : "Belum ada PR"}
+              {hasPRs ? (ttfrDelta <= 0 ? `▼ ${Math.abs(ttfrDelta)}% faster` : `▲ ${ttfrDelta}% slower`) : "No PRs recorded"}
             </div>
           </div>
         </div>
@@ -219,7 +219,7 @@ export function KPICards({ data }: { data: RepoKPIData | null }) {
                   {actualTotalDist > 0 ? `${Math.round((prDist.small / totalDist) * 100)}% Small` : "0 PR"}
                 </span>
               </div>
-              <p className="text-[11px] text-zinc-400 mt-0.5">Ukuran PR ideal &lt;200 LoC untuk review cepat</p>
+              <p className="text-[11px] text-zinc-400 mt-0.5">Ideal PR size &lt;200 LoC for rapid, high-quality reviews</p>
             </div>
           </div>
           <div className="flex flex-col items-end gap-1.5">
@@ -232,7 +232,7 @@ export function KPICards({ data }: { data: RepoKPIData | null }) {
                   <div style={{ width: `${(prDist.large / totalDist) * 100}%` }} className="bg-rose-500 h-full" title={`Large: ${prDist.large}`} />
                 </>
               ) : (
-                <div className="w-full h-full bg-zinc-800" title="Belum ada data PR" />
+                <div className="w-full h-full bg-zinc-800" title="No PR data recorded" />
               )}
             </div>
             <div className="flex items-center gap-1.5 text-[10px] font-mono">

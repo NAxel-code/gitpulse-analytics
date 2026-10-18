@@ -68,7 +68,7 @@ export function ActivityChart({
             </h3>
           </div>
           <p className="text-xs text-zinc-400 mt-0.5">
-            Tren harian interaksi kode, pull request, dan isu di <span className="font-mono text-zinc-300">{repoName}</span>
+            Daily time-series trends for code changes, pull requests, and issues in <span className="font-mono text-zinc-300">{repoName}</span>
           </p>
         </div>
 
@@ -100,9 +100,9 @@ export function ActivityChart({
       {formattedData.length === 0 ? (
         <div className="h-[280px] w-full flex flex-col items-center justify-center text-center p-6">
           <Activity className="h-8 w-8 text-zinc-600 mb-2" />
-          <h4 className="text-xs font-semibold text-zinc-300">Belum Ada Riwayat Aktivitas Harian</h4>
+          <h4 className="text-xs font-semibold text-zinc-300">No Daily Activity Recorded Yet</h4>
           <p className="text-[11px] text-zinc-500 mt-1 max-w-xs">
-            Data time-series untuk {repoName} belum tersinkronisasi.
+            Time-series activity data for {repoName} has not been synced yet.
           </p>
           {onSync && (
             <button
@@ -111,7 +111,7 @@ export function ActivityChart({
               className="mt-3 inline-flex items-center gap-1.5 rounded-lg bg-zinc-800 hover:bg-zinc-700 border border-zinc-700 px-3 py-1.5 text-xs text-zinc-200 transition"
             >
               <RefreshCw className={`h-3 w-3 ${isSyncing ? "animate-spin" : ""}`} />
-              {isSyncing ? "Menyinkronkan..." : "Ambil Data GitHub Sekarang"}
+              {isSyncing ? "Syncing..." : "Fetch GitHub Data Now"}
             </button>
           )}
         </div>
@@ -123,10 +123,10 @@ export function ActivityChart({
                 <Activity className="h-5 w-5 text-indigo-400" />
               </div>
               <h4 className="text-sm font-semibold text-zinc-200">
-                Belum Ada Aktivitas {metric === "code" ? "Commit & PR" : "Issue & Star"}
+                No {metric === "code" ? "Commit & PR" : "Issue & Star"} Activity Found
               </h4>
               <p className="text-xs text-zinc-400 mt-1 max-w-sm leading-relaxed">
-                Riwayat aktivitas harian untuk <span className="font-mono text-zinc-300 font-medium">{repoName}</span> masih kosong atau belum tersinkronisasi.
+                Daily activity history for <span className="font-mono text-zinc-300 font-medium">{repoName}</span> is currently empty or has not been synced.
               </p>
               {onSync && (
                 <button
@@ -135,7 +135,7 @@ export function ActivityChart({
                   className="mt-4 inline-flex items-center gap-2 rounded-lg bg-indigo-600 hover:bg-indigo-500 disabled:opacity-60 px-4 py-2 text-xs font-medium text-white shadow-sm transition cursor-pointer"
                 >
                   <RefreshCw className={`h-3.5 w-3.5 ${isSyncing ? "animate-spin" : ""}`} />
-                  {isSyncing ? "Menyinkronkan GitHub..." : `Sinkronisasi Live Data @${repoName}`}
+                  {isSyncing ? "Syncing GitHub..." : `Sync Live Data @${repoName}`}
                 </button>
               )}
             </div>

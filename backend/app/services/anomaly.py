@@ -47,7 +47,7 @@ class DORAAnomalyDetector:
                 "metric": "PR Review Velocity",
                 "anomaly_type": "warning",
                 "severity": "warning",
-                "description": f"Ditemukan {pending_prs} Pull Request yang masih menunggu review aktif lebih dari 48 jam.",
+                "description": f"Identified {pending_prs} Pull Requests awaiting active review for over 48 hours.",
                 "z_score": round(1.5 + (pending_prs * 0.2), 2)
             })
         else:
@@ -57,7 +57,7 @@ class DORAAnomalyDetector:
                 "metric": "PR Review Velocity",
                 "anomaly_type": "healthy",
                 "severity": "info",
-                "description": "Tidak ada Pull Request tertunda (>48 jam). Pipeline review dalam kondisi optimal.",
+                "description": "No stagnant Pull Requests (>48 hrs). Code review pipeline is operating optimally.",
                 "z_score": 0.0
             })
 
@@ -70,7 +70,7 @@ class DORAAnomalyDetector:
                 "metric": "Issue Report Inflow",
                 "anomaly_type": "spike",
                 "severity": "warning" if pct_inc > 50 else "info",
-                "description": f"Kenaikan pembukaan issue bug report (+{pct_inc}% vs minggu lalu: {curr_issues} vs {prev_issues}).",
+                "description": f"Spike in new bug report issues opened (+{pct_inc}% vs previous week: {curr_issues} vs {prev_issues}).",
                 "z_score": round(min(3.0, 1.0 + (pct_inc / 100.0)), 2)
             })
         elif curr_issues > 0:
@@ -80,7 +80,7 @@ class DORAAnomalyDetector:
                 "metric": "Issue Report Inflow",
                 "anomaly_type": "normal",
                 "severity": "info",
-                "description": f"Tercatat {curr_issues} issue aktif baru dalam 7 hari terakhir dalam batas normal.",
+                "description": f"Recorded {curr_issues} new active issues in the last 7 days within expected variance.",
                 "z_score": 0.5
             })
         else:
@@ -90,7 +90,7 @@ class DORAAnomalyDetector:
                 "metric": "Issue Report Inflow",
                 "anomaly_type": "healthy",
                 "severity": "info",
-                "description": "Nol issue baru dilaporkan dalam 7 hari terakhir. Kestabilan rilis terjaga.",
+                "description": "Zero new issues reported in the last 7 days. Release stability maintained.",
                 "z_score": 0.0
             })
 
@@ -103,7 +103,7 @@ class DORAAnomalyDetector:
                 "metric": "Deployment Frequency (DORA)",
                 "anomaly_type": "spike" if daily_rate >= 2.0 else "normal",
                 "severity": "info",
-                "description": f"Ritme merge PR ke branch utama rata-rata {daily_rate} merge/hari ({merged_prs} PR dalam 7 hari).",
+                "description": f"Main branch PR merge cadence averaged {daily_rate} merges/day ({merged_prs} PRs in 7 days).",
                 "z_score": round(min(2.5, daily_rate * 0.4), 2)
             })
         elif total_commits > 0:
@@ -114,7 +114,7 @@ class DORAAnomalyDetector:
                 "metric": "Commit Push Velocity",
                 "anomaly_type": "normal",
                 "severity": "info",
-                "description": f"Pengembangan aktif via direct commit rata-rata {daily_commits} commit/hari ({total_commits} commit dalam 7 hari).",
+                "description": f"Active development via direct commits averaged {daily_commits} commits/day ({total_commits} commits in 7 days).",
                 "z_score": round(min(2.0, daily_commits * 0.3), 2)
             })
         else:
@@ -124,7 +124,7 @@ class DORAAnomalyDetector:
                 "metric": "Activity Baseline",
                 "anomaly_type": "low",
                 "severity": "info",
-                "description": "Belum ada aktivitas commit atau PR baru tercatat pada periode 7 hari terakhir.",
+                "description": "No new commit or PR activity recorded over the past 7 days.",
                 "z_score": 0.0
             })
 

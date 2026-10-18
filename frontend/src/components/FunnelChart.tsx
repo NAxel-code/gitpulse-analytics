@@ -20,9 +20,9 @@ export function FunnelChart({ stages }: { stages: PRFunnelStage[] }) {
         <div className="h-10 w-10 rounded-full bg-zinc-900 border border-zinc-800 flex items-center justify-center text-zinc-400 mb-2 shadow-inner">
           <GitPullRequest className="h-5 w-5 text-violet-400" />
         </div>
-        <h4 className="text-xs font-semibold text-zinc-200">Belum Ada Pull Request</h4>
+        <h4 className="text-xs font-semibold text-zinc-200">No Pull Requests Recorded</h4>
         <p className="text-[11px] text-zinc-400 mt-1 max-w-xs leading-relaxed">
-          Repositori ini belum memiliki catatan Pull Request. Semua riwayat pengembangan tercatat melalui push commit langsung ke branch.
+          This repository does not have pull request history yet. Development activity has been recorded via direct branch commits.
         </p>
       </div>
     );
@@ -114,7 +114,7 @@ export function FunnelChart({ stages }: { stages: PRFunnelStage[] }) {
         <div className="mt-5 rounded-lg border border-amber-500/30 bg-amber-500/10 p-3 text-xs">
           <div className="flex items-center gap-1.5 text-amber-400 font-semibold mb-1">
             <Lightbulb className="h-3.5 w-3.5" />
-            <span>Rekomendasi Optimalisasi Review Pipeline</span>
+            <span>Review Pipeline Optimization Recommendation</span>
           </div>
           <p className="text-[11px] text-zinc-300 leading-relaxed">
             {bottleneckStage.diagnostic_tip}

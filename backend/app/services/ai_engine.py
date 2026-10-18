@@ -59,13 +59,13 @@ class AIEngine:
         if re.match(r'^(sync|sinkron|refresh)$', q, re.IGNORECASE):
             return {
                 "generated_sql": f"-- COMMAND: SYNC REPO {repo_name}",
-                "summary": f"Perintah terdeteksi: Sinkronkan repositori '{repo_name}' secara langsung dengan GitHub API.",
+                "summary": f"Command recognized: Sync repository '{repo_name}' directly with GitHub API.",
                 "chart_type": "command_action",
                 "chart_data": [],
                 "action": {
                     "type": "sync",
                     "repo": repo_name,
-                    "label": f"Sinkronkan {repo_name} Sekarang"
+                    "label": f"Sync {repo_name} Now"
                 }
             }
 
@@ -88,13 +88,13 @@ class AIEngine:
 
             return {
                 "generated_sql": f"-- COMMAND: SWITCH REPO TO {target_repo}",
-                "summary": f"Perintah terdeteksi: Beralih repositori target ke '{target_repo}'.",
+                "summary": f"Command recognized: Switch target repository to '{target_repo}'.",
                 "chart_type": "command_action",
                 "chart_data": [],
                 "action": {
                     "type": "switch_repo",
                     "target": target_repo,
-                    "label": f"Beralih ke {target_repo}"
+                    "label": f"Switch to {target_repo}"
                 }
             }
 
@@ -156,9 +156,9 @@ class AIEngine:
                 deleted = dev.get("lines_deleted", 0)
 
                 summary = (
-                    f"Ditemukan profil @{login} di repositori {repo_name}: "
-                    f"Tercatat {commits} commit, {prs_merged} PR berhasil di-merge, "
-                    f"serta +{added:,} / -{deleted:,} baris kode."
+                    f"Found profile @{login} in repository {repo_name}: "
+                    f"Recorded {commits} commits, {prs_merged} PRs merged, "
+                    f"and +{added:,} / -{deleted:,} lines of code."
                 )
                 return {
                     "generated_sql": sql.strip(),
@@ -168,7 +168,7 @@ class AIEngine:
                     "action": {
                         "type": "view_journey",
                         "login": login,
-                        "label": f"Buka Action Journey @{login}"
+                        "label": f"Open Action Journey @{login}"
                     }
                 }
             else:
@@ -185,8 +185,8 @@ class AIEngine:
                 if other_rows:
                     other_repo = other_rows[0]["repo_name"]
                     summary = (
-                        f"Pengguna '@{target_login}' tidak tercatat di repositori '{repo_name}', "
-                        f"namun ditemukan aktif di repositori '{other_repo}' ({other_rows[0]['cnt']} event)."
+                        f"User '@{target_login}' has no recorded events in '{repo_name}', "
+                        f"but was found active in repository '{other_repo}' ({other_rows[0]['cnt']} events)."
                     )
                     return {
                         "generated_sql": other_repo_sql.strip(),
@@ -196,7 +196,7 @@ class AIEngine:
                         "action": {
                             "type": "switch_repo",
                             "target": other_repo,
-                            "label": f"Beralih ke {other_repo}"
+                            "label": f"Switch to {other_repo}"
                         }
                     }
 
@@ -204,9 +204,9 @@ class AIEngine:
                 if clean_login in ["naxel-code", "naxel", "naxelcode"]:
                     target_repo_suggestion = "NAxel-code/gitpulse-analytics"
                     summary = (
-                        f"Pengguna '@{target_login}' adalah pemilik project GitPulse, "
-                        f"namun target repositori yang sedang dianalisis di atas adalah '{repo_name}'. "
-                        f"Klik tombol di bawah untuk beralih dan menyinkronkan repositori '{target_repo_suggestion}'."
+                        f"User '@{target_login}' is the creator of GitPulse, "
+                        f"while the repository currently analyzed above is '{repo_name}'. "
+                        f"Click below to switch and analyze '{target_repo_suggestion}'."
                     )
                     return {
                         "generated_sql": sql.strip(),
@@ -216,7 +216,7 @@ class AIEngine:
                         "action": {
                             "type": "switch_repo",
                             "target": target_repo_suggestion,
-                            "label": f"Analisis {target_repo_suggestion}"
+                            "label": f"Analyze {target_repo_suggestion}"
                         }
                     }
 
@@ -231,10 +231,10 @@ class AIEngine:
                 """
                 active_rows = storage.execute_readonly_sql(active_devs_sql)
                 suggestions = [r["actor_login"] for r in active_rows if "actor_login" in r]
-                suggestion_text = f" Kontributor aktif di repositori ini antara lain: {', '.join(['@' + s for s in suggestions])}." if suggestions else ""
+                suggestion_text = f" Active contributors in this repository include: {', '.join(['@' + s for s in suggestions])}." if suggestions else ""
 
                 summary = (
-                    f"Pengguna '@{target_login}' belum memiliki riwayat commit atau PR pada repositori {repo_name} dalam data saat ini.{suggestion_text}"
+                    f"User '@{target_login}' has no recorded commits or PRs in repository {repo_name} in current data.{suggestion_text}"
                 )
                 return {
                     "generated_sql": sql.strip(),
@@ -244,7 +244,7 @@ class AIEngine:
                     "action": {
                         "type": "suggest_sync",
                         "repo": repo_name,
-                        "label": f"Sinkronkan data terbaru {repo_name}"
+                        "label": f"Sync latest data for {repo_name}"
                     }
                 }
 
@@ -271,7 +271,7 @@ class AIEngine:
                 LIMIT 5
             """
             chart_type = "bar"
-            summary = f"Daftar 5 kontributor manusia paling aktif di repository {repo_name} (bot dikecualikan) berdasarkan volume commit dan PR merge."
+            summary = f"Top 5 active human contributors in repository {repo_name} (bots excluded) by commit and PR merge volume."
 
         # 2. Pull Request Status & Conversion
         elif re.search(r'\b(pr|prs|pull\s*request|merge|merging|rasio\s*pr|status\s*pr)\b', q):
@@ -283,7 +283,7 @@ class AIEngine:
                 ORDER BY total_count DESC
             """
             chart_type = "bar"
-            summary = "Distribusi status Pull Request: rasio antara PR yang berhasil di-merge, sedang dalam review, dan baru dibuka."
+            summary = "Pull Request status distribution: ratio between merged, in-review, and opened PRs."
 
         # 3. Daily Timeline Trends
         elif re.search(r'\b(trend|tren|harian|activity|aktivitas|grafik|timeline)\b', q):
@@ -298,7 +298,7 @@ class AIEngine:
                 LIMIT 14
             """
             chart_type = "line"
-            summary = f"Tren fluktuasi harian commit dan aktivitas PR di {repo_name} selama 14 hari terakhir."
+            summary = f"Daily commit and PR activity fluctuation trends in {repo_name} over the last 14 days."
 
         # 4. Code Churn & Volume (Strict word boundary: ignores 'Naxel-code')
         elif re.search(r'\b(code\s*churn|baris\s*kode|lines|loc|volume\s*kode|churn)\b', q):
@@ -314,7 +314,7 @@ class AIEngine:
                 LIMIT 6
             """
             chart_type = "bar"
-            summary = "Volume perputaran kode (Lines Added vs Lines Deleted) oleh kontributor utama (tanpa akun bot)."
+            summary = "Code churn volume (Lines Added vs Lines Deleted) by top contributors (excluding automated bots)."
 
         # 5. Default General Aggregation
         else:
@@ -326,7 +326,7 @@ class AIEngine:
                 ORDER BY event_count DESC
             """
             chart_type = "bar"
-            summary = f"Ringkasan agregasi seluruh aktivitas event pengembangan untuk repository {repo_name}."
+            summary = f"Aggregate summary of all development event activities for repository {repo_name}."
 
         return sql.strip(), chart_type, summary
 
