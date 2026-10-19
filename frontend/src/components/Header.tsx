@@ -90,11 +90,48 @@ export function Header({
     return () => clearTimeout(timer);
   }, [customRepo, githubToken]);
 
-  const presets = [
-    "vercel/next.js",
-    "facebook/react",
-    "tailwindlabs/tailwindcss",
-    "NAxel-code/gitpulse-analytics",
+  const featuredPresets = [
+    {
+      repo: "ollama/ollama",
+      label: "ollama",
+      category: "AI",
+      icon: "🤖",
+      stars: "118k",
+      tooltip: "Local AI & Large Language Model Runner (118k ⭐)",
+    },
+    {
+      repo: "astral-sh/uv",
+      label: "uv",
+      category: "Systems",
+      icon: "🦀",
+      stars: "49k",
+      tooltip: "Ultra-Fast Python Package Manager in Rust (49k ⭐)",
+    },
+    {
+      repo: "vercel/next.js",
+      label: "next.js",
+      category: "Web",
+      icon: "🌐",
+      stars: "128k",
+      tooltip: "The React Framework for the Web (128k ⭐)",
+    },
+    {
+      repo: "kubernetes/kubernetes",
+      label: "kubernetes",
+      category: "DevOps",
+      icon: "☸️",
+      stars: "113k",
+      tooltip: "Production-Grade Container Orchestration (113k ⭐)",
+    },
+    {
+      repo: "NAxel-code/gitpulse-analytics",
+      label: "gitpulse",
+      category: "Featured",
+      icon: "⚡",
+      stars: "Self",
+      tooltip: "GitPulse Analytics Platform (Author Project)",
+      isHero: true,
+    },
   ];
 
   const universalPresets = [
@@ -171,27 +208,40 @@ export function Header({
             </div>
           </div>
 
-          {/* Quick Repo Pills */}
-          <div className="hidden sm:flex items-center gap-1 ml-2">
-            {presets.map((p) => (
-              <button
-                key={p}
-                onClick={() => handleSelectPreset(p)}
-                className={`rounded-lg px-2.5 py-1 text-[11px] font-mono transition cursor-pointer focus-visible:ring-2 focus-visible:ring-zinc-400 focus-visible:outline-none ${
-                  currentRepo === p
-                    ? "bg-zinc-800 text-zinc-100 border border-zinc-600 font-semibold shadow-xs"
-                    : "bg-zinc-900/60 text-zinc-400 hover:text-zinc-200 hover:bg-zinc-800 border border-transparent"
-                }`}
-              >
-                {p.split("/")[1]}
-              </button>
-            ))}
+          {/* Quick Featured Repo Pills */}
+          <div className="hidden sm:flex items-center gap-1.5 ml-1">
+            {featuredPresets.map((p) => {
+              const isActive = currentRepo.toLowerCase() === p.repo.toLowerCase();
+              return (
+                <button
+                  key={p.repo}
+                  onClick={() => handleSelectPreset(p.repo)}
+                  title={p.tooltip}
+                  className={`group relative flex items-center gap-1.5 rounded-lg px-2.5 py-1 text-xs font-mono transition-all cursor-pointer focus-visible:ring-2 focus-visible:ring-indigo-400 focus-visible:outline-none ${
+                    isActive
+                      ? p.isHero
+                        ? "bg-emerald-500/15 text-emerald-300 border border-emerald-500/40 font-semibold shadow-xs"
+                        : "bg-indigo-500/15 text-indigo-200 border border-indigo-500/40 font-semibold shadow-xs"
+                      : p.isHero
+                      ? "bg-zinc-900/80 text-emerald-400/90 border border-emerald-500/20 hover:border-emerald-500/40 hover:bg-emerald-500/10 hover:text-emerald-300"
+                      : "bg-zinc-900/60 text-zinc-400 border border-zinc-800/80 hover:text-zinc-200 hover:bg-zinc-850 hover:border-zinc-700"
+                  }`}
+                >
+                  <span className="text-[11px] group-hover:scale-110 transition-transform">{p.icon}</span>
+                  <span className="font-medium">{p.label}</span>
+                  {p.isHero && (
+                    <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                  )}
+                </button>
+              );
+            })}
+
             {/* Custom Repo Button */}
             <button
               id="btn-ganti-repo"
               onClick={() => setShowRepoModal(true)}
-              className="rounded-lg px-2 py-1 text-[11px] font-mono border border-dashed border-zinc-700 bg-zinc-900/60 text-zinc-300 hover:text-white hover:border-zinc-500 hover:bg-zinc-800 transition flex items-center gap-1 cursor-pointer focus-visible:ring-2 focus-visible:ring-zinc-400 focus-visible:outline-none"
-              title="Analyze any public GitHub repository in the world"
+              className="rounded-lg px-2.5 py-1 text-xs font-mono border border-dashed border-zinc-700 bg-zinc-900/60 text-zinc-300 hover:text-white hover:border-zinc-500 hover:bg-zinc-800 transition flex items-center gap-1 cursor-pointer focus-visible:ring-2 focus-visible:ring-zinc-400 focus-visible:outline-none"
+              title="Analyze any public GitHub repository worldwide"
             >
               <Plus className="h-3 w-3 text-indigo-400" />
               <span>Switch Repo...</span>
@@ -200,7 +250,7 @@ export function Header({
             {/* Leaderboard Button */}
             <button
               onClick={onOpenLeaderboard}
-              className="rounded-lg px-2.5 py-1 text-[11px] font-mono border border-amber-500/40 bg-amber-500/10 text-amber-300 hover:text-white hover:border-amber-400 hover:bg-amber-500/20 transition flex items-center gap-1.5 cursor-pointer focus-visible:ring-2 focus-visible:ring-amber-400 focus-visible:outline-none"
+              className="rounded-lg px-2.5 py-1 text-xs font-mono border border-amber-500/40 bg-amber-500/10 text-amber-300 hover:text-white hover:border-amber-400 hover:bg-amber-500/20 transition flex items-center gap-1.5 cursor-pointer focus-visible:ring-2 focus-visible:ring-amber-400 focus-visible:outline-none"
               title="View Repository Benchmark Leaderboard by Stars, License, and Velocity"
             >
               <Trophy className="h-3 w-3 text-amber-400" />
@@ -500,7 +550,9 @@ export function Header({
                         key={r.name}
                         type="button"
                         onClick={() => {
-                          setCustomRepo(r.name);
+                          handleSelectPreset(r.name);
+                          setShowRepoModal(false);
+                          setCustomRepo("");
                           setRepoError("");
                           setSearchResults([]);
                         }}

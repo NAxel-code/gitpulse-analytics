@@ -5,6 +5,7 @@ import {
   computeActivityTimeline,
   computePRFunnel,
   computeContributors,
+  computeContributorJourney,
   computeAnomalies,
   computeExecutiveSummary,
   KNOWN_REPOS,
@@ -150,6 +151,12 @@ export async function GET(
     if (endpoint === "contributors") {
       const contribs = computeContributors(rawData);
       return NextResponse.json(contribs);
+    }
+
+    if (endpoint === "contributor-journey") {
+      const login = searchParams.get("login") || "contributor";
+      const journey = computeContributorJourney(rawData, login);
+      return NextResponse.json(journey);
     }
 
     if (endpoint === "anomalies") {
