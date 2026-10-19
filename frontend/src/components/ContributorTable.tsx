@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Search, ArrowUpDown, Award, Flame, Zap, TrendingUp, ChevronRight, Medal } from "lucide-react";
+import { Search, ArrowUpDown, Award, Flame, Zap, TrendingUp, ChevronRight, Medal, GitPullRequest } from "lucide-react";
 import { formatNumber } from "@/lib/utils";
 
 export interface ContributorItem {
@@ -130,49 +130,49 @@ export function ContributorTable({ data, onSelectContributor }: ContributorTable
         </div>
       </div>
 
-      <div className="overflow-x-auto">
-        <table className="w-full text-left text-xs text-zinc-300">
-          <thead className="border-b border-zinc-800 bg-zinc-950/50 text-[11px] uppercase tracking-wider text-zinc-400">
+      <div className="overflow-x-auto scrollbar-thin">
+        <table className="w-full min-w-[760px] text-left text-xs text-zinc-300">
+          <thead className="border-b border-zinc-800 bg-zinc-950/70 text-[11px] uppercase tracking-wider text-zinc-400">
             <tr>
-              <th className="py-2.5 px-3">Tier</th>
-              <th className="py-2.5 px-3">Developer</th>
+              <th className="py-3 px-3 w-20 text-center whitespace-nowrap">Tier</th>
+              <th className="py-3 px-3 min-w-[180px] whitespace-nowrap">Developer</th>
               <th
                 onClick={() => handleSort("commits")}
-                className="py-2.5 px-3 cursor-pointer hover:text-white"
+                className="py-3 px-4 text-right cursor-pointer hover:text-white whitespace-nowrap"
               >
-                <div className="flex items-center gap-1">
+                <div className="flex items-center justify-end gap-1">
                   <span>Commits</span>
                   <ArrowUpDown className="h-3 w-3" />
                 </div>
               </th>
               <th
                 onClick={() => handleSort("prs_merged")}
-                className="py-2.5 px-3 cursor-pointer hover:text-white"
+                className="py-3 px-4 text-center cursor-pointer hover:text-white whitespace-nowrap"
               >
-                <div className="flex items-center gap-1">
+                <div className="flex items-center justify-center gap-1">
                   <span>PRs Merged</span>
                   <ArrowUpDown className="h-3 w-3" />
                 </div>
               </th>
               <th
                 onClick={() => handleSort("lines_added")}
-                className="py-2.5 px-3 cursor-pointer hover:text-white"
+                className="py-3 px-4 text-right cursor-pointer hover:text-white whitespace-nowrap"
               >
-                <div className="flex items-center gap-1">
+                <div className="flex items-center justify-end gap-1">
                   <span>Lines +/-</span>
                   <ArrowUpDown className="h-3 w-3" />
                 </div>
               </th>
               <th
                 onClick={() => handleSort("velocity_score")}
-                className="py-2.5 px-3 cursor-pointer hover:text-white"
+                className="py-3 px-4 cursor-pointer hover:text-white whitespace-nowrap"
               >
                 <div className="flex items-center gap-1">
                   <span>Velocity &amp; Momentum</span>
                   <ArrowUpDown className="h-3 w-3" />
                 </div>
               </th>
-              <th className="py-2.5 px-2 text-right">Journey</th>
+              <th className="py-3 px-3 w-12 text-center whitespace-nowrap">Journey</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-zinc-800/60">
@@ -192,7 +192,7 @@ export function ContributorTable({ data, onSelectContributor }: ContributorTable
                   {search && (
                     <button
                       onClick={() => setSearch("")}
-                      className="mt-3 inline-flex items-center rounded-lg border border-zinc-700 bg-zinc-800 px-3 py-1 text-xs text-zinc-200 hover:bg-zinc-700 transition"
+                      className="mt-3 inline-flex items-center rounded-lg border border-zinc-700 bg-zinc-800 px-3 py-1 text-xs text-zinc-200 hover:bg-zinc-700 transition cursor-pointer"
                     >
                       Reset Filter
                     </button>
@@ -208,43 +208,44 @@ export function ContributorTable({ data, onSelectContributor }: ContributorTable
                     className="hover:bg-zinc-850/60 cursor-pointer transition-colors group border-b border-zinc-800/40"
                     title={`Click to view activity journey for @${dev.login}`}
                   >
-                    <td className="py-2.5 px-3 whitespace-nowrap">
+                    <td className="py-3 px-3 text-center whitespace-nowrap">
                       {getRankBadgeDisplay(dev.rank_badge, dev.rank ?? idx + 1)}
                     </td>
-                    <td className="py-2.5 px-3">
-                      <div className="flex items-center gap-2.5">
+                    <td className="py-3 px-3 whitespace-nowrap">
+                      <div className="flex items-center gap-2.5 min-w-[160px]">
                         <img
                           src={dev.avatar_url}
                           alt={dev.login}
-                          className="h-6 w-6 rounded-full border border-zinc-700 bg-zinc-800 object-cover"
+                          className="h-6 w-6 rounded-full border border-zinc-700 bg-zinc-800 object-cover shrink-0 shadow-xs"
                         />
-                        <span className="font-medium text-zinc-200 group-hover:text-white transition-colors">
+                        <span className="font-medium text-zinc-200 group-hover:text-white transition-colors truncate max-w-[150px]">
                           @{dev.login}
                         </span>
                       </div>
                     </td>
-                    <td className="py-2.5 px-3 font-mono font-medium text-zinc-200 tabular-nums">
+                    <td className="py-3 px-4 font-mono font-medium text-zinc-200 tabular-nums text-right whitespace-nowrap">
                       {formatNumber(dev.commits)}
                     </td>
-                    <td className="py-2.5 px-3 tabular-nums">
-                      <span className="rounded bg-emerald-500/10 border border-emerald-500/20 px-1.5 py-0.5 font-mono text-[11px] text-emerald-400">
-                        {dev.prs_merged} merged
+                    <td className="py-3 px-4 text-center whitespace-nowrap">
+                      <span className="inline-flex items-center gap-1.5 rounded-md bg-emerald-500/10 border border-emerald-500/25 px-2 py-0.5 font-mono text-[11px] font-medium text-emerald-400 whitespace-nowrap shadow-xs">
+                        <GitPullRequest className="h-3 w-3 shrink-0" />
+                        <span>{formatNumber(dev.prs_merged)} merged</span>
                       </span>
                     </td>
-                    <td className="py-2.5 px-3 tabular-nums font-mono text-[11px]">
-                      <span className="text-emerald-400">+{formatNumber(dev.lines_added)}</span>
-                      <span className="text-zinc-600 mx-1">/</span>
-                      <span className="text-rose-400">-{formatNumber(dev.lines_deleted)}</span>
+                    <td className="py-3 px-4 tabular-nums font-mono text-[11px] text-right whitespace-nowrap">
+                      <span className="text-emerald-400 font-medium">+{formatNumber(dev.lines_added)}</span>
+                      <span className="text-zinc-600 mx-1.5">/</span>
+                      <span className="text-rose-400 font-medium">-{formatNumber(dev.lines_deleted)}</span>
                     </td>
-                    <td className="py-2.5 px-3 tabular-nums">
+                    <td className="py-3 px-4 tabular-nums whitespace-nowrap">
                       <div className="flex items-center gap-2">
                         <span className="font-mono font-semibold text-zinc-100">
-                          {dev.velocity_score} <span className="text-zinc-500 font-normal text-[11px]">pts</span>
+                          {dev.velocity_score} <span className="text-zinc-500 font-normal text-[10px]">pts</span>
                         </span>
                         {getMomentumTagDisplay(dev.momentum_tag)}
                       </div>
                     </td>
-                    <td className="py-2.5 px-2 text-right">
+                    <td className="py-3 px-3 text-center whitespace-nowrap">
                       <ChevronRight className="h-4 w-4 text-zinc-500 group-hover:text-zinc-300 transition-colors inline" />
                     </td>
                   </tr>

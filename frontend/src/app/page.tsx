@@ -202,15 +202,15 @@ export default function GitPulseDashboard() {
           </div>
         </div>
 
-        {/* Bottom Section: Contributor Velocity Table (60%) vs DORA Feed (40%) */}
+        {/* Bottom Section: Contributor Velocity Table (67%) vs DORA Feed (33%) */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
-          <div id="tour-contributors" className="lg:col-span-7">
+          <div id="tour-contributors" className="lg:col-span-8">
             <ContributorTable
               data={contributors}
               onSelectContributor={handleOpenJourney}
             />
           </div>
-          <div className="lg:col-span-5">
+          <div className="lg:col-span-4">
             <DORAFeed alerts={anomalies} summary={executiveSummary} />
           </div>
         </div>
