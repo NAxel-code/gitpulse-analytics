@@ -180,36 +180,146 @@ export function Header({
 
   return (
     <>
-      <header className="sticky top-0 z-30 flex flex-col lg:flex-row items-start lg:items-center justify-between gap-3 border-b border-zinc-800/80 bg-zinc-950/90 px-6 py-3 backdrop-blur-md">
-        {/* Brand & Repository Switcher */}
-        <div id="tour-repo-sync" className="flex flex-wrap items-center gap-3">
-          <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-zinc-900 border border-zinc-700/80 text-zinc-100 shadow-sm">
-            <GitPullRequest className="h-4 w-4 text-zinc-200" />
-          </div>
-          <div>
-            <div className="flex items-center gap-2">
-              <span className="font-bold tracking-tight text-white text-base">GitPulse</span>
-              <span className="rounded-md bg-zinc-800/80 px-2 py-0.5 text-[10px] font-mono font-medium text-zinc-300 border border-zinc-700/60">
-                v1.1
-              </span>
+      <header className="sticky top-0 z-30 border-b border-zinc-800/80 bg-zinc-950/95 backdrop-blur-md">
+        {/* Tier 1: Primary Navigation Bar */}
+        <div className="flex items-center justify-between gap-4 px-6 py-2.5">
+          {/* Brand & Active Target Repository */}
+          <div id="tour-repo-sync" className="flex items-center gap-3 shrink-0">
+            <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-zinc-900 border border-zinc-700/80 text-zinc-100 shadow-sm">
+              <GitPullRequest className="h-4 w-4 text-zinc-200" />
             </div>
-            <div className="flex items-center gap-1.5 text-xs text-zinc-400">
-              <GitBranch className="h-3.5 w-3.5 text-zinc-400" />
-              <span>Target:</span>
-              <button
-                onClick={() => setShowRepoModal(true)}
-                className="font-mono text-zinc-200 font-semibold hover:text-indigo-300 underline decoration-dotted underline-offset-2 transition cursor-pointer"
-                title="Click to select or switch to any public GitHub repository"
-              >
-                {currentRepo}
-              </button>
-              <span className="inline-block h-2 w-2 rounded-full bg-emerald-500 ring-2 ring-emerald-500/20 ml-1" />
-              <span className="text-[11px] font-medium text-emerald-400">Live</span>
+            <div>
+              <div className="flex items-center gap-2">
+                <span className="font-bold tracking-tight text-white text-base">GitPulse</span>
+                <span className="rounded-md bg-zinc-800/80 px-2 py-0.5 text-[10px] font-mono font-medium text-zinc-300 border border-zinc-700/60">
+                  v1.1
+                </span>
+              </div>
+              <div className="flex items-center gap-1.5 text-xs text-zinc-400">
+                <GitBranch className="h-3.5 w-3.5 text-zinc-400 shrink-0" />
+                <span className="text-zinc-500">Target:</span>
+                <button
+                  onClick={() => setShowRepoModal(true)}
+                  className="font-mono text-zinc-200 font-semibold hover:text-indigo-300 underline decoration-dotted underline-offset-2 transition cursor-pointer max-w-[200px] truncate"
+                  title="Click to select or switch to any public GitHub repository"
+                >
+                  {currentRepo}
+                </button>
+                <span className="inline-block h-2 w-2 rounded-full bg-emerald-500 ring-2 ring-emerald-500/20 ml-0.5 shrink-0" />
+                <span className="text-[11px] font-medium text-emerald-400">Live</span>
+              </div>
             </div>
           </div>
 
-          {/* Quick Featured Repo Pills */}
-          <div className="hidden sm:flex items-center gap-1.5 ml-1">
+          {/* Center Search / AI Query Box */}
+          <div className="hidden md:flex flex-1 max-w-sm lg:max-w-md mx-2">
+            <button
+              id="tour-ai-search"
+              onClick={onOpenAI}
+              className="group flex w-full h-9 items-center justify-between gap-2 rounded-xl border border-zinc-800 bg-zinc-900/70 px-3 text-xs text-zinc-400 shadow-xs transition hover:border-zinc-700 hover:bg-zinc-900 hover:text-zinc-200 cursor-pointer focus-visible:ring-2 focus-visible:ring-zinc-400 focus-visible:outline-none overflow-hidden"
+            >
+              <div className="flex items-center gap-2 min-w-0 flex-1">
+                <Sparkles className="h-4 w-4 shrink-0 text-indigo-400 transition group-hover:rotate-6" />
+                <span className="truncate whitespace-nowrap text-zinc-300 text-left">
+                  <span className="font-semibold text-indigo-300">Ask AI:</span>{" "}
+                  <span className="text-zinc-400 hidden lg:inline">&quot;Top contributor with most merged PRs&quot;</span>
+                  <span className="text-zinc-400 lg:hidden">&quot;Top contributor...&quot;</span>
+                </span>
+              </div>
+              <kbd className="shrink-0 hidden sm:inline-flex items-center rounded border border-zinc-700/80 bg-zinc-800/90 px-1.5 py-0.5 text-[10px] font-mono font-medium text-zinc-300">
+                ⌘K
+              </kbd>
+            </button>
+          </div>
+
+          {/* Right Toolbar: Date Range, Sync, Leaderboard, Token, Guide */}
+          <div className="flex items-center gap-2 shrink-0">
+            {/* Mobile AI Button */}
+            <button
+              onClick={onOpenAI}
+              className="md:hidden flex h-8 w-8 items-center justify-center rounded-lg border border-zinc-800 bg-zinc-900 text-indigo-400 hover:bg-zinc-800"
+              title="Ask AI (⌘K)"
+            >
+              <Sparkles className="h-4 w-4" />
+            </button>
+
+            {/* Date Range Selector */}
+            <div className="flex items-center rounded-xl border border-zinc-800 bg-zinc-900/70 p-0.5">
+              <Calendar className="ml-2 mr-1 h-3.5 w-3.5 text-zinc-400 shrink-0" />
+              {[
+                { label: "7D", value: 7 },
+                { label: "14D", value: 14 },
+                { label: "30D", value: 30 },
+              ].map((item) => (
+                <button
+                  key={item.value}
+                  onClick={() => onDaysChange(item.value)}
+                  className={`rounded-lg px-2 py-1 text-xs font-medium transition cursor-pointer ${
+                    days === item.value
+                      ? "bg-zinc-100 text-zinc-950 font-semibold shadow-xs"
+                      : "text-zinc-400 hover:text-zinc-200 hover:bg-zinc-800"
+                  }`}
+                >
+                  {item.label}
+                </button>
+              ))}
+            </div>
+
+            {/* Sync Button */}
+            <button
+              onClick={() => onSyncRepo(currentRepo)}
+              disabled={syncing}
+              className="flex items-center gap-1.5 rounded-xl border border-zinc-800 bg-zinc-900 px-3 py-1.5 text-xs font-medium text-zinc-200 hover:bg-zinc-800 hover:border-zinc-700 disabled:opacity-50 transition cursor-pointer whitespace-nowrap"
+              title="Synchronize repository data with GitHub"
+            >
+              <RefreshCw className={`h-3.5 w-3.5 text-indigo-400 ${syncing ? "animate-spin" : ""}`} />
+              <span className="hidden sm:inline">{syncing ? "Syncing..." : "Sync Repo"}</span>
+            </button>
+
+            {/* Leaderboard Action Button */}
+            <button
+              onClick={onOpenLeaderboard}
+              title="Open Repository Benchmark Leaderboard"
+              className="flex items-center gap-1.5 rounded-xl border border-amber-500/30 bg-amber-500/10 px-2.5 py-1.5 text-xs font-semibold text-amber-300 hover:text-amber-200 hover:bg-amber-500/20 hover:border-amber-500/50 transition cursor-pointer whitespace-nowrap"
+            >
+              <Trophy className="h-3.5 w-3.5 text-amber-400 shrink-0" />
+              <span className="hidden sm:inline">Leaderboard</span>
+            </button>
+
+            {/* GitHub Token / PAT Button */}
+            <button
+              onClick={() => setShowTokenModal(true)}
+              title={githubToken ? "GitHub Token Active (5,000 req/hr)" : "Set Personal Access Token to bypass 60 req/hr limit"}
+              className={`flex items-center gap-1.5 rounded-xl border px-2.5 py-1.5 text-xs font-medium transition cursor-pointer whitespace-nowrap ${
+                githubToken
+                  ? "border-emerald-500/30 bg-emerald-500/10 text-emerald-400 hover:bg-emerald-500/20"
+                  : "border-zinc-800 bg-zinc-900 text-zinc-300 hover:text-white hover:bg-zinc-800 hover:border-zinc-700"
+              }`}
+            >
+              <Key className="h-3.5 w-3.5 shrink-0" />
+              <span className="hidden md:inline">{githubToken ? "Token Active" : "Set PAT"}</span>
+            </button>
+
+            {/* Help & Guide Button */}
+            <button
+              onClick={onOpenHelp}
+              title="GitPulse Documentation & Guide (Press '?')"
+              className="flex items-center gap-1.5 rounded-xl border border-zinc-800 bg-zinc-900 px-2.5 py-1.5 text-xs font-medium text-zinc-300 hover:text-white hover:bg-zinc-850 hover:border-zinc-700 transition cursor-pointer whitespace-nowrap"
+            >
+              <HelpCircle className="h-3.5 w-3.5 text-indigo-400 shrink-0" />
+              <span className="hidden md:inline">Guide</span>
+            </button>
+          </div>
+        </div>
+
+        {/* Tier 2: Dedicated Featured Repositories Subnav Strip */}
+        <div className="flex items-center gap-2 px-6 py-2 border-t border-zinc-800/50 bg-zinc-950/60 overflow-x-auto scrollbar-none">
+          <span className="text-[11px] font-mono text-zinc-500 shrink-0 flex items-center gap-1.5 mr-1">
+            <Globe className="h-3 w-3 text-indigo-400" />
+            <span>Featured:</span>
+          </span>
+
+          <div className="flex items-center gap-1.5 shrink-0">
             {featuredPresets.map((p) => {
               const isActive = currentRepo.toLowerCase() === p.repo.toLowerCase();
               return (
@@ -217,7 +327,7 @@ export function Header({
                   key={p.repo}
                   onClick={() => handleSelectPreset(p.repo)}
                   title={p.tooltip}
-                  className={`group relative flex items-center gap-1.5 rounded-lg px-2.5 py-1 text-xs font-mono transition-all cursor-pointer focus-visible:ring-2 focus-visible:ring-indigo-400 focus-visible:outline-none ${
+                  className={`group relative flex items-center gap-1.5 rounded-lg px-2.5 py-1 text-xs font-mono transition-all cursor-pointer whitespace-nowrap shrink-0 ${
                     isActive
                       ? p.isHero
                         ? "bg-emerald-500/15 text-emerald-300 border border-emerald-500/40 font-semibold shadow-xs"
@@ -230,7 +340,7 @@ export function Header({
                   <span className="text-[11px] group-hover:scale-110 transition-transform">{p.icon}</span>
                   <span className="font-medium">{p.label}</span>
                   {p.isHero && (
-                    <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                    <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse ml-0.5" />
                   )}
                 </button>
               );
@@ -240,113 +350,13 @@ export function Header({
             <button
               id="btn-ganti-repo"
               onClick={() => setShowRepoModal(true)}
-              className="rounded-lg px-2.5 py-1 text-xs font-mono border border-dashed border-zinc-700 bg-zinc-900/60 text-zinc-300 hover:text-white hover:border-zinc-500 hover:bg-zinc-800 transition flex items-center gap-1 cursor-pointer focus-visible:ring-2 focus-visible:ring-zinc-400 focus-visible:outline-none"
+              className="rounded-lg px-2.5 py-1 text-xs font-mono border border-dashed border-zinc-700 bg-zinc-900/60 text-zinc-300 hover:text-white hover:border-zinc-500 hover:bg-zinc-800 transition flex items-center gap-1 cursor-pointer whitespace-nowrap shrink-0 ml-1"
               title="Analyze any public GitHub repository worldwide"
             >
               <Plus className="h-3 w-3 text-indigo-400" />
               <span>Switch Repo...</span>
             </button>
-
-            {/* Leaderboard Button */}
-            <button
-              onClick={onOpenLeaderboard}
-              className="rounded-lg px-2.5 py-1 text-xs font-mono border border-amber-500/40 bg-amber-500/10 text-amber-300 hover:text-white hover:border-amber-400 hover:bg-amber-500/20 transition flex items-center gap-1.5 cursor-pointer focus-visible:ring-2 focus-visible:ring-amber-400 focus-visible:outline-none"
-              title="View Repository Benchmark Leaderboard by Stars, License, and Velocity"
-            >
-              <Trophy className="h-3 w-3 text-amber-400" />
-              <span>Leaderboard</span>
-            </button>
           </div>
-        </div>
-
-        {/* Center Search / AI Query Box */}
-        <div className="w-full xl:w-auto flex-1 max-w-sm sm:max-w-md mx-auto min-w-[200px]">
-          <button
-            id="tour-ai-search"
-            onClick={onOpenAI}
-            className="group flex w-full h-9 items-center justify-between gap-2 rounded-xl border border-zinc-800 bg-zinc-900/70 px-3 text-xs text-zinc-400 shadow-xs transition hover:border-zinc-700 hover:bg-zinc-900 hover:text-zinc-200 cursor-pointer focus-visible:ring-2 focus-visible:ring-zinc-400 focus-visible:outline-none overflow-hidden"
-          >
-            <div className="flex items-center gap-2 min-w-0 flex-1">
-              <Sparkles className="h-4 w-4 shrink-0 text-indigo-400 transition group-hover:rotate-6" />
-              <span className="truncate whitespace-nowrap text-zinc-300 text-left">
-                <span className="font-semibold text-indigo-300">Ask AI:</span>{" "}
-                <span className="text-zinc-400 hidden md:inline">&quot;Top contributor with most merged PRs&quot;</span>
-                <span className="text-zinc-400 md:hidden">&quot;Top contributor...&quot;</span>
-              </span>
-            </div>
-            <kbd className="shrink-0 hidden sm:inline-flex items-center rounded border border-zinc-700/80 bg-zinc-800/90 px-1.5 py-0.5 text-[10px] font-mono font-medium text-zinc-300">
-              ⌘K
-            </kbd>
-          </button>
-        </div>
-
-        {/* Actions: PAT Token, Sync Button, Date Range & Guide */}
-        <div className="flex flex-wrap items-center gap-2 w-full lg:w-auto justify-end">
-          {/* GitHub Token / PAT Button */}
-          <button
-            onClick={() => setShowTokenModal(true)}
-            title={githubToken ? "GitHub Token Active (5,000 req/hr)" : "Set Personal Access Token to bypass 60 req/hr limit"}
-            className={`flex items-center gap-1.5 rounded-xl border px-2.5 py-1.5 text-xs font-medium transition cursor-pointer focus-visible:ring-2 focus-visible:ring-zinc-400 focus-visible:outline-none ${
-              githubToken
-                ? "border-emerald-500/30 bg-emerald-500/10 text-emerald-400 hover:bg-emerald-500/20"
-                : "border-zinc-800 bg-zinc-900 text-zinc-300 hover:text-white hover:bg-zinc-800 hover:border-zinc-700"
-            }`}
-          >
-            <Key className="h-3.5 w-3.5" />
-            <span className="hidden sm:inline">{githubToken ? "Token Active" : "Set PAT"}</span>
-          </button>
-
-          {/* Sync Button */}
-          <button
-            onClick={() => onSyncRepo(currentRepo)}
-            disabled={syncing}
-            className="flex items-center gap-1.5 rounded-xl border border-zinc-800 bg-zinc-900 px-3 py-1.5 text-xs font-medium text-zinc-200 hover:bg-zinc-800 hover:border-zinc-700 disabled:opacity-50 transition cursor-pointer focus-visible:ring-2 focus-visible:ring-zinc-400 focus-visible:outline-none"
-          >
-            <RefreshCw className={`h-3.5 w-3.5 text-indigo-400 ${syncing ? "animate-spin" : ""}`} />
-            <span>{syncing ? "Syncing..." : "Sync Live Repo"}</span>
-          </button>
-
-          {/* Date Range Selector */}
-          <div className="flex items-center rounded-xl border border-zinc-800 bg-zinc-900/70 p-1">
-            <Calendar className="ml-2 mr-1 h-3.5 w-3.5 text-zinc-400" />
-            {[
-              { label: "7D", value: 7 },
-              { label: "14D", value: 14 },
-              { label: "30D", value: 30 },
-            ].map((item) => (
-              <button
-                key={item.value}
-                onClick={() => onDaysChange(item.value)}
-                className={`rounded-lg px-2.5 py-1 text-xs font-medium transition cursor-pointer focus-visible:ring-2 focus-visible:ring-zinc-400 focus-visible:outline-none ${
-                  days === item.value
-                    ? "bg-zinc-100 text-zinc-950 font-semibold shadow-xs"
-                    : "text-zinc-400 hover:text-zinc-200 hover:bg-zinc-800"
-                }`}
-              >
-                {item.label}
-              </button>
-            ))}
-          </div>
-
-          {/* Leaderboard Action Button */}
-          <button
-            onClick={onOpenLeaderboard}
-            title="Open Repository Benchmark Leaderboard"
-            className="flex items-center gap-1.5 rounded-xl border border-amber-500/30 bg-amber-500/10 px-2.5 py-1.5 text-xs font-semibold text-amber-300 hover:text-amber-200 hover:bg-amber-500/20 hover:border-amber-500/50 transition cursor-pointer focus-visible:ring-2 focus-visible:ring-amber-400 focus-visible:outline-none"
-          >
-            <Trophy className="h-3.5 w-3.5 text-amber-400" />
-            <span className="hidden sm:inline">Leaderboard</span>
-          </button>
-
-          {/* Help & Guide Button */}
-          <button
-            onClick={onOpenHelp}
-            title="GitPulse Documentation & Guide (Press '?')"
-            className="flex items-center gap-1.5 rounded-xl border border-zinc-800 bg-zinc-900 px-2.5 py-1.5 text-xs font-medium text-zinc-300 hover:text-white hover:bg-zinc-850 hover:border-zinc-700 transition cursor-pointer focus-visible:ring-2 focus-visible:ring-zinc-400 focus-visible:outline-none"
-          >
-            <HelpCircle className="h-3.5 w-3.5 text-indigo-400" />
-            <span className="hidden sm:inline">Guide</span>
-          </button>
         </div>
       </header>
 
