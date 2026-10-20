@@ -185,8 +185,27 @@ export function Header({
         <div className="flex items-center justify-between gap-4 px-6 py-2.5">
           {/* Brand & Active Target Repository */}
           <div id="tour-repo-sync" className="flex items-center gap-3 shrink-0">
-            <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-zinc-900 border border-zinc-700/80 text-zinc-100 shadow-sm">
-              <GitPullRequest className="h-4 w-4 text-zinc-200" />
+            <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-zinc-950 border border-zinc-800 shadow-sm p-1.5 shrink-0 overflow-hidden">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" className="h-full w-full">
+                <defs>
+                  <linearGradient id="headerPulseGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                    <stop offset="0%" stopColor="#6366f1" />
+                    <stop offset="35%" stopColor="#818cf8" />
+                    <stop offset="65%" stopColor="#06b6d4" />
+                    <stop offset="100%" stopColor="#10b981" />
+                  </linearGradient>
+                  <linearGradient id="headerBranchGrad" x1="0%" y1="100%" x2="100%" y2="0%">
+                    <stop offset="0%" stopColor="#6366f1" stopOpacity="0.6" />
+                    <stop offset="100%" stopColor="#a855f7" stopOpacity="0.95" />
+                  </linearGradient>
+                </defs>
+                <path d="M 34,68 C 34,44 48,34 64,34 L 78,34" fill="none" stroke="url(#headerBranchGrad)" strokeWidth="6" strokeLinecap="round" />
+                <circle cx="78" cy="34" r="6" fill="#a855f7" stroke="#ffffff" strokeWidth="2" />
+                <path d="M 22,68 L 38,68 L 47,48 L 56,86 L 68,24 L 79,94 L 88,54 L 95,68 L 106,68" fill="none" stroke="url(#headerPulseGrad)" strokeWidth="8" strokeLinecap="round" strokeLinejoin="round" />
+                <circle cx="22" cy="68" r="7" fill="#6366f1" stroke="#ffffff" strokeWidth="2.5" />
+                <circle cx="68" cy="24" r="6" fill="#06b6d4" stroke="#ffffff" strokeWidth="2" />
+                <circle cx="106" cy="68" r="7" fill="#10b981" stroke="#ffffff" strokeWidth="2.5" />
+              </svg>
             </div>
             <div>
               <div className="flex items-center gap-2">

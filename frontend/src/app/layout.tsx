@@ -4,6 +4,14 @@ import type { Metadata } from "next";
 export const metadata: Metadata = {
   title: "GitPulse Analytics — High-Performance GitHub Developer Intelligence",
   description: "Real-time GitHub analytics, DORA velocity metrics, PR lifecycle funnels, and AI text-to-insight powered by DuckDB.",
+  icons: {
+    icon: [
+      { url: "/favicon.svg", type: "image/svg+xml" },
+      { url: "/favicon.ico", sizes: "any" },
+    ],
+    shortcut: "/favicon.svg",
+    apple: "/apple-touch-icon.png",
+  },
 };
 
 export default function RootLayout({
