@@ -54,9 +54,35 @@ export function KPICards({ data }: { data: RepoKPIData | null }) {
     );
   }
 
+  const scrollToSection = (targetId: string) => {
+    if (typeof window === "undefined") return;
+    const element = document.getElementById(targetId);
+    if (!element) return;
+
+    const navHeight = 96; // Offset for sticky navbar + subnav strip
+    const elementPosition = element.getBoundingClientRect().top + window.scrollY;
+    const offsetPosition = Math.max(0, elementPosition - navHeight);
+
+    window.scrollTo({
+      top: offsetPosition,
+      behavior: "smooth",
+    });
+
+    // Provide visual feedback: a sleek ring highlight animation
+    element.classList.remove("ring-2", "ring-indigo-500/70", "shadow-lg", "shadow-indigo-500/10");
+    void element.offsetWidth; // Trigger DOM reflow to restart animation
+    element.classList.add("ring-2", "ring-indigo-500/70", "shadow-lg", "shadow-indigo-500/10");
+
+    setTimeout(() => {
+      element.classList.remove("ring-2", "ring-indigo-500/70", "shadow-lg", "shadow-indigo-500/10");
+    }, 1600);
+  };
+
   const kpis = [
     {
       title: "Active Contributors",
+      targetId: "tour-contributors",
+      targetName: "Contributor Velocity Table",
       value: data.active_contributors,
       suffix: "",
       delta: data.contributors_change_pct,
@@ -67,6 +93,8 @@ export function KPICards({ data }: { data: RepoKPIData | null }) {
     },
     {
       title: "Total Commits",
+      targetId: "section-activity",
+      targetName: "Commit & Activity Timeline",
       value: data.total_commits,
       suffix: "",
       delta: data.commits_change_pct,
@@ -76,6 +104,8 @@ export function KPICards({ data }: { data: RepoKPIData | null }) {
     },
     {
       title: "PR Merge Velocity",
+      targetId: "tour-pr-funnel",
+      targetName: "PR Lifecycle Funnel",
       value: data.pr_merge_rate,
       decimalPlaces: 1,
       suffix: "%",
@@ -86,6 +116,8 @@ export function KPICards({ data }: { data: RepoKPIData | null }) {
     },
     {
       title: "Issue Resolution Rate",
+      targetId: "section-dora-feed",
+      targetName: "DORA & Engineering Feed",
       value: data.issue_resolution_rate,
       decimalPlaces: 1,
       suffix: "%",
@@ -116,7 +148,17 @@ export function KPICards({ data }: { data: RepoKPIData | null }) {
           return (
             <div
               key={idx}
-              className={`relative overflow-hidden rounded-xl border bg-zinc-900/70 p-5 shadow-sm transition hover:border-zinc-700 ${
+              onClick={() => scrollToSection(kpi.targetId)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter" || e.key === " ") {
+                  e.preventDefault();
+                  scrollToSection(kpi.targetId);
+                }
+              }}
+              tabIndex={0}
+              role="button"
+              title={`Click to jump to ${kpi.targetName}`}
+              className={`group relative overflow-hidden rounded-xl border bg-zinc-900/70 p-5 shadow-sm transition-all duration-200 cursor-pointer hover:border-zinc-600 hover:bg-zinc-900/90 hover:shadow-md hover:shadow-indigo-500/5 active:scale-[0.99] focus-visible:ring-2 focus-visible:ring-indigo-400 focus-visible:outline-none ${
                 kpi.highlight
                   ? "border-zinc-700 bg-zinc-900/90 before:absolute before:inset-x-0 before:top-0 before:h-0.5 before:bg-indigo-500"
                   : "border-zinc-800/80"
@@ -124,7 +166,9 @@ export function KPICards({ data }: { data: RepoKPIData | null }) {
             >
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-1.5">
-                  <span className="text-xs font-medium text-zinc-400">{kpi.title}</span>
+                  <span className="text-xs font-medium text-zinc-400 group-hover:text-zinc-200 transition-colors">
+                    {kpi.title}
+                  </span>
                   {kpi.livePulse && (
                     <span className="flex h-2 w-2 relative" title="GA4-style real-time activity pulse">
                       <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
@@ -132,8 +176,13 @@ export function KPICards({ data }: { data: RepoKPIData | null }) {
                     </span>
                   )}
                 </div>
-                <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-zinc-800/90 text-zinc-300 border border-zinc-700/50">
-                  <Icon className="h-4 w-4" />
+                <div className="flex items-center gap-1.5">
+                  <span className="text-[10px] font-mono text-indigo-400 opacity-0 group-hover:opacity-100 transition-all hidden sm:inline-flex items-center gap-0.5">
+                    View <ArrowDownRight className="h-3 w-3 inline" />
+                  </span>
+                  <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-zinc-800/90 text-zinc-300 border border-zinc-700/50 group-hover:border-indigo-500/40 group-hover:text-indigo-300 group-hover:bg-zinc-800 transition-all">
+                    <Icon className="h-4 w-4" />
+                  </div>
                 </div>
               </div>
 
@@ -147,7 +196,9 @@ export function KPICards({ data }: { data: RepoKPIData | null }) {
               </div>
 
               <div className="mt-2 flex items-center justify-between text-xs">
-                <span className="text-zinc-500 text-[11px] truncate max-w-[130px]">{kpi.subtitle}</span>
+                <span className="text-zinc-500 text-[11px] truncate max-w-[130px] group-hover:text-zinc-400 transition-colors">
+                  {kpi.subtitle}
+                </span>
                 <div
                   className={`flex items-center gap-0.5 font-semibold font-mono text-[11px] ${
                     isPositive ? "text-emerald-400" : "text-rose-400"
@@ -165,13 +216,28 @@ export function KPICards({ data }: { data: RepoKPIData | null }) {
       {/* DORA Velocity & Engineering Hygiene Sub-Strip */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
         {/* Lead Time to Merge */}
-        <div className="rounded-xl border border-zinc-800/80 bg-zinc-900/60 p-3.5 flex items-center justify-between hover:border-zinc-700 transition">
+        <div
+          onClick={() => scrollToSection("tour-pr-funnel")}
+          onKeyDown={(e) => {
+            if (e.key === "Enter" || e.key === " ") {
+              e.preventDefault();
+              scrollToSection("tour-pr-funnel");
+            }
+          }}
+          tabIndex={0}
+          role="button"
+          title="Click to jump to PR Lifecycle Funnel & review bottleneck analysis"
+          className="group rounded-xl border border-zinc-800/80 bg-zinc-900/60 p-3.5 flex items-center justify-between hover:border-zinc-600 hover:bg-zinc-900/90 transition-all duration-200 cursor-pointer active:scale-[0.99] focus-visible:ring-2 focus-visible:ring-indigo-400 focus-visible:outline-none"
+        >
           <div className="flex items-center gap-3">
-            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-zinc-800 text-zinc-300 border border-zinc-700/60">
+            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-zinc-800 text-zinc-300 border border-zinc-700/60 group-hover:border-indigo-500/40 group-hover:text-indigo-300 transition-all">
               <Clock className="h-4 w-4" />
             </div>
             <div>
-              <div className="text-xs font-semibold text-zinc-200">Lead Time to Merge</div>
+              <div className="text-xs font-semibold text-zinc-200 group-hover:text-white transition-colors flex items-center gap-1.5">
+                <span>Lead Time to Merge</span>
+                <ArrowDownRight className="h-3 w-3 text-indigo-400 opacity-0 group-hover:opacity-100 transition-opacity" />
+              </div>
               <p className="text-[11px] text-zinc-400 mt-0.5">Time from initial commit to default branch merge</p>
             </div>
           </div>
@@ -186,13 +252,28 @@ export function KPICards({ data }: { data: RepoKPIData | null }) {
         </div>
 
         {/* Time to First Review */}
-        <div className="rounded-xl border border-zinc-800/80 bg-zinc-900/60 p-3.5 flex items-center justify-between hover:border-zinc-700 transition">
+        <div
+          onClick={() => scrollToSection("tour-pr-funnel")}
+          onKeyDown={(e) => {
+            if (e.key === "Enter" || e.key === " ") {
+              e.preventDefault();
+              scrollToSection("tour-pr-funnel");
+            }
+          }}
+          tabIndex={0}
+          role="button"
+          title="Click to jump to PR Lifecycle Funnel & reviewer response latency"
+          className="group rounded-xl border border-zinc-800/80 bg-zinc-900/60 p-3.5 flex items-center justify-between hover:border-zinc-600 hover:bg-zinc-900/90 transition-all duration-200 cursor-pointer active:scale-[0.99] focus-visible:ring-2 focus-visible:ring-indigo-400 focus-visible:outline-none"
+        >
           <div className="flex items-center gap-3">
-            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-zinc-800 text-zinc-300 border border-zinc-700/60">
+            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-zinc-800 text-zinc-300 border border-zinc-700/60 group-hover:border-indigo-500/40 group-hover:text-indigo-300 transition-all">
               <Zap className="h-4 w-4" />
             </div>
             <div>
-              <div className="text-xs font-semibold text-zinc-200">Time to First Review (TTFR)</div>
+              <div className="text-xs font-semibold text-zinc-200 group-hover:text-white transition-colors flex items-center gap-1.5">
+                <span>Time to First Review (TTFR)</span>
+                <ArrowDownRight className="h-3 w-3 text-indigo-400 opacity-0 group-hover:opacity-100 transition-opacity" />
+              </div>
               <p className="text-[11px] text-zinc-400 mt-0.5">Initial reviewer response latency after PR creation</p>
             </div>
           </div>
@@ -207,17 +288,30 @@ export function KPICards({ data }: { data: RepoKPIData | null }) {
         </div>
 
         {/* PR Size Distribution */}
-        <div className="rounded-xl border border-zinc-800/80 bg-zinc-900/60 p-3.5 flex items-center justify-between hover:border-zinc-700 transition">
+        <div
+          onClick={() => scrollToSection("section-dora-feed")}
+          onKeyDown={(e) => {
+            if (e.key === "Enter" || e.key === " ") {
+              e.preventDefault();
+              scrollToSection("section-dora-feed");
+            }
+          }}
+          tabIndex={0}
+          role="button"
+          title="Click to jump to DORA Engineering Recommendations & Alerts"
+          className="group rounded-xl border border-zinc-800/80 bg-zinc-900/60 p-3.5 flex items-center justify-between hover:border-zinc-600 hover:bg-zinc-900/90 transition-all duration-200 cursor-pointer active:scale-[0.99] focus-visible:ring-2 focus-visible:ring-indigo-400 focus-visible:outline-none"
+        >
           <div className="flex items-center gap-3">
-            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-zinc-800 text-zinc-300 border border-zinc-700/60">
+            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-zinc-800 text-zinc-300 border border-zinc-700/60 group-hover:border-indigo-500/40 group-hover:text-indigo-300 transition-all">
               <Layers className="h-4 w-4" />
             </div>
             <div>
               <div className="flex items-center gap-2">
-                <span className="text-xs font-semibold text-zinc-200">PR Size Hygiene</span>
+                <span className="text-xs font-semibold text-zinc-200 group-hover:text-white transition-colors">PR Size Hygiene</span>
                 <span className="text-[10px] text-emerald-400 font-mono font-semibold">
                   {actualTotalDist > 0 ? `${Math.round((prDist.small / totalDist) * 100)}% Small` : "0 PR"}
                 </span>
+                <ArrowDownRight className="h-3 w-3 text-indigo-400 opacity-0 group-hover:opacity-100 transition-opacity" />
               </div>
               <p className="text-[11px] text-zinc-400 mt-0.5">Ideal PR size &lt;200 LoC for rapid, high-quality reviews</p>
             </div>

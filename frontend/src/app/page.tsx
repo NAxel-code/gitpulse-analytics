@@ -189,7 +189,7 @@ export default function GitPulseDashboard() {
 
         {/* Middle Section: Activity Timeline Chart (65%) vs PR Lifecycle Funnel (35%) */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
-          <div className="lg:col-span-8">
+          <div id="section-activity" className="lg:col-span-8 scroll-mt-28 rounded-xl transition-all duration-300">
             <ActivityChart
               data={timelineData}
               repoName={currentRepo}
@@ -197,20 +197,20 @@ export default function GitPulseDashboard() {
               isSyncing={syncing}
             />
           </div>
-          <div id="tour-pr-funnel" className="lg:col-span-4">
+          <div id="tour-pr-funnel" className="lg:col-span-4 scroll-mt-28 rounded-xl transition-all duration-300">
             <FunnelChart stages={funnelData} />
           </div>
         </div>
 
         {/* Bottom Section: Contributor Velocity Table (67%) vs DORA Feed (33%) */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
-          <div id="tour-contributors" className="lg:col-span-8">
+          <div id="tour-contributors" className="lg:col-span-8 scroll-mt-28 rounded-xl transition-all duration-300">
             <ContributorTable
               data={contributors}
               onSelectContributor={handleOpenJourney}
             />
           </div>
-          <div className="lg:col-span-4">
+          <div id="section-dora-feed" className="lg:col-span-4 scroll-mt-28 rounded-xl transition-all duration-300">
             <DORAFeed alerts={anomalies} summary={executiveSummary} />
           </div>
         </div>
