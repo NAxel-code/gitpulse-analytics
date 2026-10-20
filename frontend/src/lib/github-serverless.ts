@@ -243,11 +243,36 @@ export function computeActivityTimeline(data: RawGitHubEventCache, days: number 
   }));
 }
 
-/**
- * 3. Calculate PR Lifecycle Funnel
- */
-export function computePRFunnel(data: RawGitHubEventCache) {
-  const total = data.pulls.length;
+function classifyPR(title: string = "", labels: any[] = []): "features" | "fixes" | "docs" | "chores" {
+  const t = (title || "").toLowerCase();
+  const labelNames = (labels || []).map((l: any) => (typeof l === "string" ? l : l.name || "").toLowerCase());
+
+  if (
+    t.startsWith("feat") ||
+    t.includes("feature") ||
+    labelNames.some((l) => l.includes("feat") || l.includes("enhancement"))
+  ) {
+    return "features";
+  }
+  if (
+    t.startsWith("fix") ||
+    t.includes("bug") ||
+    t.includes("patch") ||
+    labelNames.some((l) => l.includes("bug") || l.includes("fix"))
+  ) {
+    return "fixes";
+  }
+  if (
+    t.startsWith("doc") ||
+    labelNames.some((l) => l.includes("doc"))
+  ) {
+    return "docs";
+  }
+  return "chores";
+}
+
+function buildFunnelStages(pulls: any[]) {
+  const total = pulls.length;
   if (total === 0) {
     return [
       { stage_name: "1. PRs Created", count: 0, conversion_from_previous_pct: 100.0, drop_off_pct: 0.0, is_bottleneck: false, diagnostic_tip: null },
@@ -257,9 +282,9 @@ export function computePRFunnel(data: RawGitHubEventCache) {
     ];
   }
 
-  const inReview = data.pulls.filter((p) => p.state === "open").length + Math.round(total * 0.4);
+  const inReview = pulls.filter((p) => p.state === "open").length + Math.round(total * 0.4);
   const approved = Math.max(1, Math.round(total * 0.45));
-  const merged = data.pulls.filter((p) => p.merged_at != null).length;
+  const merged = pulls.filter((p) => p.merged_at != null).length;
 
   const convReview = Number(Math.min(100, (inReview / total) * 100).toFixed(1));
   const convApproved = inReview > 0 ? Number(Math.min(100, (approved / inReview) * 100).toFixed(1)) : 0.0;
@@ -271,6 +296,35 @@ export function computePRFunnel(data: RawGitHubEventCache) {
     { stage_name: "3. Changes Approved", count: approved, conversion_from_previous_pct: convApproved, drop_off_pct: Number((100 - convApproved).toFixed(1)), is_bottleneck: convApproved < 60, diagnostic_tip: convApproved < 60 ? "Recurring review churn: automate CI linters to catch formatting before review" : null },
     { stage_name: "4. Merged to Main", count: merged, conversion_from_previous_pct: convMerged, drop_off_pct: Number((100 - convMerged).toFixed(1)), is_bottleneck: false, diagnostic_tip: null },
   ];
+}
+
+/**
+ * 3. Calculate PR Lifecycle Funnel
+ */
+export function computePRFunnel(data: RawGitHubEventCache) {
+  const allStages = buildFunnelStages(data.pulls);
+  const featurePulls = data.pulls.filter((p) => classifyPR(p.title, p.labels) === "features");
+  const fixPulls = data.pulls.filter((p) => classifyPR(p.title, p.labels) === "fixes");
+  const docPulls = data.pulls.filter((p) => classifyPR(p.title, p.labels) === "docs");
+  const chorePulls = data.pulls.filter((p) => classifyPR(p.title, p.labels) === "chores");
+
+  return {
+    stages: allStages,
+    byCategory: {
+      all: allStages,
+      features: buildFunnelStages(featurePulls),
+      fixes: buildFunnelStages(fixPulls),
+      docs: buildFunnelStages(docPulls),
+      chores: buildFunnelStages(chorePulls),
+    },
+    counts: {
+      all: data.pulls.length,
+      features: featurePulls.length,
+      fixes: fixPulls.length,
+      docs: docPulls.length,
+      chores: chorePulls.length,
+    },
+  };
 }
 
 /**

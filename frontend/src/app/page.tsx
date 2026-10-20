@@ -21,6 +21,7 @@ export default function GitPulseDashboard() {
   const [kpiData, setKpiData] = useState<any>(null);
   const [timelineData, setTimelineData] = useState<any[]>([]);
   const [funnelData, setFunnelData] = useState<any[]>([]);
+  const [funnelPayload, setFunnelPayload] = useState<any>(null);
   const [contributors, setContributors] = useState<any[]>([]);
   const [anomalies, setAnomalies] = useState<any[]>([]);
   const [executiveSummary, setExecutiveSummary] = useState<any>(null);
@@ -108,6 +109,10 @@ export default function GitPulseDashboard() {
       }
       if (Array.isArray(funnelRes)) {
         setFunnelData(funnelRes);
+        setFunnelPayload(null);
+      } else if (funnelRes && Array.isArray(funnelRes.stages)) {
+        setFunnelData(funnelRes.stages);
+        setFunnelPayload(funnelRes);
       }
       if (Array.isArray(contribRes)) {
         setContributors(contribRes);
@@ -198,7 +203,7 @@ export default function GitPulseDashboard() {
             />
           </div>
           <div id="tour-pr-funnel" className="lg:col-span-4 scroll-mt-28 rounded-xl transition-all duration-300">
-            <FunnelChart stages={funnelData} />
+            <FunnelChart stages={funnelData} payload={funnelPayload} />
           </div>
         </div>
 
@@ -211,7 +216,7 @@ export default function GitPulseDashboard() {
             />
           </div>
           <div id="section-dora-feed" className="lg:col-span-4 scroll-mt-28 rounded-xl transition-all duration-300">
-            <DORAFeed alerts={anomalies} summary={executiveSummary} />
+            <DORAFeed alerts={anomalies} summary={executiveSummary} contributors={contributors} />
           </div>
         </div>
       </main>

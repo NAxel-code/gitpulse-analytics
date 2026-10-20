@@ -1,8 +1,28 @@
 "use client";
 
-import { useState } from "react";
-import { Search, ArrowUpDown, Award, Flame, Zap, TrendingUp, ChevronRight, Medal, GitPullRequest } from "lucide-react";
+import { useState, useMemo } from "react";
+import { Search, ArrowUpDown, Award, Flame, Zap, TrendingUp, ChevronRight, Medal, GitPullRequest, Bot } from "lucide-react";
 import { formatNumber } from "@/lib/utils";
+
+export const isBotAccount = (login: string) => {
+  const l = login.toLowerCase();
+  return (
+    l.includes("[bot]") ||
+    l.endsWith("-bot") ||
+    l.endsWith("_bot") ||
+    l.startsWith("bot-") ||
+    l.startsWith("bot_") ||
+    l.includes("robot") ||
+    l === "dependabot" ||
+    l === "renovate" ||
+    l === "k8s-ci-robot" ||
+    l === "github-actions" ||
+    l === "codecov" ||
+    l === "snyk-bot" ||
+    l === "greenkeeper" ||
+    l === "stale"
+  );
+};
 
 export interface ContributorItem {
   login: string;
@@ -28,19 +48,27 @@ export function ContributorTable({ data, onSelectContributor }: ContributorTable
   const [search, setSearch] = useState("");
   const [sortField, setSortField] = useState<keyof ContributorItem>("velocity_score");
   const [sortAsc, setSortAsc] = useState(false);
+  const [excludeBots, setExcludeBots] = useState(true);
 
-  const filtered = data
-    .filter((item) => item.login.toLowerCase().includes(search.toLowerCase()))
-    .sort((a, b) => {
-      const valA = a[sortField];
-      const valB = b[sortField];
-      if (typeof valA === "number" && typeof valB === "number") {
-        return sortAsc ? valA - valB : valB - valA;
-      }
-      return sortAsc
-        ? String(valA ?? "").localeCompare(String(valB ?? ""))
-        : String(valB ?? "").localeCompare(String(valA ?? ""));
-    });
+  const botCount = useMemo(() => data.filter((item) => isBotAccount(item.login)).length, [data]);
+
+  const filtered = useMemo(() => {
+    return data
+      .filter((item) => {
+        if (excludeBots && isBotAccount(item.login)) return false;
+        return item.login.toLowerCase().includes(search.toLowerCase());
+      })
+      .sort((a, b) => {
+        const valA = a[sortField];
+        const valB = b[sortField];
+        if (typeof valA === "number" && typeof valB === "number") {
+          return sortAsc ? valA - valB : valB - valA;
+        }
+        return sortAsc
+          ? String(valA ?? "").localeCompare(String(valB ?? ""))
+          : String(valB ?? "").localeCompare(String(valA ?? ""));
+      });
+  }, [data, search, sortField, sortAsc, excludeBots]);
 
   const handleSort = (field: keyof ContributorItem) => {
     if (sortField === field) {
@@ -117,16 +145,36 @@ export function ContributorTable({ data, onSelectContributor }: ContributorTable
           </p>
         </div>
 
-        {/* Search */}
-        <div className="relative w-full sm:w-60">
-          <Search className="absolute left-3 top-2.5 h-3.5 w-3.5 text-zinc-500" />
-          <input
-            type="text"
-            placeholder="Search contributor..."
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            className="w-full rounded-lg border border-zinc-800 bg-zinc-950/80 pl-8 pr-3 py-1.5 text-xs text-zinc-200 placeholder-zinc-500 focus:border-zinc-700 focus:ring-1 focus:ring-zinc-700 focus:outline-none transition-colors"
-          />
+        {/* Controls: Exclude Bots Toggle & Search */}
+        <div className="flex items-center gap-2 w-full sm:w-auto">
+          <button
+            onClick={() => setExcludeBots(!excludeBots)}
+            className={`flex items-center gap-1.5 rounded-lg border px-2.5 py-1.5 text-xs font-mono transition cursor-pointer shrink-0 ${
+              excludeBots
+                ? "border-indigo-500/40 bg-indigo-500/10 text-indigo-300 hover:bg-indigo-500/20"
+                : "border-zinc-800 bg-zinc-950 text-zinc-400 hover:text-zinc-200"
+            }`}
+            title={excludeBots ? "Click to show bot accounts" : "Click to hide automated bot accounts (e.g. Renovate, Dependabot)"}
+          >
+            <Bot className="h-3.5 w-3.5" />
+            <span>{excludeBots ? "Bots Hidden" : "Show All"}</span>
+            {botCount > 0 && (
+              <span className="rounded-full bg-zinc-800/90 px-1.5 py-0.2 text-[10px] text-zinc-300 border border-zinc-700/60 font-semibold">
+                {excludeBots ? `-${botCount}` : botCount}
+              </span>
+            )}
+          </button>
+
+          <div className="relative w-full sm:w-56">
+            <Search className="absolute left-3 top-2.5 h-3.5 w-3.5 text-zinc-500" />
+            <input
+              type="text"
+              placeholder="Search contributor..."
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              className="w-full rounded-lg border border-zinc-800 bg-zinc-950/80 pl-8 pr-3 py-1.5 text-xs text-zinc-200 placeholder-zinc-500 focus:border-zinc-700 focus:ring-1 focus:ring-zinc-700 focus:outline-none transition-colors"
+            />
+          </div>
         </div>
       </div>
 
@@ -201,6 +249,9 @@ export function ContributorTable({ data, onSelectContributor }: ContributorTable
               </tr>
             ) : (
               filtered.slice(0, 10).map((dev, idx) => {
+                const isBot = isBotAccount(dev.login);
+                const displayRank = idx + 1;
+
                 return (
                   <tr
                     key={idx}
@@ -209,7 +260,7 @@ export function ContributorTable({ data, onSelectContributor }: ContributorTable
                     title={`Click to view activity journey for @${dev.login}`}
                   >
                     <td className="py-3 px-3 text-center whitespace-nowrap">
-                      {getRankBadgeDisplay(dev.rank_badge, dev.rank ?? idx + 1)}
+                      {getRankBadgeDisplay(undefined, displayRank)}
                     </td>
                     <td className="py-3 px-3 whitespace-nowrap">
                       <div className="flex items-center gap-2.5 min-w-[160px]">
@@ -221,6 +272,11 @@ export function ContributorTable({ data, onSelectContributor }: ContributorTable
                         <span className="font-medium text-zinc-200 group-hover:text-white transition-colors truncate max-w-[150px]">
                           @{dev.login}
                         </span>
+                        {isBot && (
+                          <span className="rounded bg-zinc-800/80 px-1 py-0.2 text-[9px] font-mono font-medium text-zinc-400 border border-zinc-700/60">
+                            BOT
+                          </span>
+                        )}
                       </div>
                     </td>
                     <td className="py-3 px-4 font-mono font-medium text-zinc-200 tabular-nums text-right whitespace-nowrap">
