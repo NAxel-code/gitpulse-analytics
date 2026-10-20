@@ -11,6 +11,7 @@ import { DORAFeed } from "@/components/DORAFeed";
 import { AIModal } from "@/components/AIModal";
 import { HelpTourModal } from "@/components/HelpTourModal";
 import { RepoLeaderboardModal } from "@/components/RepoLeaderboardModal";
+import { SprintExportModal } from "@/components/SprintExportModal";
 import { GITHUB_API_URL } from "@/lib/api";
 import { getFallbackDashboardData } from "@/lib/fallback";
 
@@ -29,6 +30,7 @@ export default function GitPulseDashboard() {
   const [selectedContributor, setSelectedContributor] = useState<string | null>(null);
   const [isJourneyModalOpen, setIsJourneyModalOpen] = useState(false);
   const [isHelpModalOpen, setIsHelpModalOpen] = useState(false);
+  const [isExportModalOpen, setIsExportModalOpen] = useState(false);
   const [isLeaderboardOpen, setIsLeaderboardOpen] = useState(false);
   const [isTourActive, setIsTourActive] = useState(false);
   const [syncing, setSyncing] = useState(false);
@@ -216,7 +218,12 @@ export default function GitPulseDashboard() {
             />
           </div>
           <div id="section-dora-feed" className="lg:col-span-4 scroll-mt-28 rounded-xl transition-all duration-300">
-            <DORAFeed alerts={anomalies} summary={executiveSummary} contributors={contributors} />
+            <DORAFeed
+              alerts={anomalies}
+              summary={executiveSummary}
+              contributors={contributors}
+              onOpenExport={() => setIsExportModalOpen(true)}
+            />
           </div>
         </div>
       </main>
@@ -265,6 +272,17 @@ export default function GitPulseDashboard() {
           setCurrentRepo(r);
           handleSyncRepo(r);
         }}
+      />
+
+      {/* Engineering Sprint Brief Export & Share Modal */}
+      <SprintExportModal
+        isOpen={isExportModalOpen}
+        onClose={() => setIsExportModalOpen(false)}
+        repoName={currentRepo}
+        days={days}
+        kpiData={kpiData}
+        contributors={contributors}
+        executiveSummary={executiveSummary}
       />
     </div>
   );

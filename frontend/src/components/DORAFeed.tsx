@@ -1,6 +1,6 @@
 "use client";
 
-import { AlertTriangle, FileText, CheckCircle2, GitMerge, Clock, Activity, ShieldCheck } from "lucide-react";
+import { AlertTriangle, FileText, CheckCircle2, GitMerge, Clock, Activity, ShieldCheck, Share2 } from "lucide-react";
 import { ContributorItem, isBotAccount } from "./ContributorTable";
 
 interface DORAAlert {
@@ -24,10 +24,12 @@ export function DORAFeed({
   alerts,
   summary,
   contributors = [],
+  onOpenExport,
 }: {
   alerts: DORAAlert[];
   summary: ExecutiveSummaryData | null;
   contributors?: ContributorItem[];
+  onOpenExport?: () => void;
 }) {
   // Compute Team Resilience & Bus Factor
   const humanContribs = (contributors || []).filter((c) => !isBotAccount(c.login));
@@ -195,9 +197,21 @@ export function DORAFeed({
                 Daily Engineering Brief
               </h3>
             </div>
-            <span className="text-[10px] font-mono tabular-nums text-zinc-400 bg-zinc-800/90 px-2 py-0.5 rounded border border-zinc-700/60">
-              {summary.generated_at}
-            </span>
+            <div className="flex items-center gap-2">
+              {onOpenExport && (
+                <button
+                  onClick={onOpenExport}
+                  className="flex items-center gap-1.5 rounded-lg border border-zinc-700/80 bg-zinc-800/90 px-2.5 py-1 text-xs font-mono font-medium text-zinc-200 hover:text-white hover:bg-zinc-750 hover:border-zinc-600 transition cursor-pointer"
+                  title="Copy formatted sprint brief for Slack, Discord, or Markdown"
+                >
+                  <Share2 className="h-3.5 w-3.5 text-indigo-400" />
+                  <span>Share Brief</span>
+                </button>
+              )}
+              <span className="text-[10px] font-mono tabular-nums text-zinc-400 bg-zinc-800/90 px-2 py-0.5 rounded border border-zinc-700/60 hidden sm:inline">
+                {summary.generated_at}
+              </span>
+            </div>
           </div>
 
           <p className="text-xs leading-relaxed text-zinc-300 mb-3.5">
