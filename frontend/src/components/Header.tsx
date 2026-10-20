@@ -219,11 +219,11 @@ export function Header({
               className="group flex w-full h-9 items-center justify-between gap-2 rounded-xl border border-zinc-800 bg-zinc-900/70 px-3 text-xs text-zinc-400 shadow-xs transition hover:border-zinc-700 hover:bg-zinc-900 hover:text-zinc-200 cursor-pointer focus-visible:ring-2 focus-visible:ring-zinc-400 focus-visible:outline-none overflow-hidden"
             >
               <div className="flex items-center gap-2 min-w-0 flex-1">
-                <Sparkles className="h-4 w-4 shrink-0 text-indigo-400 transition group-hover:rotate-6" />
+                <Search className="h-4 w-4 shrink-0 text-indigo-400 transition group-hover:scale-110" />
                 <span className="truncate whitespace-nowrap text-zinc-300 text-left">
-                  <span className="font-semibold text-indigo-300">Ask AI:</span>{" "}
-                  <span className="text-zinc-400 hidden lg:inline">&quot;Top contributor with most merged PRs&quot;</span>
-                  <span className="text-zinc-400 lg:hidden">&quot;Top contributor...&quot;</span>
+                  <span className="font-semibold text-indigo-300">Search:</span>{" "}
+                  <span className="text-zinc-400 hidden lg:inline">&quot;Search repositories, @devs, or ask AI...&quot;</span>
+                  <span className="text-zinc-400 lg:hidden">&quot;Search or ask AI...&quot;</span>
                 </span>
               </div>
               <kbd className="shrink-0 hidden sm:inline-flex items-center rounded border border-zinc-700/80 bg-zinc-800/90 px-1.5 py-0.5 text-[10px] font-mono font-medium text-zinc-300">

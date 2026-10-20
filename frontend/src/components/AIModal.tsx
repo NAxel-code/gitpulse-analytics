@@ -16,6 +16,8 @@ import {
   RefreshCw,
   FolderGit2,
   AlertCircle,
+  Search,
+  Star,
 } from "lucide-react";
 import {
   BarChart,
@@ -68,6 +70,8 @@ export function AIModal({
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState<AIResponse | null>(null);
   const [copied, setCopied] = useState(false);
+  const [liveRepos, setLiveRepos] = useState<any[]>([]);
+  const [isSearchingLive, setIsSearchingLive] = useState(false);
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -78,6 +82,33 @@ export function AIModal({
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [onClose]);
+
+  // Live GitHub Repository Search as user types (like GitHub's ⌘K search bar)
+  useEffect(() => {
+    const q = prompt.trim();
+    if (!q || q.length < 2) {
+      setLiveRepos([]);
+      setIsSearchingLive(false);
+      return;
+    }
+
+    const timer = setTimeout(async () => {
+      setIsSearchingLive(true);
+      try {
+        const res = await fetch(`/api/github/search?q=${encodeURIComponent(q)}`);
+        if (res.ok) {
+          const data = await res.json();
+          setLiveRepos(data.items || []);
+        }
+      } catch (err) {
+        console.warn("Live GitHub search error:", err);
+      } finally {
+        setIsSearchingLive(false);
+      }
+    }, 250);
+
+    return () => clearTimeout(timer);
+  }, [prompt]);
 
   if (!isOpen) return null;
 
@@ -141,14 +172,14 @@ export function AIModal({
         <div className="flex items-center justify-between pb-4 border-b border-zinc-800">
           <div className="flex items-center gap-2.5">
             <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-zinc-900 text-zinc-200 border border-zinc-700/80">
-              <Terminal className="h-4 w-4 text-indigo-400" />
+              <Search className="h-4 w-4 text-indigo-400" />
             </div>
             <div>
               <h3 className="font-semibold text-zinc-100 text-base">
-                Natural Language Code Analytics
+                GitHub Universal Search &amp; AI Analytics
               </h3>
               <p className="text-xs text-zinc-400">
-                Text-to-SQL AST Sanitized on DuckDB · Repo:{" "}
+                Search repositories worldwide, @developers, or query DuckDB SQL · Active:{" "}
                 <span className="font-mono text-zinc-200">{currentRepo}</span>
               </p>
             </div>
@@ -171,26 +202,89 @@ export function AIModal({
             }}
             className="flex items-center gap-2 rounded-xl border border-zinc-800 bg-zinc-900/70 p-2 focus-within:border-zinc-600 focus-within:ring-1 focus-within:ring-zinc-600 transition-colors"
           >
-            <input
-              type="text"
-              placeholder="Ask dev metrics, search @username, or command 'sync' / 'switch react'..."
-              value={prompt}
-              onChange={(e) => setPrompt(e.target.value)}
-              className="flex-1 bg-transparent px-3 py-1.5 text-sm text-zinc-100 placeholder-zinc-500 focus:outline-none"
-            />
+            <div className="relative flex-1">
+              <Search className="absolute left-3 top-2.5 h-4 w-4 text-zinc-500" />
+              <input
+                type="text"
+                autoFocus
+                placeholder="Search repositories (e.g. OreOdyssey, react, uv), @developer, or ask dev questions..."
+                value={prompt}
+                onChange={(e) => {
+                  setPrompt(e.target.value);
+                  if (result) setResult(null);
+                }}
+                className="w-full bg-transparent pl-9 pr-3 py-1.5 text-sm text-zinc-100 placeholder-zinc-500 focus:outline-none"
+              />
+            </div>
             <button
               type="submit"
               disabled={loading || !prompt.trim()}
-              className="flex items-center gap-1.5 rounded-lg bg-zinc-100 px-3.5 py-1.5 text-xs font-medium text-zinc-950 hover:bg-white disabled:opacity-40 transition-colors shadow-sm"
+              className="flex items-center gap-1.5 rounded-lg bg-zinc-100 px-3.5 py-1.5 text-xs font-medium text-zinc-950 hover:bg-white disabled:opacity-40 transition-colors shadow-sm cursor-pointer shrink-0"
             >
               {loading ? (
                 <Loader2 className="h-3.5 w-3.5 animate-spin text-zinc-950" />
               ) : (
                 <Send className="h-3.5 w-3.5 text-zinc-950" />
               )}
-              <span>Ask</span>
+              <span>Ask AI</span>
             </button>
           </form>
+
+          {/* Live GitHub Search Autocomplete Results (seperti milik GitHub) */}
+          {prompt.trim().length >= 2 && !result && (
+            <div className="mt-3 rounded-xl border border-zinc-800 bg-zinc-950/95 shadow-xl overflow-hidden divide-y divide-zinc-800/60 max-h-64 overflow-y-auto">
+              <div className="px-3 py-2 bg-zinc-900/70 flex items-center justify-between text-[11px] font-mono text-zinc-400">
+                <span className="flex items-center gap-1.5">
+                  <FolderGit2 className="h-3.5 w-3.5 text-indigo-400" />
+                  <span>GitHub Repositories Matching &quot;{prompt}&quot;</span>
+                </span>
+                {isSearchingLive && (
+                  <span className="flex items-center gap-1 text-[10px] text-zinc-500">
+                    <Loader2 className="h-3 w-3 animate-spin text-indigo-400" />
+                    Searching GitHub...
+                  </span>
+                )}
+              </div>
+
+              {liveRepos.length > 0 ? (
+                liveRepos.slice(0, 6).map((repo) => (
+                  <button
+                    key={repo.full_name}
+                    type="button"
+                    onClick={() => {
+                      onClose();
+                      onRepoChange?.(repo.full_name);
+                    }}
+                    className="w-full text-left px-3 py-2.5 hover:bg-zinc-850 transition flex items-center justify-between gap-3 group cursor-pointer border-b border-zinc-900/60"
+                  >
+                    <div className="min-w-0 flex-1">
+                      <div className="flex items-center gap-2">
+                        <span className="font-mono text-xs font-bold text-white group-hover:text-indigo-300 truncate">
+                          {repo.full_name}
+                        </span>
+                        {repo.language && (
+                          <span className="text-[10px] font-mono px-1.5 py-0.2 rounded bg-zinc-800 text-zinc-400 border border-zinc-700/50">
+                            {repo.language}
+                          </span>
+                        )}
+                      </div>
+                      <p className="text-[11px] text-zinc-400 truncate mt-0.5">
+                        {repo.description}
+                      </p>
+                    </div>
+                    <div className="flex items-center gap-1 text-[11px] font-mono font-bold text-amber-300 shrink-0">
+                      <Star className="h-3 w-3 fill-amber-400 text-amber-400" />
+                      <span>{repo.stars_formatted}</span>
+                    </div>
+                  </button>
+                ))
+              ) : !isSearchingLive ? (
+                <div className="p-3 text-center text-xs text-zinc-500">
+                  No public repositories found. Press &quot;Ask AI&quot; or Enter to execute natural language query.
+                </div>
+              ) : null}
+            </div>
+          )}
 
           {/* Quick Prompts */}
           <div className="flex flex-wrap gap-1.5 mt-2.5">
