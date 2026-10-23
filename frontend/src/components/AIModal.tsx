@@ -18,6 +18,8 @@ import {
   AlertCircle,
   Search,
   Star,
+  ChevronDown,
+  ChevronUp,
 } from "lucide-react";
 import {
   BarChart,
@@ -72,6 +74,7 @@ export function AIModal({
   const [copied, setCopied] = useState(false);
   const [liveRepos, setLiveRepos] = useState<any[]>([]);
   const [isSearchingLive, setIsSearchingLive] = useState(false);
+  const [showSQL, setShowSQL] = useState(false);
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -117,6 +120,7 @@ export function AIModal({
     if (!q.trim()) return;
 
     setLoading(true);
+    setShowSQL(false);
     try {
       const res = await fetch(`${AI_API_URL}/insight`, {
         method: "POST",
@@ -484,27 +488,49 @@ export function AIModal({
                 </div>
               )}
 
-            {/* Generated SQL AST Sandbox */}
-            <div className="rounded-xl border border-zinc-800 bg-zinc-900/70 p-3">
-              <div className="flex items-center justify-between mb-1.5">
-                <div className="flex items-center gap-1.5 text-xs text-zinc-400 font-mono">
-                  <Terminal className="h-3.5 w-3.5 text-zinc-500" />
-                  <span>Sandboxed Read-Only SQL (DuckDB)</span>
+            {/* Generated SQL AST Sandbox (Collapsible & Non-Command Filtered) */}
+            {result.generated_sql &&
+              result.chart_type !== "command_action" &&
+              !result.generated_sql.trim().startsWith("-- COMMAND:") && (
+                <div className="rounded-xl border border-zinc-800/80 bg-zinc-900/60 overflow-hidden transition-all duration-200">
+                  <div className="flex items-center justify-between px-3 py-2 bg-zinc-900/80 border-b border-zinc-800/60">
+                    <button
+                      type="button"
+                      onClick={() => setShowSQL((prev) => !prev)}
+                      className="flex items-center gap-2 text-xs font-mono text-zinc-300 hover:text-white transition-colors cursor-pointer select-none group"
+                    >
+                      <Terminal className="h-3.5 w-3.5 text-zinc-400 group-hover:text-indigo-400 transition-colors" />
+                      <span className="font-medium">Sandboxed Read-Only SQL (DuckDB)</span>
+                      <span className="rounded bg-zinc-800/80 px-1.5 py-0.2 text-[10px] text-zinc-400 border border-zinc-700/50 font-sans">
+                        {showSQL ? "Hide" : "Inspect"}
+                      </span>
+                      {showSQL ? (
+                        <ChevronUp className="h-3.5 w-3.5 text-zinc-400 group-hover:text-zinc-200" />
+                      ) : (
+                        <ChevronDown className="h-3.5 w-3.5 text-zinc-400 group-hover:text-zinc-200" />
+                      )}
+                    </button>
+                    {showSQL && (
+                      <button
+                        onClick={copySQL}
+                        className="flex items-center gap-1 rounded bg-zinc-800 hover:bg-zinc-700 px-2 py-0.5 text-[10px] text-zinc-300 border border-zinc-700/60 hover:text-white transition cursor-pointer"
+                      >
+                        {copied ? (
+                          <Check className="h-3 w-3 text-emerald-400" />
+                        ) : null}
+                        <span>{copied ? "Copied" : "Copy SQL"}</span>
+                      </button>
+                    )}
+                  </div>
+                  {showSQL && (
+                    <div className="p-3 bg-zinc-950/90 border-t border-zinc-900">
+                      <pre className="overflow-x-auto font-mono text-[11px] text-emerald-400 leading-relaxed selection:bg-emerald-500/20">
+                        {result.generated_sql}
+                      </pre>
+                    </div>
+                  )}
                 </div>
-                <button
-                  onClick={copySQL}
-                  className="flex items-center gap-1 rounded bg-zinc-800 px-2 py-0.5 text-[10px] text-zinc-300 hover:bg-zinc-700 transition"
-                >
-                  {copied ? (
-                    <Check className="h-3 w-3 text-emerald-400" />
-                  ) : null}
-                  <span>{copied ? "Copied" : "Copy SQL"}</span>
-                </button>
-              </div>
-              <pre className="overflow-x-auto rounded bg-zinc-950 p-2 font-mono text-[11px] text-emerald-400">
-                {result.generated_sql}
-              </pre>
-            </div>
+              )}
           </div>
         )}
       </div>
