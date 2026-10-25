@@ -12,7 +12,7 @@
 [![Next.js 15](https://img.shields.io/badge/Next.js%2015-App%20Router-black?style=for-the-badge&logo=next.js)](https://nextjs.org)
 [![FastAPI](https://img.shields.io/badge/FastAPI-Python%203.12-009688?style=for-the-badge&logo=fastapi)](https://fastapi.tiangolo.com)
 [![DuckDB](https://img.shields.io/badge/DuckDB-Columnar%20Engine-FFF000?style=for-the-badge&logo=duckdb&logoColor=black)](https://duckdb.org)
-[![GitHub Issues](https://img.shields.io/badge/GitHub%20Issues-7%20Resolved-success?style=for-the-badge&logo=github)](https://github.com/NAxel-code/gitpulse-analytics/issues?q=is%3Aissue+is%3Aclosed)
+[![GitHub Issues](https://img.shields.io/badge/GitHub%20Issues-8%20Resolved-success?style=for-the-badge&logo=github)](https://github.com/NAxel-code/gitpulse-analytics/issues?q=is%3Aissue+is%3Aclosed)
 
 ---
 
@@ -90,6 +90,7 @@ All feature implementations, UX refinements, and bug fixes are transparently tra
 | [#5](https://github.com/NAxel-code/gitpulse-analytics/issues/5) | `fix` | **100% Factual GitHub Data & Responsive Search Layout:** Stripped synthetic mock data and corrected AI search input overflow on medium viewports. | [`0862280`](https://github.com/NAxel-code/gitpulse-analytics/commit/0862280) | `CLOSED` |
 | [#6](https://github.com/NAxel-code/gitpulse-analytics/issues/6) | `feat` | **Sector Benchmark Leaderboard:** Multi-sector comparative modal (AI, Systems, Cloud, Web, Mobile) with star ratings, licenses, and velocity scores. | [`05af35e`](https://github.com/NAxel-code/gitpulse-analytics/commit/05af35e) | `CLOSED` |
 | [#7](https://github.com/NAxel-code/gitpulse-analytics/issues/7) | `feat` | **Pure Next.js Universal Serverless Architecture & Live Autocomplete:** Ported DORA engine to Next.js route handlers with live debounced search. | [`72900f6`](https://github.com/NAxel-code/gitpulse-analytics/commit/72900f6) | `CLOSED` |
+| [#8](https://github.com/NAxel-code/gitpulse-analytics/issues/8) | `feat` | **Awwwards SOTD Monochrome Redesign & Live Benchmark:** Swiss architectural overhaul, minimalist geometric brand identity, Framer Motion choreography, and live GitHub trending real data parsing. | [`487e4de`](https://github.com/NAxel-code/gitpulse-analytics/commit/487e4de) | `CLOSED` |
 
 ---
 

@@ -12,7 +12,7 @@
 [![Next.js 15](https://img.shields.io/badge/Next.js%2015-App%20Router-black?style=for-the-badge&logo=next.js)](https://nextjs.org)
 [![FastAPI](https://img.shields.io/badge/FastAPI-Python%203.12-009688?style=for-the-badge&logo=fastapi)](https://fastapi.tiangolo.com)
 [![DuckDB](https://img.shields.io/badge/DuckDB-Columnar%20Engine-FFF000?style=for-the-badge&logo=duckdb&logoColor=black)](https://duckdb.org)
-[![GitHub Issues](https://img.shields.io/badge/GitHub%20Issues-7%20Resolved-success?style=for-the-badge&logo=github)](https://github.com/NAxel-code/gitpulse-analytics/issues?q=is%3Aissue+is%3Aclosed)
+[![GitHub Issues](https://img.shields.io/badge/GitHub%20Issues-8%20Resolved-success?style=for-the-badge&logo=github)](https://github.com/NAxel-code/gitpulse-analytics/issues?q=is%3Aissue+is%3Aclosed)
 
 ---
 
@@ -90,6 +90,7 @@ Semua perbaikan dan peningkatan fitur terdokumentasi secara transparan pada issu
 | [#5](https://github.com/NAxel-code/gitpulse-analytics/issues/5) | `fix` | **100% Factual GitHub Data & Responsive Search Layout:** Menghapus data simulasi tiruan dan memperbaiki overflow kotak pencarian AI di viewport medium. | [`0862280`](https://github.com/NAxel-code/gitpulse-analytics/commit/0862280) | `CLOSED` |
 | [#6](https://github.com/NAxel-code/gitpulse-analytics/issues/6) | `feat` | **Sector Benchmark Leaderboard:** Modal komparasi lintas sektor (AI, Systems, Cloud, Web, Mobile) dengan indikator stars, lisensi, dan velocity. | [`05af35e`](https://github.com/NAxel-code/gitpulse-analytics/commit/05af35e) | `CLOSED` |
 | [#7](https://github.com/NAxel-code/gitpulse-analytics/issues/7) | `feat` | **Pure Next.js Universal Serverless Architecture & Live Autocomplete:** Migrasi engine DORA ke serverless route handlers Next.js dan live search. | [`72900f6`](https://github.com/NAxel-code/gitpulse-analytics/commit/72900f6) | `CLOSED` |
+| [#8](https://github.com/NAxel-code/gitpulse-analytics/issues/8) | `feat` | **Awwwards SOTD Monochrome Redesign & Live Benchmark:** Rombak desain arsitektural Swiss monokrom, identitas logo geometris, koreografi Framer Motion, dan perbaikan live data parsing GitHub trending. | [`487e4de`](https://github.com/NAxel-code/gitpulse-analytics/commit/487e4de) | `CLOSED` |
 
 ---
 
