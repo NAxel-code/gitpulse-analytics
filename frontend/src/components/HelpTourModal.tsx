@@ -226,38 +226,38 @@ export function HelpTourModal({
     <>
       {/* 1. First-time Visitor Welcome Banner */}
       {showWelcomeBanner && !isTourActive && !isHelpOpen && (
-        <div className="fixed bottom-4 right-4 z-40 max-w-md rounded-2xl border border-zinc-700/80 bg-zinc-900/95 p-4 shadow-2xl backdrop-blur-md animate-in fade-in slide-in-from-bottom-3 duration-300">
+        <div className="fixed bottom-4 right-4 z-40 max-w-md border border-white/[0.14] bg-[#0c0c0e] p-4 shadow-2xl animate-in fade-in slide-in-from-bottom-3 duration-300">
           <div className="flex items-start gap-3">
-            <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-indigo-500/10 border border-indigo-500/20 text-indigo-400">
-              <Compass className="h-5 w-5" />
+            <div className="flex h-8 w-8 shrink-0 items-center justify-center border border-white/[0.12] bg-white/[0.04] text-white">
+              <Compass className="h-4 w-4" />
             </div>
             <div className="flex-1">
-              <h4 className="text-xs font-semibold text-zinc-100">
-                Welcome to GitPulse Analytics!
+              <h4 className="text-xs font-mono font-bold uppercase tracking-wider text-white">
+                Welcome to GitPulse Telemetry
               </h4>
-              <p className="mt-1 text-xs text-zinc-400 leading-relaxed">
-                Take a 1-minute interactive tour to understand DORA metrics, natural language AI search, and contributor velocity?
+              <p className="mt-1 text-xs text-zinc-400 leading-relaxed font-sans">
+                Take a 1-minute guided tour to explore DORA engineering metrics, DuckDB query console, and contributor velocity.
               </p>
               <div className="mt-3 flex items-center gap-2">
                 <button
                   onClick={handleStartTourFromBanner}
-                  className="rounded-lg bg-zinc-100 hover:bg-white text-zinc-950 px-3 py-1.5 text-xs font-semibold shadow-xs transition-colors flex items-center gap-1.5 focus-visible:ring-2 focus-visible:ring-zinc-400 focus:outline-none"
+                  className="bg-white hover:bg-zinc-200 text-black px-3 py-1.5 text-xs font-mono font-medium uppercase tracking-tight transition-colors flex items-center gap-1.5 cursor-pointer"
                 >
                   <span>Start Tour</span>
                   <ArrowRight className="h-3.5 w-3.5" />
                 </button>
                 <button
                   onClick={handleDismissBanner}
-                  className="rounded-lg border border-zinc-800 bg-zinc-900/80 hover:bg-zinc-800 text-zinc-300 px-2.5 py-1.5 text-xs font-medium transition-colors focus-visible:ring-2 focus-visible:ring-zinc-700 focus:outline-none"
+                  className="border border-white/[0.1] bg-white/[0.02] hover:border-white/20 text-zinc-300 px-2.5 py-1.5 text-xs font-mono transition-colors cursor-pointer"
                 >
-                  Maybe Later
+                  Dismiss
                 </button>
               </div>
             </div>
             <button
               onClick={handleDismissBanner}
               aria-label="Close banner"
-              className="text-zinc-500 hover:text-zinc-300 p-1 rounded-lg transition-colors"
+              className="text-zinc-500 hover:text-white p-1 transition-colors cursor-pointer"
             >
               <X className="h-4 w-4" />
             </button>
@@ -279,8 +279,8 @@ export function HelpTourModal({
                     y={Math.max(0, targetRect.top - 6)}
                     width={targetRect.width + 12}
                     height={targetRect.height + 12}
-                    rx="16"
-                    ry="16"
+                    rx="4"
+                    ry="4"
                     fill="black"
                   />
                 )}
@@ -312,10 +312,10 @@ export function HelpTourModal({
                   }
                 : undefined
             }
-            className="absolute inset-0 bg-black/75 backdrop-blur-[2px] transition-opacity duration-300 cursor-pointer"
+            className="absolute inset-0 bg-black/80 transition-opacity duration-300 cursor-pointer"
           />
 
-          {/* Spotlight Highlight Ring with Glow around active element */}
+          {/* Spotlight Highlight Ring around active element */}
           {targetRect && (
             <div
               style={{
@@ -324,11 +324,11 @@ export function HelpTourModal({
                 width: `${targetRect.width + 12}px`,
                 height: `${targetRect.height + 12}px`,
               }}
-              className="absolute pointer-events-none rounded-2xl ring-2 ring-indigo-500 shadow-[0_0_35px_rgba(99,102,241,0.5)] transition-all duration-300"
+              className="absolute pointer-events-none ring-1 ring-white/60 shadow-[0_0_30px_rgba(255,255,255,0.12)] transition-all duration-300"
             />
           )}
 
-          {/* Floating Step Card (Adaptively positioned top or bottom to avoid covering the spotlight target) */}
+          {/* Floating Step Card */}
           <div
             className={`fixed inset-x-4 md:inset-x-auto md:left-1/2 md:-translate-x-1/2 z-50 w-full md:max-w-xl transition-all duration-300 pointer-events-auto ${
               targetRect && typeof window !== "undefined" && targetRect.top > window.innerHeight * 0.45
@@ -336,9 +336,9 @@ export function HelpTourModal({
                 : "bottom-6 md:bottom-10"
             }`}
           >
-            <div className="rounded-2xl border border-zinc-700/80 bg-zinc-950/95 p-5 shadow-2xl backdrop-blur-xl animate-in zoom-in-95 duration-200">
+            <div className="border border-white/[0.14] bg-[#09090b] p-5 shadow-2xl animate-in zoom-in-95 duration-200">
               <div className="flex items-center justify-between mb-2">
-                <span className="rounded-md bg-indigo-500/10 px-2.5 py-0.5 text-[11px] font-mono font-medium text-indigo-400 border border-indigo-500/20">
+                <span className="border border-white/[0.1] bg-white/[0.04] px-2 py-0.5 text-[11px] font-mono text-zinc-300">
                   {TOUR_STEPS[currentStep].badge}
                 </span>
                 <div className="flex items-center gap-1.5">
@@ -348,30 +348,30 @@ export function HelpTourModal({
                   <button
                     onClick={onCloseTour}
                     aria-label="Close tour"
-                    className="p-1 rounded-lg text-zinc-400 hover:text-zinc-200 hover:bg-zinc-900 transition-colors"
+                    className="p-1 text-zinc-400 hover:text-white transition-colors cursor-pointer"
                   >
                     <X className="h-4 w-4" />
                   </button>
                 </div>
               </div>
 
-              <h3 className="text-sm md:text-base font-semibold text-zinc-100">
+              <h3 className="text-sm md:text-base font-bold text-white font-mono">
                 {TOUR_STEPS[currentStep].title}
               </h3>
-              <p className="mt-1.5 text-xs text-zinc-300 leading-relaxed">
+              <p className="mt-1.5 text-xs text-zinc-300 leading-relaxed font-sans">
                 {TOUR_STEPS[currentStep].description}
               </p>
 
               {/* Practical Pro Tip Hint */}
-              <div className="mt-3 rounded-lg border border-zinc-800 bg-zinc-900/60 px-3 py-2 text-[11px] text-zinc-400 leading-snug">
+              <div className="mt-3 border border-white/[0.08] bg-white/[0.02] px-3 py-2 text-[11px] font-mono text-zinc-400 leading-snug">
                 {TOUR_STEPS[currentStep].hint}
               </div>
 
               {/* Controls */}
-              <div className="mt-4 flex items-center justify-between pt-3 border-t border-zinc-800/80">
+              <div className="mt-4 flex items-center justify-between pt-3 border-t border-white/[0.08]">
                 <button
                   onClick={onCloseTour}
-                  className="text-xs text-zinc-400 hover:text-zinc-200 transition-colors font-medium px-2 py-1"
+                  className="text-xs font-mono text-zinc-400 hover:text-white transition-colors cursor-pointer"
                 >
                   Skip Tour
                 </button>
@@ -380,14 +380,14 @@ export function HelpTourModal({
                   <button
                     onClick={handlePrevStep}
                     disabled={currentStep === 0}
-                    className="flex items-center gap-1 rounded-lg border border-zinc-800 bg-zinc-900 px-3 py-1.5 text-xs font-medium text-zinc-300 hover:bg-zinc-855 hover:text-white disabled:opacity-30 disabled:pointer-events-none transition-colors"
+                    className="flex items-center gap-1 border border-white/[0.1] bg-white/[0.03] px-3 py-1.5 text-xs font-mono text-zinc-300 hover:text-white disabled:opacity-20 disabled:pointer-events-none transition-colors cursor-pointer"
                   >
                     <ChevronLeft className="h-3.5 w-3.5" />
                     <span>Previous</span>
                   </button>
                   <button
                     onClick={handleNextStep}
-                    className="flex items-center gap-1 rounded-lg bg-zinc-100 hover:bg-white text-zinc-950 px-3.5 py-1.5 text-xs font-semibold shadow-xs transition-colors focus-visible:ring-2 focus-visible:ring-zinc-400 focus:outline-none"
+                    className="flex items-center gap-1 bg-white hover:bg-zinc-200 text-black px-3.5 py-1.5 text-xs font-mono font-semibold uppercase tracking-tight transition-colors cursor-pointer"
                   >
                     <span>{currentStep === TOUR_STEPS.length - 1 ? "Finish" : "Next"}</span>
                     <ChevronRight className="h-3.5 w-3.5" />
@@ -401,68 +401,68 @@ export function HelpTourModal({
 
       {/* 3. Comprehensive Help & Feature Cheat Sheet Modal */}
       {isHelpOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4">
-          <div className="relative w-full max-w-3xl rounded-2xl border border-zinc-800 bg-zinc-950 p-6 shadow-2xl overflow-hidden flex flex-col max-h-[88vh]">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/85 backdrop-blur-md p-4">
+          <div className="relative w-full max-w-3xl border border-white/[0.14] bg-[#09090b] p-6 shadow-2xl overflow-hidden flex flex-col max-h-[88vh]">
             {/* Modal Header */}
-            <div className="flex items-start justify-between pb-4 border-b border-zinc-800 shrink-0">
+            <div className="flex items-start justify-between pb-4 border-b border-white/[0.08] shrink-0">
               <div className="flex items-center gap-3">
-                <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-zinc-900 border border-zinc-700/80 text-zinc-200">
-                  <BookOpen className="h-4 w-4 text-indigo-400" />
+                <div className="flex h-8 w-8 items-center justify-center border border-white/[0.12] bg-white/[0.04] text-white">
+                  <BookOpen className="h-4 w-4 text-zinc-300" />
                 </div>
                 <div>
                   <div className="flex items-center gap-2">
-                    <h3 className="font-semibold text-zinc-100 text-base md:text-lg">
-                      GitPulse Documentation &amp; Guide
+                    <h3 className="font-mono font-bold text-white text-sm md:text-base uppercase tracking-wider">
+                      GitPulse Documentation
                     </h3>
-                    <span className="rounded bg-zinc-800 px-2 py-0.5 text-[10px] font-mono text-zinc-400 border border-zinc-700/60">
+                    <span className="border border-white/[0.1] bg-white/[0.04] px-1.5 py-0.2 text-[10px] font-mono text-zinc-400">
                       v1.1
                     </span>
                   </div>
-                  <p className="text-xs text-zinc-400 mt-0.5">
-                    Operational instructions, AI search syntax, and DORA metrics glossary
+                  <p className="text-xs text-zinc-500 font-mono mt-0.5">
+                    Operational manual, query syntax, and telemetry schema
                   </p>
                 </div>
               </div>
               <button
                 onClick={onCloseHelp}
                 aria-label="Close guide"
-                className="rounded-lg p-1.5 text-zinc-400 hover:bg-zinc-900 hover:text-zinc-100 focus-visible:ring-2 focus-visible:ring-zinc-700 focus:outline-none transition-colors"
+                className="p-1 text-zinc-400 hover:text-white transition-colors cursor-pointer"
               >
-                <X className="h-5 w-5" />
+                <X className="h-4 w-4" />
               </button>
             </div>
 
             {/* Navigation Tabs */}
-            <div className="flex items-center gap-2 mt-4 border-b border-zinc-800 pb-3 shrink-0">
+            <div className="flex items-center gap-1 mt-4 border-b border-white/[0.08] pb-2 shrink-0">
               <button
                 onClick={() => setActiveTab("quickstart")}
-                className={`rounded-lg px-3 py-1.5 text-xs font-medium transition-colors focus-visible:ring-2 focus-visible:ring-zinc-700 focus:outline-none ${
+                className={`px-3 py-1 text-xs font-mono transition-colors cursor-pointer ${
                   activeTab === "quickstart"
-                    ? "bg-zinc-800 text-zinc-100 border border-zinc-700/80 shadow-xs"
-                    : "text-zinc-400 hover:text-zinc-200 hover:bg-zinc-900"
+                    ? "bg-white text-black font-bold"
+                    : "text-zinc-400 hover:text-white border border-transparent hover:border-white/[0.08]"
                 }`}
               >
-                🚀 Quickstart &amp; PAT
+                Quickstart &amp; PAT
               </button>
               <button
                 onClick={() => setActiveTab("cheatsheet")}
-                className={`rounded-lg px-3 py-1.5 text-xs font-medium transition-colors focus-visible:ring-2 focus-visible:ring-zinc-700 focus:outline-none ${
+                className={`px-3 py-1 text-xs font-mono transition-colors cursor-pointer ${
                   activeTab === "cheatsheet"
-                    ? "bg-zinc-800 text-zinc-100 border border-zinc-700/80 shadow-xs"
-                    : "text-zinc-400 hover:text-zinc-200 hover:bg-zinc-900"
+                    ? "bg-white text-black font-bold"
+                    : "text-zinc-400 hover:text-white border border-transparent hover:border-white/[0.08]"
                 }`}
               >
-                ⚡ AI &amp; Command Cheatsheet
+                AI &amp; Command Syntax
               </button>
               <button
                 onClick={() => setActiveTab("dora")}
-                className={`rounded-lg px-3 py-1.5 text-xs font-medium transition-colors focus-visible:ring-2 focus-visible:ring-zinc-700 focus:outline-none ${
+                className={`px-3 py-1 text-xs font-mono transition-colors cursor-pointer ${
                   activeTab === "dora"
-                    ? "bg-zinc-800 text-zinc-100 border border-zinc-700/80 shadow-xs"
-                    : "text-zinc-400 hover:text-zinc-200 hover:bg-zinc-900"
+                    ? "bg-white text-black font-bold"
+                    : "text-zinc-400 hover:text-white border border-transparent hover:border-white/[0.08]"
                 }`}
               >
-                📊 DORA Metrics Glossary
+                DORA Metrics Glossary
               </button>
 
               <button

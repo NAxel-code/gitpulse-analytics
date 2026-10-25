@@ -19,6 +19,7 @@ import {
   Loader2,
   Globe,
 } from "lucide-react";
+import { GitPulseLogo } from "./GitPulseLogo";
 
 interface HeaderProps {
   currentRepo: string;
@@ -185,12 +186,10 @@ export function Header({
         <div className="flex items-center justify-between gap-4 px-6 py-3">
           {/* Brand & Active Target Repository */}
           <div id="tour-repo-sync" className="flex items-center gap-3.5 shrink-0">
-            <div className="flex h-8 w-8 items-center justify-center rounded bg-white text-black p-1 shrink-0 overflow-hidden font-bold text-xs tracking-tighter">
-              GP
-            </div>
+            <GitPulseLogo size={30} />
             <div>
               <div className="flex items-center gap-2">
-                <span className="font-bold tracking-tight text-white text-sm">GitPulse</span>
+                <span className="font-bold tracking-tight text-white text-sm font-mono">GITPULSE</span>
                 <span className="text-[10px] font-mono text-zinc-500">
                   / 1.1
                 </span>
@@ -351,23 +350,23 @@ export function Header({
 
       {/* GitHub PAT Modal */}
       {showTokenModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/85 backdrop-blur-xl p-4">
-          <div className="relative w-full max-w-md rounded-2xl border border-white/[0.12] bg-[#0d0f14]/95 p-6 shadow-2xl">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/85 backdrop-blur-md p-4">
+          <div className="relative w-full max-w-md border border-white/[0.14] bg-[#09090b] p-6 shadow-2xl">
             <div className="flex items-center justify-between pb-3 border-b border-white/[0.08]">
               <div className="flex items-center gap-2">
-                <Key className="h-4 w-4 text-emerald-400" />
-                <h3 className="font-semibold text-white text-sm">GitHub Personal Access Token</h3>
+                <Key className="h-4 w-4 text-zinc-300" />
+                <h3 className="font-semibold text-white text-xs font-mono uppercase tracking-wider">GitHub Personal Access Token</h3>
               </div>
               <button
                 onClick={() => setShowTokenModal(false)}
-                className="rounded-lg p-1 text-zinc-400 hover:bg-white/[0.06] hover:text-white cursor-pointer transition"
+                className="p-1 text-zinc-400 hover:bg-white/[0.06] hover:text-white cursor-pointer transition"
               >
                 <X className="h-4 w-4" />
               </button>
             </div>
 
             <p className="text-xs text-zinc-400 mt-3 leading-relaxed">
-              By default GitHub limits unauthenticated requests to <strong>60 requests/hour</strong>. Enter your personal GitHub token (read-only) to increase your quota up to <strong>5,000 requests/hour</strong>.
+              By default GitHub limits unauthenticated requests to <strong className="text-zinc-200">60 req/hr</strong>. Enter your personal GitHub token (read-only) to increase quota up to <strong className="text-zinc-200">5,000 req/hr</strong>.
             </p>
 
             <div className="mt-4 space-y-3">
@@ -376,10 +375,10 @@ export function Header({
                 placeholder="ghp_xxxxxxxxxxxxxxxxxxxx"
                 value={tempToken}
                 onChange={(e) => setTempToken(e.target.value)}
-                className="w-full rounded-xl border border-white/[0.1] bg-white/[0.04] px-3.5 py-2 text-xs font-mono text-white placeholder-zinc-500 focus:border-indigo-400 focus:outline-none"
+                className="w-full border border-white/[0.12] bg-white/[0.03] px-3.5 py-2 text-xs font-mono text-white placeholder-zinc-500 focus:border-white/40 focus:outline-none"
               />
               <div className="flex justify-between items-center text-[11px] text-zinc-500 font-mono">
-                <span>Stored locally in browser (localStorage)</span>
+                <span>Stored in browser (localStorage)</span>
                 {githubToken && (
                   <button
                     onClick={() => {
@@ -398,13 +397,13 @@ export function Header({
             <div className="mt-5 flex justify-end gap-2">
               <button
                 onClick={() => setShowTokenModal(false)}
-                className="rounded-lg px-3 py-1.5 text-xs text-zinc-400 hover:bg-white/[0.06] cursor-pointer"
+                className="px-3 py-1.5 text-xs font-mono text-zinc-400 hover:text-white cursor-pointer"
               >
                 Cancel
               </button>
               <button
                 onClick={handleSaveToken}
-                className="flex items-center gap-1 rounded-lg bg-white hover:bg-zinc-100 text-zinc-950 px-4 py-1.5 text-xs font-semibold shadow-xs transition-colors cursor-pointer"
+                className="flex items-center gap-1.5 bg-white hover:bg-zinc-200 text-black px-4 py-1.5 text-xs font-mono font-semibold tracking-tight uppercase transition-colors cursor-pointer"
               >
                 <Check className="h-3.5 w-3.5" />
                 <span>Save Token</span>
@@ -416,18 +415,18 @@ export function Header({
 
       {/* Custom Repository Switcher Modal */}
       {showRepoModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/85 backdrop-blur-xl p-4">
-          <div className="relative w-full max-w-lg rounded-2xl border border-white/[0.12] bg-[#0d0f14]/95 p-6 shadow-2xl">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/85 backdrop-blur-md p-4">
+          <div className="relative w-full max-w-lg border border-white/[0.14] bg-[#09090b] p-6 shadow-2xl">
             <div className="flex items-center justify-between pb-3 border-b border-white/[0.08]">
               <div className="flex items-center gap-2.5">
-                <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-white/[0.04] border border-white/[0.08] text-zinc-200">
-                  <FolderGit2 className="h-4 w-4 text-indigo-400" />
+                <div className="flex h-7 w-7 items-center justify-center border border-white/[0.12] bg-white/[0.04] text-zinc-200">
+                  <FolderGit2 className="h-3.5 w-3.5 text-zinc-300" />
                 </div>
                 <div>
-                  <h3 className="font-semibold text-zinc-100 text-sm md:text-base">
-                    Switch / Analyze GitHub Repository
+                  <h3 className="font-semibold text-white text-xs font-mono uppercase tracking-wider">
+                    Switch / Analyze Repository
                   </h3>
-                  <p className="text-[11px] text-zinc-400 font-mono">
+                  <p className="text-[11px] text-zinc-500 font-mono">
                     DuckDB telemetry indexed across public repositories
                   </p>
                 </div>
@@ -437,7 +436,7 @@ export function Header({
                   setShowRepoModal(false);
                   setRepoError("");
                 }}
-                className="rounded-lg p-1 text-zinc-400 hover:bg-white/[0.06] hover:text-white transition cursor-pointer"
+                className="p-1 text-zinc-400 hover:bg-white/[0.06] hover:text-white transition cursor-pointer"
               >
                 <X className="h-4 w-4" />
               </button>
@@ -445,8 +444,8 @@ export function Header({
 
             <form onSubmit={handleCustomRepoSubmit} className="mt-4 space-y-3">
               <div>
-                <label className="text-xs font-medium text-zinc-300 block mb-1">
-                  GitHub Repository Name (Universal):
+                <label className="text-xs font-mono uppercase text-zinc-400 block mb-1">
+                  GitHub Repository Name:
                 </label>
                 <div className="relative">
                   <Search className="absolute left-3 top-2.5 h-3.5 w-3.5 text-zinc-500" />
@@ -454,27 +453,27 @@ export function Header({
                     id="input-custom-repo"
                     type="text"
                     autoFocus
-                    placeholder="Type owner/repo-name (e.g., astral-sh/uv, vllm-project/vllm, torvalds/linux)..."
+                    placeholder="owner/repo-name (e.g., astral-sh/uv, vllm-project/vllm, torvalds/linux)..."
                     value={customRepo}
                     onChange={(e) => {
                       setCustomRepo(e.target.value);
                       if (repoError) setRepoError("");
                     }}
-                    className="w-full rounded-xl border border-zinc-800 bg-zinc-900 pl-9 pr-8 py-2 text-xs font-mono text-zinc-100 placeholder-zinc-500 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 focus:outline-none transition-colors"
+                    className="w-full border border-white/[0.12] bg-white/[0.03] pl-9 pr-8 py-2 text-xs font-mono text-zinc-100 placeholder-zinc-500 focus:border-white/40 focus:outline-none transition-colors"
                   />
                   {isSearching && (
-                    <Loader2 className="absolute right-3 top-2.5 h-3.5 w-3.5 text-indigo-400 animate-spin" />
+                    <Loader2 className="absolute right-3 top-2.5 h-3.5 w-3.5 text-zinc-400 animate-spin" />
                   )}
                 </div>
                 {repoError && (
-                  <p className="text-[11px] text-rose-400 mt-1">{repoError}</p>
+                  <p className="text-[11px] font-mono text-rose-400 mt-1">{repoError}</p>
                 )}
 
                 {/* Live Autocomplete Results from GitHub Search */}
                 {searchResults.length > 0 && (
                   <div
                     id="autocomplete-dropdown"
-                    className="mt-2 rounded-xl border border-zinc-800 bg-zinc-900/95 max-h-48 overflow-y-auto divide-y divide-zinc-800/80 shadow-lg"
+                    className="mt-2 border border-white/[0.1] bg-[#0c0c0e] max-h-48 overflow-y-auto divide-y divide-white/[0.06] shadow-lg"
                   >
                     {searchResults.map((sr) => (
                       <button
@@ -485,14 +484,14 @@ export function Header({
                           setSearchResults([]);
                           setRepoError("");
                         }}
-                        className="w-full text-left p-2.5 hover:bg-zinc-800/80 transition flex items-start justify-between gap-3 cursor-pointer group"
+                        className="w-full text-left p-2.5 hover:bg-white/[0.04] transition flex items-start justify-between gap-3 cursor-pointer group"
                       >
                         <div className="min-w-0 flex-1">
                           <div className="flex items-center gap-2">
-                            <span className="font-mono text-xs font-bold text-white group-hover:text-indigo-300">
+                            <span className="font-mono text-xs font-bold text-white group-hover:underline underline-offset-2">
                               {sr.full_name}
                             </span>
-                            <span className="text-[10px] font-mono text-zinc-400">
+                            <span className="text-[10px] font-mono text-zinc-500">
                               {sr.language}
                             </span>
                           </div>
@@ -500,8 +499,8 @@ export function Header({
                             {sr.description}
                           </p>
                         </div>
-                        <div className="flex items-center gap-1 text-[11px] font-mono font-bold text-amber-300 shrink-0">
-                          <Star className="h-3 w-3 fill-amber-400 text-amber-400" />
+                        <div className="flex items-center gap-1 text-[11px] font-mono text-zinc-400 shrink-0">
+                          <Star className="h-3 w-3 fill-white/20 text-white" />
                           <span>{sr.stars_formatted}</span>
                         </div>
                       </button>
@@ -571,11 +570,11 @@ export function Header({
 
               {/* Direct Leaderboard Banner */}
               {onOpenLeaderboard && (
-                <div className="rounded-xl border border-amber-500/20 bg-amber-500/5 p-2.5 flex items-center justify-between gap-3 text-xs">
+                <div className="border border-white/[0.08] bg-white/[0.02] p-2.5 flex items-center justify-between gap-3 text-xs">
                   <div className="flex items-center gap-2">
-                    <Trophy className="h-4 w-4 text-amber-400 shrink-0" />
-                    <span className="text-[11px] text-zinc-300">
-                      Want full comparison of stars, licenses, &amp; velocity?
+                    <Trophy className="h-3.5 w-3.5 text-zinc-400 shrink-0" />
+                    <span className="text-[11px] text-zinc-400 font-mono">
+                      Compare stars, licenses, and velocity:
                     </span>
                   </div>
                   <button
@@ -584,14 +583,14 @@ export function Header({
                       setShowRepoModal(false);
                       onOpenLeaderboard();
                     }}
-                    className="font-semibold text-[11px] text-amber-400 hover:text-amber-300 hover:underline shrink-0 cursor-pointer"
+                    className="font-mono text-[11px] text-white hover:underline underline-offset-2 shrink-0 cursor-pointer"
                   >
                     Open Leaderboard &rarr;
                   </button>
                 </div>
               )}
 
-              <div className="mt-4 pt-3 border-t border-zinc-800 flex justify-end gap-2">
+              <div className="mt-4 pt-3 border-t border-white/[0.08] flex justify-end gap-2">
                 <button
                   type="button"
                   onClick={() => {
@@ -599,17 +598,17 @@ export function Header({
                     setRepoError("");
                     setSearchResults([]);
                   }}
-                  className="rounded-lg px-3 py-1.5 text-xs text-zinc-400 hover:bg-zinc-900 cursor-pointer"
+                  className="px-3 py-1.5 text-xs font-mono text-zinc-400 hover:text-white cursor-pointer"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
                   disabled={!customRepo.trim()}
-                  className="flex items-center gap-1.5 rounded-lg bg-zinc-100 px-4 py-1.5 text-xs font-semibold text-zinc-950 hover:bg-white disabled:opacity-40 transition-colors shadow-xs cursor-pointer"
+                  className="flex items-center gap-1.5 bg-white text-black px-4 py-1.5 text-xs font-mono font-medium tracking-tight uppercase hover:bg-zinc-200 disabled:opacity-30 transition-colors cursor-pointer"
                 >
                   <Check className="h-3.5 w-3.5" />
-                  <span>Load &amp; Analyze Repository</span>
+                  <span>Load Repository</span>
                 </button>
               </div>
             </form>

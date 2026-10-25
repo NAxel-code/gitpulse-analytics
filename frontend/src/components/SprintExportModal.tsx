@@ -163,110 +163,110 @@ export function SprintExportModal({
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-zinc-950/80 backdrop-blur-sm animate-in fade-in duration-150">
-      <div className="relative w-full max-w-2xl rounded-2xl border border-zinc-800 bg-zinc-900 shadow-2xl overflow-hidden flex flex-col max-h-[88vh]">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/85 backdrop-blur-md animate-in fade-in duration-150">
+      <div className="relative w-full max-w-2xl border border-white/[0.14] bg-[#09090b] shadow-2xl overflow-hidden flex flex-col max-h-[88vh]">
         {/* Header */}
-        <div className="flex items-center justify-between px-6 py-4 border-b border-zinc-800">
+        <div className="flex items-center justify-between px-6 py-4 border-b border-white/[0.08]">
           <div className="flex items-center gap-2.5">
-            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-indigo-500/10 border border-indigo-500/30 text-indigo-400">
-              <Share2 className="h-4 w-4" />
+            <div className="flex h-7 w-7 items-center justify-center border border-white/[0.12] bg-white/[0.04] text-zinc-200">
+              <Share2 className="h-3.5 w-3.5 text-zinc-300" />
             </div>
             <div>
-              <h2 className="text-sm font-semibold text-white">Share Sprint Brief &amp; Export</h2>
-              <p className="text-xs text-zinc-400">
-                Ready-to-paste report for <span className="font-mono text-zinc-300">{repoName}</span> ({days}D window)
+              <h2 className="text-xs font-mono font-bold uppercase tracking-wider text-white">Share Sprint Brief &amp; Export</h2>
+              <p className="text-[11px] font-mono text-zinc-500">
+                Ready-to-paste engineering ledger for <span className="text-zinc-300">{repoName}</span> ({days}D observation)
               </p>
             </div>
           </div>
           <button
             onClick={onClose}
-            className="rounded-lg p-1 text-zinc-400 hover:text-white hover:bg-zinc-800 transition"
+            className="p-1 text-zinc-400 hover:text-white transition cursor-pointer"
           >
             <X className="h-4 w-4" />
           </button>
         </div>
 
         {/* Tab Selector & Controls */}
-        <div className="px-6 py-3 border-b border-zinc-800/80 bg-zinc-950/50 flex flex-wrap items-center justify-between gap-3">
-          <div className="flex items-center gap-1.5 p-1 rounded-xl bg-zinc-900 border border-zinc-800">
+        <div className="px-6 py-2.5 border-b border-white/[0.08] bg-[#0c0c0e] flex flex-wrap items-center justify-between gap-3">
+          <div className="flex items-center gap-1">
             <button
               onClick={() => setActiveTab("slack")}
-              className={`flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-medium transition cursor-pointer ${
+              className={`flex items-center gap-1.5 px-3 py-1 text-xs font-mono transition cursor-pointer ${
                 activeTab === "slack"
-                  ? "bg-zinc-800 text-white font-semibold shadow-xs"
-                  : "text-zinc-400 hover:text-zinc-200"
+                  ? "bg-white text-black font-bold"
+                  : "text-zinc-400 hover:text-white border border-transparent hover:border-white/[0.08]"
               }`}
             >
-              <MessageSquare className="h-3.5 w-3.5 text-emerald-400" />
-              <span>Slack &amp; Discord</span>
+              <MessageSquare className="h-3.5 w-3.5" />
+              <span>Slack / Discord</span>
             </button>
             <button
               onClick={() => setActiveTab("markdown")}
-              className={`flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-medium transition cursor-pointer ${
+              className={`flex items-center gap-1.5 px-3 py-1 text-xs font-mono transition cursor-pointer ${
                 activeTab === "markdown"
-                  ? "bg-zinc-800 text-white font-semibold shadow-xs"
-                  : "text-zinc-400 hover:text-zinc-200"
+                  ? "bg-white text-black font-bold"
+                  : "text-zinc-400 hover:text-white border border-transparent hover:border-white/[0.08]"
               }`}
             >
-              <FileCode className="h-3.5 w-3.5 text-indigo-400" />
-              <span>GitHub / Markdown</span>
+              <FileCode className="h-3.5 w-3.5" />
+              <span>Markdown</span>
             </button>
             <button
               onClick={() => setActiveTab("csv")}
-              className={`flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-medium transition cursor-pointer ${
+              className={`flex items-center gap-1.5 px-3 py-1 text-xs font-mono transition cursor-pointer ${
                 activeTab === "csv"
-                  ? "bg-zinc-800 text-white font-semibold shadow-xs"
-                  : "text-zinc-400 hover:text-zinc-200"
+                  ? "bg-white text-black font-bold"
+                  : "text-zinc-400 hover:text-white border border-transparent hover:border-white/[0.08]"
               }`}
             >
-              <Table className="h-3.5 w-3.5 text-amber-400" />
+              <Table className="h-3.5 w-3.5" />
               <span>CSV Dataset</span>
             </button>
           </div>
 
-          <label className="flex items-center gap-2 text-xs text-zinc-400 cursor-pointer select-none">
+          <label className="flex items-center gap-2 text-xs font-mono text-zinc-400 cursor-pointer select-none">
             <input
               type="checkbox"
               checked={excludeBots}
               onChange={(e) => setExcludeBots(e.target.checked)}
-              className="rounded border-zinc-700 bg-zinc-800 text-indigo-500 focus:ring-indigo-400 focus:ring-offset-zinc-900"
+              className="border-white/20 bg-black text-white focus:ring-0"
             />
-            <span>Filter Bot Accounts</span>
+            <span>Filter Bots</span>
           </label>
         </div>
 
         {/* Content Preview */}
         <div className="p-6 overflow-y-auto flex-1 font-mono text-xs">
-          <div className="relative rounded-xl border border-zinc-800 bg-zinc-950 p-4 text-zinc-300 leading-relaxed overflow-x-auto whitespace-pre-wrap selection:bg-indigo-500/30">
+          <div className="relative border border-white/[0.08] bg-black p-4 text-zinc-300 leading-relaxed overflow-x-auto whitespace-pre-wrap selection:bg-white selection:text-black">
             {activeContent}
           </div>
         </div>
 
         {/* Footer Actions */}
-        <div className="px-6 py-3.5 border-t border-zinc-800 bg-zinc-950/70 flex items-center justify-between gap-3">
-          <div className="text-[11px] text-zinc-500">
-            {activeTab === "csv" ? "Includes full contributor velocity metrics" : "Formatted with clean markdown syntax"}
+        <div className="px-6 py-3.5 border-t border-white/[0.08] bg-black flex items-center justify-between gap-3">
+          <div className="text-[11px] font-mono text-zinc-500">
+            {activeTab === "csv" ? "Full contributor velocity dataset" : "Standard markdown formatting"}
           </div>
           <div className="flex items-center gap-2">
             <button
               onClick={handleDownload}
-              className="flex items-center gap-1.5 rounded-xl border border-zinc-700 bg-zinc-800 px-3 py-1.5 text-xs font-medium text-zinc-200 hover:text-white hover:bg-zinc-750 transition cursor-pointer"
+              className="flex items-center gap-1.5 border border-white/[0.12] bg-white/[0.04] px-3 py-1.5 text-xs font-mono font-medium text-zinc-200 hover:text-white hover:bg-white/[0.08] transition cursor-pointer"
             >
               <Download className="h-3.5 w-3.5" />
               <span>Download {activeTab === "csv" ? ".csv" : ".md"}</span>
             </button>
             <button
               onClick={handleCopy}
-              className={`flex items-center gap-1.5 rounded-xl px-4 py-1.5 text-xs font-semibold transition cursor-pointer ${
+              className={`flex items-center gap-1.5 px-4 py-1.5 text-xs font-mono font-semibold uppercase tracking-tight transition cursor-pointer ${
                 copied
-                  ? "bg-emerald-500 text-zinc-950 font-bold"
-                  : "bg-indigo-600 text-white hover:bg-indigo-500 shadow-md shadow-indigo-600/20"
+                  ? "bg-emerald-500 text-black"
+                  : "bg-white text-black hover:bg-zinc-200"
               }`}
             >
               {copied ? (
                 <>
-                  <Check className="h-3.5 w-3.5 stroke-[2.5]" />
-                  <span>Copied to Clipboard!</span>
+                  <Check className="h-3.5 w-3.5" />
+                  <span>Copied</span>
                 </>
               ) : (
                 <>

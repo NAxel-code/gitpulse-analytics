@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { motion, type Variants } from "framer-motion";
 import { Header } from "@/components/Header";
 import { KPICards } from "@/components/KPICards";
 import { ActivityChart } from "@/components/ActivityChart";
@@ -12,9 +13,33 @@ import { AIModal } from "@/components/AIModal";
 import { HelpTourModal } from "@/components/HelpTourModal";
 import { RepoLeaderboardModal } from "@/components/RepoLeaderboardModal";
 import { SprintExportModal } from "@/components/SprintExportModal";
+import { GitPulseLogo } from "@/components/GitPulseLogo";
 import { GITHUB_API_URL } from "@/lib/api";
 import { getFallbackDashboardData } from "@/lib/fallback";
 import { Terminal, Database, Cpu, Command } from "lucide-react";
+
+const containerVariants: Variants = {
+  hidden: { opacity: 0 },
+  show: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.08,
+      delayChildren: 0.05,
+    },
+  },
+};
+
+const itemVariants: Variants = {
+  hidden: { opacity: 0, y: 12 },
+  show: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.45,
+      ease: "easeOut",
+    },
+  },
+};
 
 export default function GitPulseDashboard() {
   const [currentRepo, setCurrentRepo] = useState("vercel/next.js");
@@ -189,33 +214,49 @@ export default function GitPulseDashboard() {
       />
 
       {/* Main Content Area */}
-      <main className="flex-1 p-6 md:p-8 lg:p-10 max-w-7xl w-full mx-auto space-y-8">
+      <motion.main
+        variants={containerVariants}
+        initial="hidden"
+        animate="show"
+        className="flex-1 p-6 md:p-8 lg:p-10 max-w-7xl w-full mx-auto space-y-8"
+      >
         {/* Repository Overview Context */}
-        <div className="flex flex-col sm:flex-row sm:items-baseline justify-between gap-3 pb-6 border-b border-white/[0.08]">
+        <motion.div
+          variants={itemVariants}
+          className="flex flex-col sm:flex-row sm:items-baseline justify-between gap-3 pb-6 border-b border-white/[0.08]"
+        >
           <div>
-            <span className="text-[11px] font-mono uppercase tracking-wider text-zinc-500 block">
-              TARGET REPOSITORY / {days}D OBSERVATION
-            </span>
-            <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-white mt-1 display-num">
+            <div className="flex items-center gap-2 mb-1.5 text-[11px] font-mono text-zinc-500">
+              <span className="uppercase tracking-wider">TARGET REPOSITORY</span>
+              <span>/</span>
+              <span className="text-zinc-400">{days}D OBSERVATION</span>
+            </div>
+            <h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-white display-num">
               {currentRepo}
             </h1>
           </div>
           <div className="flex items-center gap-3 text-xs font-mono text-zinc-500">
             <span>DuckDB Columnar</span>
-            <span>/</span>
+            <span className="text-zinc-700">/</span>
             <span>Sub-second AST</span>
-            <span>/</span>
-            <span className="text-zinc-300">Live Telemetry</span>
+            <span className="text-zinc-700">/</span>
+            <span className="text-white font-medium flex items-center gap-1.5">
+              <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse" />
+              Live Telemetry
+            </span>
           </div>
-        </div>
+        </motion.div>
 
         {/* Primary Monolithic Metric Strip */}
-        <div id="tour-kpi-cards">
+        <motion.div variants={itemVariants} id="tour-kpi-cards">
           <KPICards key={currentRepo} data={kpiData} />
-        </div>
+        </motion.div>
 
         {/* Middle Section: Activity Timeline (65%) vs PR Lifecycle Funnel (35%) */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+        <motion.div
+          variants={itemVariants}
+          className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start"
+        >
           <div
             id="section-activity"
             className="lg:col-span-8 scroll-mt-28"
@@ -233,10 +274,13 @@ export default function GitPulseDashboard() {
           >
             <FunnelChart stages={funnelData} payload={funnelPayload} />
           </div>
-        </div>
+        </motion.div>
 
         {/* Bottom Section: Contributor Table (65%) vs DORA Feed (35%) */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+        <motion.div
+          variants={itemVariants}
+          className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start"
+        >
           <div
             id="tour-contributors"
             className="lg:col-span-8 scroll-mt-28"
@@ -257,25 +301,29 @@ export default function GitPulseDashboard() {
               onOpenExport={() => setIsExportModalOpen(true)}
             />
           </div>
-        </div>
+        </motion.div>
 
         {/* Minimalist Four-Corners Footer */}
-        <footer className="pt-8 pb-4 border-t border-white/[0.08] flex flex-col sm:flex-row items-center justify-between gap-4 text-xs font-mono text-zinc-500">
+        <motion.footer
+          variants={itemVariants}
+          className="pt-8 pb-4 border-t border-white/[0.08] flex flex-col sm:flex-row items-center justify-between gap-4 text-xs font-mono text-zinc-500"
+        >
           <div className="flex items-center gap-3">
-            <span className="text-zinc-400 font-semibold">GitPulse</span>
-            <span>/</span>
+            <GitPulseLogo size={20} />
+            <span className="text-white font-bold font-mono">GITPULSE</span>
+            <span className="text-zinc-700">/</span>
             <span>DuckDB Embedded Storage</span>
-            <span>/</span>
+            <span className="text-zinc-700">/</span>
             <span>AST Query Sandbox</span>
           </div>
 
           <div className="flex items-center gap-3 text-zinc-500">
-            <span>Press <kbd className="text-zinc-300 font-bold">⌘K</kbd> to query</span>
+            <span>Press <kbd className="text-zinc-300 font-bold border border-white/[0.1] bg-white/[0.04] px-1 py-0.5">⌘K</kbd> to query</span>
             <span>·</span>
-            <span>Press <kbd className="text-zinc-300 font-bold">?</kbd> for documentation</span>
+            <span>Press <kbd className="text-zinc-300 font-bold border border-white/[0.1] bg-white/[0.04] px-1 py-0.5">?</kbd> for documentation</span>
           </div>
-        </footer>
-      </main>
+        </motion.footer>
+      </motion.main>
 
       {/* Contributor Action Stream Journey Modal */}
       <ContributorJourneyModal

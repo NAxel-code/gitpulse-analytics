@@ -499,53 +499,53 @@ export function RepoLeaderboardModal({
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-md p-3 sm:p-5">
-      <div className="relative flex flex-col w-full max-w-5xl max-h-[90vh] rounded-2xl border border-zinc-800 bg-zinc-950 shadow-2xl overflow-hidden animate-in fade-in zoom-in-95 duration-200">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/85 backdrop-blur-md p-3 sm:p-5">
+      <div className="relative flex flex-col w-full max-w-5xl max-h-[90vh] border border-white/[0.14] bg-[#09090b] shadow-2xl overflow-hidden animate-in fade-in duration-200">
         
         {/* Header Bar */}
-        <div className="flex items-center justify-between border-b border-zinc-800/80 px-6 py-4 bg-zinc-900/60">
+        <div className="flex items-center justify-between border-b border-white/[0.08] px-6 py-4 bg-[#0c0c0e]">
           <div className="flex items-center gap-3">
-            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-amber-500/10 border border-amber-500/30 text-amber-400 shadow-sm">
-              <Trophy className="h-5 w-5" />
+            <div className="flex h-8 w-8 items-center justify-center border border-white/[0.12] bg-white/[0.04] text-white">
+              <Trophy className="h-4 w-4 text-zinc-300" />
             </div>
             <div>
               <div className="flex flex-wrap items-center gap-2">
-                <h2 className="text-base sm:text-lg font-bold text-white tracking-tight">
-                  Open Source Benchmark Leaderboard
+                <h2 className="text-sm font-mono font-bold text-white uppercase tracking-wider">
+                  Open Source Benchmark Index
                 </h2>
                 {debouncedQuery.trim() ? (
-                  <span className="rounded-full bg-emerald-500/10 px-2.5 py-0.5 text-[10px] font-mono font-semibold text-emerald-300 border border-emerald-500/30 flex items-center gap-1">
+                  <span className="border border-white/[0.1] bg-white/[0.04] px-2 py-0.5 text-[10px] font-mono text-zinc-400 flex items-center gap-1">
                     <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse" />
-                    Live GitHub Search API
+                    Live GitHub Search
                   </span>
                 ) : activeCategory.startsWith("trending") ? (
-                  <span className="rounded-full bg-amber-500/10 px-2.5 py-0.5 text-[10px] font-mono font-semibold text-amber-300 border border-amber-500/30 flex items-center gap-1">
-                    <Flame className="h-3 w-3 text-amber-400" />
-                    Live Scraped from github.com/trending
+                  <span className="border border-white/[0.1] bg-white/[0.04] px-2 py-0.5 text-[10px] font-mono text-zinc-400 flex items-center gap-1">
+                    <Flame className="h-3 w-3 text-zinc-300" />
+                    github.com/trending
                   </span>
                 ) : (
-                  <span className="rounded-full bg-indigo-500/10 px-2.5 py-0.5 text-[10px] font-mono font-semibold text-indigo-300 border border-indigo-500/30 flex items-center gap-1">
-                    <Sparkles className="h-3 w-3 text-indigo-400" />
-                    Live GitHub Search API
+                  <span className="border border-white/[0.1] bg-white/[0.04] px-2 py-0.5 text-[10px] font-mono text-zinc-400 flex items-center gap-1">
+                    <Sparkles className="h-3 w-3 text-zinc-300" />
+                    Telemetry Index
                   </span>
                 )}
               </div>
-              <p className="text-xs text-zinc-400 mt-0.5">
-                Displaying {filteredItems.length} repositories across trending velocity and global GitHub search.
+              <p className="text-[11px] font-mono text-zinc-500 mt-0.5">
+                Displaying {filteredItems.length} repositories across engineering velocity and global GitHub index.
               </p>
             </div>
           </div>
           <button
             onClick={onClose}
-            className="rounded-lg p-1.5 text-zinc-400 hover:text-white hover:bg-zinc-800 transition cursor-pointer"
+            className="p-1 text-zinc-400 hover:text-white transition cursor-pointer"
             aria-label="Close"
           >
-            <X className="h-5 w-5" />
+            <X className="h-4 w-4" />
           </button>
         </div>
 
         {/* Category Tabs */}
-        <div className="flex items-center gap-1.5 px-6 py-2.5 border-b border-zinc-800/80 bg-zinc-900/30 overflow-x-auto scrollbar-none">
+        <div className="flex items-center gap-1 px-6 py-2 border-b border-white/[0.08] bg-black overflow-x-auto scrollbar-none">
           {categories.map((cat) => {
             const Icon = cat.icon;
             const isActive = activeCategory === cat.id;
@@ -553,13 +553,13 @@ export function RepoLeaderboardModal({
               <button
                 key={cat.id}
                 onClick={() => setActiveCategory(cat.id)}
-                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium whitespace-nowrap transition cursor-pointer ${
+                className={`flex items-center gap-1.5 px-3 py-1 text-xs font-mono whitespace-nowrap transition cursor-pointer ${
                   isActive
-                    ? "bg-zinc-800 text-white border border-zinc-700 shadow-xs"
-                    : "text-zinc-400 hover:text-zinc-200 hover:bg-zinc-900 border border-transparent"
+                    ? "bg-white text-black font-bold"
+                    : "text-zinc-400 hover:text-white border border-transparent hover:border-white/[0.08]"
                 }`}
               >
-                <Icon className={`h-3.5 w-3.5 ${isActive ? "text-amber-400" : "text-zinc-500"}`} />
+                <Icon className={`h-3 w-3 ${isActive ? "text-black" : "text-zinc-500"}`} />
                 <span>{cat.label}</span>
               </button>
             );
@@ -567,7 +567,7 @@ export function RepoLeaderboardModal({
         </div>
 
         {/* Filter & Search Bar */}
-        <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 px-6 py-3 border-b border-zinc-800/60 bg-zinc-950/80">
+        <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 px-6 py-3 border-b border-white/[0.08] bg-[#0c0c0e]">
           {/* Search Box */}
           <div className="relative flex-1 min-w-[220px]">
             <Search className="absolute left-3 top-2.5 h-3.5 w-3.5 text-zinc-500" />
@@ -576,26 +576,26 @@ export function RepoLeaderboardModal({
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Search across all GitHub repositories (e.g., deepseek, transformers, linux, uv)..."
-              className="w-full rounded-xl border border-zinc-800 bg-zinc-900/90 pl-9 pr-3 py-1.5 text-xs text-white placeholder-zinc-500 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 focus:outline-none transition"
+              className="w-full border border-white/[0.12] bg-white/[0.03] pl-9 pr-3 py-1.5 text-xs font-mono text-white placeholder-zinc-500 focus:border-white/40 focus:outline-none transition"
             />
           </div>
 
           {/* Controls: License Filter & Sort By */}
           <div className="flex flex-wrap items-center gap-2">
             {/* License Dropdown */}
-            <div className="flex items-center gap-1.5 rounded-xl border border-zinc-800 bg-zinc-900/70 px-2.5 py-1 text-xs">
-              <ShieldCheck className="h-3.5 w-3.5 text-emerald-400" />
+            <div className="flex items-center gap-1.5 border border-white/[0.1] bg-black px-2.5 py-1 text-xs font-mono">
+              <ShieldCheck className="h-3.5 w-3.5 text-zinc-400" />
               <select
                 value={licenseFilter}
                 onChange={(e) => setLicenseFilter(e.target.value)}
                 aria-label="Filter License"
-                className="bg-transparent text-xs text-zinc-300 focus:outline-none cursor-pointer"
+                className="bg-transparent text-xs font-mono text-zinc-300 focus:outline-none cursor-pointer"
               >
-                <option value="all" className="bg-zinc-900">All Licenses</option>
-                <option value="apache" className="bg-zinc-900">Apache-2.0 (Enterprise Patent)</option>
-                <option value="mit" className="bg-zinc-900">MIT (Commercial Friendly)</option>
-                <option value="bsd" className="bg-zinc-900">BSD-3-Clause</option>
-                <option value="gpl" className="bg-zinc-900">GPL-2.0 / GPL-3.0</option>
+                <option value="all" className="bg-black">All Licenses</option>
+                <option value="apache" className="bg-black">Apache-2.0</option>
+                <option value="mit" className="bg-black">MIT</option>
+                <option value="bsd" className="bg-black">BSD-3-Clause</option>
+                <option value="gpl" className="bg-black">GPL</option>
               </select>
             </div>
 
@@ -669,12 +669,12 @@ export function RepoLeaderboardModal({
               return (
                 <div
                   key={item.repo_name}
-                  className={`group relative rounded-xl border p-4 transition-all ${
+                  className={`group relative border p-4 transition-all ${
                     isSelected
-                      ? "border-emerald-500/50 bg-emerald-500/5 shadow-md shadow-emerald-500/5"
+                      ? "border-white/40 bg-white/[0.05]"
                       : isTop1
-                      ? "border-amber-500/30 bg-zinc-900/60 hover:border-amber-500/50"
-                      : "border-zinc-800/80 bg-zinc-900/40 hover:border-zinc-700 hover:bg-zinc-900/70"
+                      ? "border-white/20 bg-white/[0.02] hover:border-white/40"
+                      : "border-white/[0.08] bg-white/[0.01] hover:border-white/[0.16] hover:bg-white/[0.03]"
                   }`}
                 >
                   <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-4">
@@ -682,18 +682,8 @@ export function RepoLeaderboardModal({
                     <div className="flex items-start gap-3.5 min-w-0 flex-1">
                       {/* Rank Badge */}
                       <div className="shrink-0 mt-0.5">
-                        <span
-                          className={`flex h-8 w-8 items-center justify-center rounded-xl text-xs font-mono font-bold border ${
-                            isTop1
-                              ? "bg-amber-500/20 text-amber-300 border-amber-500/40 shadow-xs shadow-amber-500/20"
-                              : isTop2
-                              ? "bg-zinc-700/30 text-zinc-200 border-zinc-500/40"
-                              : isTop3
-                              ? "bg-orange-500/20 text-orange-300 border-orange-500/40"
-                              : "bg-zinc-800/80 text-zinc-400 border-zinc-700/50"
-                          }`}
-                        >
-                          #{item.rank}
+                        <span className="flex h-7 w-7 items-center justify-center border border-white/[0.12] bg-white/[0.04] text-xs font-mono font-bold text-white">
+                          #{item.rank < 10 ? `0${item.rank}` : item.rank}
                         </span>
                       </div>
 
@@ -701,7 +691,7 @@ export function RepoLeaderboardModal({
                       <img
                         src={item.avatar_url}
                         alt={item.repo_name}
-                        className="h-10 w-10 rounded-xl border border-zinc-700/80 bg-zinc-800 object-cover shrink-0 mt-0.5"
+                        className="h-9 w-9 grayscale border border-white/[0.12] bg-[#141414] object-cover shrink-0 mt-0.5"
                       />
 
                       {/* Details */}
@@ -711,7 +701,7 @@ export function RepoLeaderboardModal({
                             href={`https://github.com/${item.repo_name}`}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="font-mono text-sm font-bold text-white hover:text-indigo-400 transition flex items-center gap-1 group-hover:underline"
+                            className="font-mono text-xs font-bold text-white hover:underline underline-offset-2 transition flex items-center gap-1"
                             title="Open repository on GitHub"
                           >
                             <span>{item.repo_name}</span>
@@ -719,14 +709,14 @@ export function RepoLeaderboardModal({
                           </a>
 
                           {item.highlight_tag && (
-                            <span className="rounded-md bg-indigo-500/10 px-2 py-0.5 text-[10px] font-medium text-indigo-300 border border-indigo-500/20">
+                            <span className="border border-white/[0.08] bg-white/[0.03] px-2 py-0.2 text-[10px] font-mono text-zinc-400">
                               {item.highlight_tag}
                             </span>
                           )}
 
-                          <span className="flex items-center gap-1 text-[11px] font-mono text-zinc-400">
+                          <span className="flex items-center gap-1 text-[11px] font-mono text-zinc-500">
                             <span
-                              className="h-2 w-2 rounded-full inline-block"
+                              className="h-1.5 w-1.5 rounded-full inline-block"
                               style={{ backgroundColor: item.language_color }}
                             />
                             {item.primary_language}
@@ -740,19 +730,13 @@ export function RepoLeaderboardModal({
                         {/* License & Health Notes */}
                         <div className="flex flex-wrap items-center gap-2 mt-2">
                           <span
-                            className={`inline-flex items-center gap-1 px-2 py-0.5 rounded text-[11px] font-mono font-medium border ${
-                              item.license.includes("Apache")
-                                ? "bg-sky-500/10 text-sky-300 border-sky-500/30"
-                                : item.license.includes("MIT")
-                                ? "bg-emerald-500/10 text-emerald-300 border-emerald-500/30"
-                                : "bg-teal-500/10 text-teal-300 border-teal-500/30"
-                            }`}
+                            className="inline-flex items-center gap-1 px-1.5 py-0.2 text-[10px] font-mono text-zinc-300 border border-white/[0.1] bg-white/[0.02]"
                             title={item.license_notes}
                           >
                             <ShieldCheck className="h-3 w-3" />
                             {item.license}
                           </span>
-                          <span className="text-[11px] text-zinc-500 truncate max-w-xs">
+                          <span className="text-[11px] font-mono text-zinc-500 truncate max-w-xs">
                             {item.license_notes}
                           </span>
                         </div>
@@ -760,11 +744,11 @@ export function RepoLeaderboardModal({
                     </div>
 
                     {/* Right: Metrics & Action */}
-                    <div className="flex flex-wrap sm:flex-nowrap items-center gap-4 w-full lg:w-auto justify-between lg:justify-end pt-2 lg:pt-0 border-t lg:border-t-0 border-zinc-800/80">
+                    <div className="flex flex-wrap sm:flex-nowrap items-center gap-4 w-full lg:w-auto justify-between lg:justify-end pt-2 lg:pt-0 border-t lg:border-t-0 border-white/[0.08]">
                       {/* Community Stars */}
                       <div className="text-left sm:text-right min-w-[75px]">
-                        <div className="flex items-center gap-1 text-xs sm:justify-end font-mono font-bold text-amber-300">
-                          <Star className="h-3.5 w-3.5 fill-amber-400 text-amber-400" />
+                        <div className="flex items-center gap-1 text-xs sm:justify-end font-mono font-bold text-white">
+                          <Star className="h-3.5 w-3.5 fill-white/20 text-white" />
                           <span>{item.stars_formatted}</span>
                         </div>
                         <div className="flex items-center gap-1 text-[10px] text-zinc-500 sm:justify-end font-mono mt-0.5">
@@ -776,10 +760,10 @@ export function RepoLeaderboardModal({
                       {/* Velocity Meter */}
                       <div className="text-left sm:text-right min-w-[95px]">
                         <div className="flex items-center gap-1 text-xs sm:justify-end font-mono font-bold text-white">
-                          <Zap className="h-3.5 w-3.5 text-indigo-400" />
+                          <Zap className="h-3.5 w-3.5 text-zinc-300" />
                           <span>{item.velocity_score} pts</span>
                         </div>
-                        <div className="text-[10px] text-indigo-300/80 font-medium sm:justify-end">
+                        <div className="text-[10px] font-mono text-zinc-500 sm:justify-end">
                           {item.velocity_tier}
                         </div>
                       </div>
@@ -787,10 +771,10 @@ export function RepoLeaderboardModal({
                       {/* Contributors & Health */}
                       <div className="hidden sm:block text-right min-w-[90px]">
                         <div className="flex items-center gap-1 justify-end text-xs font-mono text-zinc-300">
-                          <Users className="h-3.5 w-3.5 text-zinc-400" />
+                          <Users className="h-3.5 w-3.5 text-zinc-500" />
                           <span>{item.active_contributors.toLocaleString()}</span>
                         </div>
-                        <div className="text-[10px] text-emerald-400 font-mono mt-0.5">
+                        <div className="text-[10px] text-zinc-400 font-mono mt-0.5">
                           {item.health_score}% Health
                         </div>
                       </div>
@@ -798,9 +782,9 @@ export function RepoLeaderboardModal({
                       {/* 1-Click Action Button */}
                       <div className="shrink-0 ml-auto sm:ml-0">
                         {isSelected ? (
-                          <div className="flex items-center gap-1.5 rounded-xl border border-emerald-500/30 bg-emerald-500/10 px-3 py-1.5 text-xs font-medium text-emerald-400">
-                            <span className="h-2 w-2 rounded-full bg-emerald-400 animate-pulse" />
-                            <span>Currently Active</span>
+                          <div className="flex items-center gap-1.5 border border-white/20 bg-white/[0.05] px-3 py-1 text-xs font-mono text-zinc-300">
+                            <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                            <span>Active</span>
                           </div>
                         ) : (
                           <button
@@ -808,10 +792,10 @@ export function RepoLeaderboardModal({
                               onSelectRepo(item.repo_name);
                               onClose();
                             }}
-                            className="flex items-center gap-1.5 rounded-xl border border-zinc-700 bg-zinc-800 hover:bg-indigo-600 hover:border-indigo-500 px-3 py-1.5 text-xs font-semibold text-white shadow-sm transition cursor-pointer group/btn"
+                            className="flex items-center gap-1.5 bg-white text-black hover:bg-zinc-200 px-3 py-1.5 text-xs font-mono font-medium uppercase tracking-tight transition cursor-pointer"
                           >
-                            <span>Analyze Repo</span>
-                            <ArrowRight className="h-3.5 w-3.5 transition group-hover/btn:translate-x-0.5" />
+                            <span>Analyze</span>
+                            <ArrowRight className="h-3.5 w-3.5" />
                           </button>
                         )}
                       </div>
