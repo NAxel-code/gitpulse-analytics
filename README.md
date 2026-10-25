@@ -8,6 +8,7 @@
 > Universal DORA metrics, software engineering velocity tracking, and contributor journey timelines for any public GitHub repository worldwide.
 
 [![Live Demo](https://img.shields.io/badge/Live%20Demo-Vercel%20Production-black?style=for-the-badge&logo=vercel)](https://frontend-theta-beige-69.vercel.app)
+[![Design](https://img.shields.io/badge/Design-Awwwards%20SOTD%20Monochrome-black?style=for-the-badge)](DESIGN.md)
 [![Next.js 15](https://img.shields.io/badge/Next.js%2015-App%20Router-black?style=for-the-badge&logo=next.js)](https://nextjs.org)
 [![FastAPI](https://img.shields.io/badge/FastAPI-Python%203.12-009688?style=for-the-badge&logo=fastapi)](https://fastapi.tiangolo.com)
 [![DuckDB](https://img.shields.io/badge/DuckDB-Columnar%20Engine-FFF000?style=for-the-badge&logo=duckdb&logoColor=black)](https://duckdb.org)
@@ -18,7 +19,7 @@
 ## 📸 Production Dashboard Interface (Live Preview)
 
 ![GitPulse Analytics Live Production Dashboard](docs/images/dashboard-preview.png)
-*Live production analytics dashboard deployed on Vercel (`https://frontend-theta-beige-69.vercel.app`) rendering real-time DORA indicators, code velocity trends, PR conversion funnel, and contributor leaderboards.*
+*Live production analytics dashboard featuring Awwwards SOTD Swiss monochrome architectural aesthetics, geometric telemetry identity, Framer Motion choreography, and real-time DORA engineering indicators.*
 
 ---
 

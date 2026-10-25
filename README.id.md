@@ -8,6 +8,7 @@
 > Menganalisis metrik DORA, kecepatan rekayasa perangkat lunak, dan linimasa kontributor secara universal untuk repositori publik GitHub apa pun di dunia.
 
 [![Live Demo](https://img.shields.io/badge/Live%20Demo-Vercel%20Production-black?style=for-the-badge&logo=vercel)](https://frontend-theta-beige-69.vercel.app)
+[![Design](https://img.shields.io/badge/Design-Awwwards%20SOTD%20Monochrome-black?style=for-the-badge)](DESIGN.md)
 [![Next.js 15](https://img.shields.io/badge/Next.js%2015-App%20Router-black?style=for-the-badge&logo=next.js)](https://nextjs.org)
 [![FastAPI](https://img.shields.io/badge/FastAPI-Python%203.12-009688?style=for-the-badge&logo=fastapi)](https://fastapi.tiangolo.com)
 [![DuckDB](https://img.shields.io/badge/DuckDB-Columnar%20Engine-FFF000?style=for-the-badge&logo=duckdb&logoColor=black)](https://duckdb.org)
@@ -18,7 +19,7 @@
 ## 📸 Antarmuka Dashboard Produksi (Live Preview)
 
 ![GitPulse Analytics Live Production Dashboard](docs/images/dashboard-preview.png)
-*Tampilan dashboard analitik live di Vercel Production (`https://frontend-theta-beige-69.vercel.app`) menampilkan metrik DORA real-time, grafik kecepatan aktivitas kode, corong konversi PR, dan perankingan kontributor.*
+*Tampilan dashboard analitik live dengan estetika arsitektural monokrom Swiss Awwwards SOTD, identitas geometris telemetri minimalis, koreografi Framer Motion, dan indikator engineering DORA real-time.*
 
 ---
 
