@@ -1,7 +1,12 @@
 "use client";
 
 import { useState, useMemo } from "react";
-import { Search, ArrowUpDown, Award, Flame, Zap, TrendingUp, ChevronRight, Medal, GitPullRequest, Bot } from "lucide-react";
+import {
+  Search,
+  ArrowUpDown,
+  ChevronRight,
+  Bot,
+} from "lucide-react";
 import { formatNumber } from "@/lib/utils";
 
 export const isBotAccount = (login: string) => {
@@ -44,13 +49,20 @@ interface ContributorTableProps {
   onSelectContributor?: (login: string) => void;
 }
 
-export function ContributorTable({ data, onSelectContributor }: ContributorTableProps) {
+export function ContributorTable({
+  data,
+  onSelectContributor,
+}: ContributorTableProps) {
   const [search, setSearch] = useState("");
-  const [sortField, setSortField] = useState<keyof ContributorItem>("velocity_score");
+  const [sortField, setSortField] =
+    useState<keyof ContributorItem>("velocity_score");
   const [sortAsc, setSortAsc] = useState(false);
   const [excludeBots, setExcludeBots] = useState(true);
 
-  const botCount = useMemo(() => data.filter((item) => isBotAccount(item.login)).length, [data]);
+  const botCount = useMemo(
+    () => data.filter((item) => isBotAccount(item.login)).length,
+    [data]
+  );
 
   const filtered = useMemo(() => {
     return data
@@ -79,230 +91,150 @@ export function ContributorTable({ data, onSelectContributor }: ContributorTable
     }
   };
 
-  const getRankBadgeDisplay = (badge?: string, rank?: number) => {
-    if (badge === "gold" || rank === 1) {
-      return (
-        <span className="inline-flex items-center gap-1 rounded-md bg-amber-500/10 px-2 py-0.5 text-[11px] font-mono font-semibold text-amber-300 border border-amber-500/30">
-          <Medal className="h-3 w-3 text-amber-400" />
-          <span>Gold</span>
-        </span>
-      );
-    }
-    if (badge === "silver" || rank === 2) {
-      return (
-        <span className="inline-flex items-center gap-1 rounded-md bg-slate-300/10 px-2 py-0.5 text-[11px] font-mono font-semibold text-slate-200 border border-slate-300/30">
-          <Medal className="h-3 w-3 text-slate-300" />
-          <span>Silver</span>
-        </span>
-      );
-    }
-    if (badge === "bronze" || rank === 3) {
-      return (
-        <span className="inline-flex items-center gap-1 rounded-md bg-amber-700/15 px-2 py-0.5 text-[11px] font-mono font-semibold text-amber-400 border border-amber-700/30">
-          <Medal className="h-3 w-3 text-amber-500" />
-          <span>Bronze</span>
-        </span>
-      );
-    }
-    return (
-      <span className="text-[11px] font-mono text-zinc-400 px-1">
-        #{rank ?? "-"}
-      </span>
-    );
-  };
-
-  const getMomentumTagDisplay = (tag?: string) => {
-    if (!tag) return null;
-    const cleanTag = tag.replace(/^[^\w]+/, "").trim();
-    const isHigh = cleanTag.includes("High Velocity");
-    const isSurging = cleanTag.includes("Surging");
-    return (
-      <span className="inline-flex items-center gap-1 text-[10px] font-mono text-zinc-300 bg-zinc-800/80 px-1.5 py-0.5 rounded border border-zinc-700/60">
-        {isHigh ? (
-          <Flame className="h-2.5 w-2.5 text-amber-400" />
-        ) : isSurging ? (
-          <Zap className="h-2.5 w-2.5 text-indigo-400" />
-        ) : (
-          <TrendingUp className="h-2.5 w-2.5 text-emerald-400" />
-        )}
-        <span>{cleanTag}</span>
-      </span>
-    );
-  };
-
   return (
-    <div className="rounded-xl border border-zinc-800/80 bg-zinc-900/60 p-5 shadow-sm">
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
+    <div className="border border-white/[0.08] bg-[#0c0c0e] p-6">
+      {/* Header Deck */}
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-white/[0.08] mb-4">
         <div>
-          <div className="flex items-center gap-2">
-            <Award className="h-4 w-4 text-indigo-400" />
-            <h3 className="font-semibold text-zinc-100 text-sm md:text-base">
-              Contributor Engineering Velocity
-            </h3>
-          </div>
-          <p className="text-xs text-zinc-400 mt-0.5">
-            Developer velocity rankings and contribution timeline insights
-          </p>
+          <span className="text-[10px] font-mono uppercase tracking-wider text-zinc-500 block">
+            INDEX DIRECTORY
+          </span>
+          <h3 className="font-semibold text-white text-base mt-0.5 tracking-tight">
+            Contributor Velocity Index
+          </h3>
         </div>
 
-        {/* Controls: Exclude Bots Toggle & Search */}
-        <div className="flex items-center gap-2 w-full sm:w-auto">
+        {/* Search & Bot Filter */}
+        <div className="flex items-center gap-3 w-full sm:w-auto">
           <button
             onClick={() => setExcludeBots(!excludeBots)}
-            className={`flex items-center gap-1.5 rounded-lg border px-2.5 py-1.5 text-xs font-mono transition cursor-pointer shrink-0 ${
+            className={`px-2.5 py-1 text-xs font-mono border transition cursor-pointer shrink-0 ${
               excludeBots
-                ? "border-indigo-500/40 bg-indigo-500/10 text-indigo-300 hover:bg-indigo-500/20"
-                : "border-zinc-800 bg-zinc-950 text-zinc-400 hover:text-zinc-200"
+                ? "border-white/20 text-white bg-white/5"
+                : "border-white/10 text-zinc-500 hover:text-zinc-300"
             }`}
-            title={excludeBots ? "Click to show bot accounts" : "Click to hide automated bot accounts (e.g. Renovate, Dependabot)"}
+            title="Toggle automated bots"
           >
-            <Bot className="h-3.5 w-3.5" />
-            <span>{excludeBots ? "Bots Hidden" : "Show All"}</span>
-            {botCount > 0 && (
-              <span className="rounded-full bg-zinc-800/90 px-1.5 py-0.2 text-[10px] text-zinc-300 border border-zinc-700/60 font-semibold">
-                {excludeBots ? `-${botCount}` : botCount}
-              </span>
-            )}
+            <span className="flex items-center gap-1.5">
+              <Bot className="h-3 w-3" />
+              <span>{excludeBots ? "Bots Hidden" : "All Accounts"}</span>
+              {botCount > 0 && <span>({botCount})</span>}
+            </span>
           </button>
 
-          <div className="relative w-full sm:w-56">
-            <Search className="absolute left-3 top-2.5 h-3.5 w-3.5 text-zinc-500" />
+          <div className="relative w-full sm:w-48">
+            <Search className="absolute left-2.5 top-2 h-3.5 w-3.5 text-zinc-500" />
             <input
               type="text"
-              placeholder="Search contributor..."
+              placeholder="Filter by handle..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="w-full rounded-lg border border-zinc-800 bg-zinc-950/80 pl-8 pr-3 py-1.5 text-xs text-zinc-200 placeholder-zinc-500 focus:border-zinc-700 focus:ring-1 focus:ring-zinc-700 focus:outline-none transition-colors"
+              className="w-full border border-white/10 bg-black/40 pl-8 pr-3 py-1 text-xs font-mono text-zinc-200 placeholder-zinc-600 focus:border-white/30 focus:outline-none"
             />
           </div>
         </div>
       </div>
 
       <div className="overflow-x-auto scrollbar-thin">
-        <table className="w-full min-w-[760px] text-left text-xs text-zinc-300">
-          <thead className="border-b border-zinc-800 bg-zinc-950/70 text-[11px] uppercase tracking-wider text-zinc-400">
+        <table className="w-full min-w-[700px] text-left text-xs font-mono">
+          <thead className="border-b border-white/[0.08] text-[10px] uppercase tracking-wider text-zinc-500">
             <tr>
-              <th className="py-3 px-3 w-20 text-center whitespace-nowrap">Tier</th>
-              <th className="py-3 px-3 min-w-[180px] whitespace-nowrap">Developer</th>
+              <th className="py-2.5 px-3 w-12 text-center">#</th>
+              <th className="py-2.5 px-3 min-w-[180px]">Developer</th>
               <th
                 onClick={() => handleSort("commits")}
-                className="py-3 px-4 text-right cursor-pointer hover:text-white whitespace-nowrap"
+                className="py-2.5 px-3 text-right cursor-pointer hover:text-white"
               >
                 <div className="flex items-center justify-end gap-1">
                   <span>Commits</span>
-                  <ArrowUpDown className="h-3 w-3" />
+                  <ArrowUpDown className="h-2.5 w-2.5 text-zinc-600" />
                 </div>
               </th>
               <th
                 onClick={() => handleSort("prs_merged")}
-                className="py-3 px-4 text-center cursor-pointer hover:text-white whitespace-nowrap"
+                className="py-2.5 px-3 text-center cursor-pointer hover:text-white"
               >
                 <div className="flex items-center justify-center gap-1">
                   <span>PRs Merged</span>
-                  <ArrowUpDown className="h-3 w-3" />
+                  <ArrowUpDown className="h-2.5 w-2.5 text-zinc-600" />
                 </div>
               </th>
               <th
                 onClick={() => handleSort("lines_added")}
-                className="py-3 px-4 text-right cursor-pointer hover:text-white whitespace-nowrap"
+                className="py-2.5 px-3 text-right cursor-pointer hover:text-white"
               >
                 <div className="flex items-center justify-end gap-1">
                   <span>Lines +/-</span>
-                  <ArrowUpDown className="h-3 w-3" />
+                  <ArrowUpDown className="h-2.5 w-2.5 text-zinc-600" />
                 </div>
               </th>
               <th
                 onClick={() => handleSort("velocity_score")}
-                className="py-3 px-4 cursor-pointer hover:text-white whitespace-nowrap"
+                className="py-2.5 px-3 text-right cursor-pointer hover:text-white"
               >
-                <div className="flex items-center gap-1">
-                  <span>Velocity &amp; Momentum</span>
-                  <ArrowUpDown className="h-3 w-3" />
+                <div className="flex items-center justify-end gap-1">
+                  <span>Velocity</span>
+                  <ArrowUpDown className="h-2.5 w-2.5 text-zinc-600" />
                 </div>
               </th>
-              <th className="py-3 px-3 w-12 text-center whitespace-nowrap">Journey</th>
+              <th className="py-2.5 px-2 w-8" />
             </tr>
           </thead>
-          <tbody className="divide-y divide-zinc-800/60">
+          <tbody className="divide-y divide-white/[0.04]">
             {filtered.length === 0 ? (
               <tr>
-                <td colSpan={7} className="py-8 text-center">
-                  <p className="text-xs font-medium text-zinc-300">
-                    {search
-                      ? `No contributors found matching "${search}".`
-                      : "No contributor data recorded for this repository."}
-                  </p>
-                  <p className="text-[11px] text-zinc-500 mt-1">
-                    {search
-                      ? "Check the username spelling or clear the search filter."
-                      : "Click 'Sync Live Repo' in the top navigation to fetch GitHub data."}
-                  </p>
-                  {search && (
-                    <button
-                      onClick={() => setSearch("")}
-                      className="mt-3 inline-flex items-center rounded-lg border border-zinc-700 bg-zinc-800 px-3 py-1 text-xs text-zinc-200 hover:bg-zinc-700 transition cursor-pointer"
-                    >
-                      Reset Filter
-                    </button>
-                  )}
+                <td colSpan={7} className="py-8 text-center text-zinc-500 font-mono text-xs">
+                  No contributors matching filter.
                 </td>
               </tr>
             ) : (
               filtered.slice(0, 10).map((dev, idx) => {
                 const isBot = isBotAccount(dev.login);
-                const displayRank = idx + 1;
+                const displayRank = String(idx + 1).padStart(2, "0");
 
                 return (
                   <tr
                     key={idx}
                     onClick={() => onSelectContributor?.(dev.login)}
-                    className="hover:bg-zinc-850/60 cursor-pointer transition-colors group border-b border-zinc-800/40"
-                    title={`Click to view activity journey for @${dev.login}`}
+                    className="hover:bg-white/[0.02] cursor-pointer transition-colors group"
+                    title={`Inspect journey for @${dev.login}`}
                   >
-                    <td className="py-3 px-3 text-center whitespace-nowrap">
-                      {getRankBadgeDisplay(undefined, displayRank)}
+                    <td className="py-3 px-3 text-center text-zinc-600 font-mono text-[11px]">
+                      {displayRank}
                     </td>
-                    <td className="py-3 px-3 whitespace-nowrap">
+                    <td className="py-3 px-3">
                       <div className="flex items-center gap-2.5 min-w-[160px]">
                         <img
                           src={dev.avatar_url}
                           alt={dev.login}
-                          className="h-6 w-6 rounded-full border border-zinc-700 bg-zinc-800 object-cover shrink-0 shadow-xs"
+                          className="h-5 w-5 rounded-full bg-zinc-800 object-cover shrink-0 grayscale group-hover:grayscale-0 transition-all"
                         />
-                        <span className="font-medium text-zinc-200 group-hover:text-white transition-colors truncate max-w-[150px]">
+                        <span className="font-sans font-medium text-zinc-200 group-hover:text-white transition-colors truncate max-w-[150px]">
                           @{dev.login}
                         </span>
                         {isBot && (
-                          <span className="rounded bg-zinc-800/80 px-1 py-0.2 text-[9px] font-mono font-medium text-zinc-400 border border-zinc-700/60">
-                            BOT
+                          <span className="text-[9px] text-zinc-600">
+                            [BOT]
                           </span>
                         )}
                       </div>
                     </td>
-                    <td className="py-3 px-4 font-mono font-medium text-zinc-200 tabular-nums text-right whitespace-nowrap">
+                    <td className="py-3 px-3 text-right font-bold text-white tabular-nums">
                       {formatNumber(dev.commits)}
                     </td>
-                    <td className="py-3 px-4 text-center whitespace-nowrap">
-                      <span className="inline-flex items-center gap-1.5 rounded-md bg-emerald-500/10 border border-emerald-500/25 px-2 py-0.5 font-mono text-[11px] font-medium text-emerald-400 whitespace-nowrap shadow-xs">
-                        <GitPullRequest className="h-3 w-3 shrink-0" />
-                        <span>{formatNumber(dev.prs_merged)} merged</span>
-                      </span>
+                    <td className="py-3 px-3 text-center text-zinc-300 tabular-nums">
+                      {formatNumber(dev.prs_merged)}
                     </td>
-                    <td className="py-3 px-4 tabular-nums font-mono text-[11px] text-right whitespace-nowrap">
-                      <span className="text-emerald-400 font-medium">+{formatNumber(dev.lines_added)}</span>
-                      <span className="text-zinc-600 mx-1.5">/</span>
-                      <span className="text-rose-400 font-medium">-{formatNumber(dev.lines_deleted)}</span>
+                    <td className="py-3 px-3 text-right text-[11px] tabular-nums">
+                      <span className="text-zinc-300">+{formatNumber(dev.lines_added)}</span>
+                      <span className="text-zinc-600 mx-1">/</span>
+                      <span className="text-zinc-500">-{formatNumber(dev.lines_deleted)}</span>
                     </td>
-                    <td className="py-3 px-4 tabular-nums whitespace-nowrap">
-                      <div className="flex items-center gap-2">
-                        <span className="font-mono font-semibold text-zinc-100">
-                          {dev.velocity_score} <span className="text-zinc-500 font-normal text-[10px]">pts</span>
-                        </span>
-                        {getMomentumTagDisplay(dev.momentum_tag)}
-                      </div>
+                    <td className="py-3 px-3 text-right font-bold text-zinc-100 tabular-nums">
+                      {dev.velocity_score}
                     </td>
-                    <td className="py-3 px-3 text-center whitespace-nowrap">
-                      <ChevronRight className="h-4 w-4 text-zinc-500 group-hover:text-zinc-300 transition-colors inline" />
+                    <td className="py-3 px-2 text-right">
+                      <ChevronRight className="h-3 w-3 text-zinc-600 group-hover:text-white transition-colors inline" />
                     </td>
                   </tr>
                 );

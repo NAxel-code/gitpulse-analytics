@@ -14,6 +14,7 @@ import { RepoLeaderboardModal } from "@/components/RepoLeaderboardModal";
 import { SprintExportModal } from "@/components/SprintExportModal";
 import { GITHUB_API_URL } from "@/lib/api";
 import { getFallbackDashboardData } from "@/lib/fallback";
+import { Terminal, Database, Cpu, Command } from "lucide-react";
 
 export default function GitPulseDashboard() {
   const [currentRepo, setCurrentRepo] = useState("vercel/next.js");
@@ -168,8 +169,8 @@ export default function GitPulseDashboard() {
   };
 
   return (
-    <div className="min-h-screen bg-zinc-950 text-zinc-100 flex flex-col font-sans">
-      {/* Sticky Header with Token, Sync & Help controls */}
+    <div className="min-h-screen bg-[#080808] text-zinc-100 flex flex-col font-sans selection:bg-white selection:text-black">
+      {/* Navigation Header */}
       <Header
         currentRepo={currentRepo}
         onRepoChange={(r) => {
@@ -187,16 +188,38 @@ export default function GitPulseDashboard() {
         onOpenLeaderboard={() => setIsLeaderboardOpen(true)}
       />
 
-      {/* Main Content Bento Grid */}
-      <main className="flex-1 p-4 md:p-6 max-w-7xl w-full mx-auto space-y-6">
-        {/* Top: Bento KPI Cards with Number Ticker & DORA Velocity */}
+      {/* Main Content Area */}
+      <main className="flex-1 p-6 md:p-8 lg:p-10 max-w-7xl w-full mx-auto space-y-8">
+        {/* Repository Overview Context */}
+        <div className="flex flex-col sm:flex-row sm:items-baseline justify-between gap-3 pb-6 border-b border-white/[0.08]">
+          <div>
+            <span className="text-[11px] font-mono uppercase tracking-wider text-zinc-500 block">
+              TARGET REPOSITORY / {days}D OBSERVATION
+            </span>
+            <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-white mt-1 display-num">
+              {currentRepo}
+            </h1>
+          </div>
+          <div className="flex items-center gap-3 text-xs font-mono text-zinc-500">
+            <span>DuckDB Columnar</span>
+            <span>/</span>
+            <span>Sub-second AST</span>
+            <span>/</span>
+            <span className="text-zinc-300">Live Telemetry</span>
+          </div>
+        </div>
+
+        {/* Primary Monolithic Metric Strip */}
         <div id="tour-kpi-cards">
           <KPICards key={currentRepo} data={kpiData} />
         </div>
 
-        {/* Middle Section: Activity Timeline Chart (65%) vs PR Lifecycle Funnel (35%) */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
-          <div id="section-activity" className="lg:col-span-8 scroll-mt-28 rounded-xl transition-all duration-300">
+        {/* Middle Section: Activity Timeline (65%) vs PR Lifecycle Funnel (35%) */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+          <div
+            id="section-activity"
+            className="lg:col-span-8 scroll-mt-28"
+          >
             <ActivityChart
               data={timelineData}
               repoName={currentRepo}
@@ -204,20 +227,29 @@ export default function GitPulseDashboard() {
               isSyncing={syncing}
             />
           </div>
-          <div id="tour-pr-funnel" className="lg:col-span-4 scroll-mt-28 rounded-xl transition-all duration-300">
+          <div
+            id="tour-pr-funnel"
+            className="lg:col-span-4 scroll-mt-28 h-full"
+          >
             <FunnelChart stages={funnelData} payload={funnelPayload} />
           </div>
         </div>
 
-        {/* Bottom Section: Contributor Velocity Table (67%) vs DORA Feed (33%) */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
-          <div id="tour-contributors" className="lg:col-span-8 scroll-mt-28 rounded-xl transition-all duration-300">
+        {/* Bottom Section: Contributor Table (65%) vs DORA Feed (35%) */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+          <div
+            id="tour-contributors"
+            className="lg:col-span-8 scroll-mt-28"
+          >
             <ContributorTable
               data={contributors}
               onSelectContributor={handleOpenJourney}
             />
           </div>
-          <div id="section-dora-feed" className="lg:col-span-4 scroll-mt-28 rounded-xl transition-all duration-300">
+          <div
+            id="section-dora-feed"
+            className="lg:col-span-4 scroll-mt-28"
+          >
             <DORAFeed
               alerts={anomalies}
               summary={executiveSummary}
@@ -226,6 +258,23 @@ export default function GitPulseDashboard() {
             />
           </div>
         </div>
+
+        {/* Minimalist Four-Corners Footer */}
+        <footer className="pt-8 pb-4 border-t border-white/[0.08] flex flex-col sm:flex-row items-center justify-between gap-4 text-xs font-mono text-zinc-500">
+          <div className="flex items-center gap-3">
+            <span className="text-zinc-400 font-semibold">GitPulse</span>
+            <span>/</span>
+            <span>DuckDB Embedded Storage</span>
+            <span>/</span>
+            <span>AST Query Sandbox</span>
+          </div>
+
+          <div className="flex items-center gap-3 text-zinc-500">
+            <span>Press <kbd className="text-zinc-300 font-bold">⌘K</kbd> to query</span>
+            <span>·</span>
+            <span>Press <kbd className="text-zinc-300 font-bold">?</kbd> for documentation</span>
+          </div>
+        </footer>
       </main>
 
       {/* Contributor Action Stream Journey Modal */}

@@ -1,7 +1,11 @@
 "use client";
 
 import { useState, useMemo } from "react";
-import { GitPullRequest, ChevronRight, AlertCircle, Lightbulb, CheckCircle2, Sparkles, Bug, FileCode } from "lucide-react";
+import {
+  GitPullRequest,
+  AlertCircle,
+  Lightbulb,
+} from "lucide-react";
 
 export interface PRFunnelStage {
   stage_name: string;
@@ -37,7 +41,9 @@ export function FunnelChart({
   stages: PRFunnelStage[];
   payload?: PRFunnelPayload | null;
 }) {
-  const [activeCategory, setActiveCategory] = useState<"all" | "features" | "fixes" | "docs">("all");
+  const [activeCategory, setActiveCategory] = useState<
+    "all" | "features" | "fixes" | "docs"
+  >("all");
 
   const counts = useMemo(() => {
     if (payload?.counts) {
@@ -58,11 +64,8 @@ export function FunnelChart({
     if (payload?.byCategory?.[activeCategory]) {
       return payload.byCategory[activeCategory];
     }
-    const totalAll = stages[0]?.count || 1;
     const catRatio =
-      activeCategory === "features" ? 0.42 :
-      activeCategory === "fixes" ? 0.33 :
-      0.25;
+      activeCategory === "features" ? 0.42 : activeCategory === "fixes" ? 0.33 : 0.25;
 
     return stages.map((s) => ({
       ...s,
@@ -70,53 +73,53 @@ export function FunnelChart({
     }));
   }, [stages, activeCategory, payload]);
 
-  const isAllZero = !activeStages || activeStages.length === 0 || activeStages.every((s) => s.count === 0);
+  const isAllZero =
+    !activeStages || activeStages.length === 0 || activeStages.every((s) => s.count === 0);
 
   const maxCount = activeStages[0]?.count || 1;
   const bottleneckStage = activeStages.find((s) => s.is_bottleneck && s.diagnostic_tip);
 
   return (
-    <div className="rounded-xl border border-zinc-800/80 bg-zinc-900/60 p-5 shadow-sm flex flex-col justify-between h-full">
+    <div className="border border-white/[0.08] bg-[#0c0c0e] p-6 h-full flex flex-col justify-between">
       <div>
-        <div className="flex items-center justify-between mb-3">
-          <div className="flex items-center gap-2">
-            <GitPullRequest className="h-4 w-4 text-violet-400" />
-            <h3 className="font-semibold text-zinc-100 text-sm md:text-base">
-              PR Lifecycle Funnel
+        {/* Header */}
+        <div className="flex items-center justify-between pb-4 border-b border-white/[0.08] mb-5">
+          <div>
+            <span className="text-[10px] font-mono uppercase tracking-wider text-zinc-500 block">
+              LIFECYCLE PIPELINE
+            </span>
+            <h3 className="font-semibold text-white text-base mt-0.5 tracking-tight">
+              PR Conversion Funnel
             </h3>
           </div>
-          <span className="text-[11px] text-zinc-500 font-mono">Conversion Stream</span>
+          <span className="text-[11px] font-mono text-zinc-500">
+            {activeStages[0]?.count || 0} TOTAL
+          </span>
         </div>
 
-        {/* Category Filter Tabs */}
-        <div className="flex items-center gap-1 p-1 rounded-lg bg-zinc-950/70 border border-zinc-800/80 mb-4 overflow-x-auto scrollbar-none">
+        {/* Minimalist Category Tabs */}
+        <div className="flex items-center gap-4 mb-6 text-xs font-mono border-b border-white/[0.06] pb-2">
           {[
-            { id: "all", label: "All PRs", count: counts.all, icon: GitPullRequest },
-            { id: "features", label: "Features", count: counts.features, icon: Sparkles },
-            { id: "fixes", label: "Bugfixes", count: counts.fixes, icon: Bug },
-            { id: "docs", label: "Docs & Chores", count: counts.docs + counts.chores, icon: FileCode },
+            { id: "all", label: "All PRs", count: counts.all },
+            { id: "features", label: "Features", count: counts.features },
+            { id: "fixes", label: "Bugfixes", count: counts.fixes },
+            { id: "docs", label: "Docs", count: counts.docs + counts.chores },
           ].map((cat) => {
             const isActive = activeCategory === cat.id;
-            const Icon = cat.icon;
             return (
               <button
                 key={cat.id}
                 onClick={() => setActiveCategory(cat.id as any)}
-                className={`flex items-center gap-1.5 rounded-md px-2 py-1 text-[11px] font-medium transition cursor-pointer whitespace-nowrap shrink-0 ${
+                className={`transition cursor-pointer pb-1 relative ${
                   isActive
-                    ? "bg-zinc-800 text-white font-semibold shadow-xs border border-zinc-700/60"
-                    : "text-zinc-400 hover:text-zinc-200 hover:bg-zinc-900"
+                    ? "text-white font-bold border-b-2 border-white -mb-[9px]"
+                    : "text-zinc-500 hover:text-zinc-300"
                 }`}
               >
-                <Icon className={`h-3 w-3 ${isActive ? "text-indigo-400" : "text-zinc-500"}`} />
                 <span>{cat.label}</span>
                 {cat.count > 0 && (
-                  <span
-                    className={`text-[10px] font-mono px-1 rounded ${
-                      isActive ? "bg-zinc-700 text-zinc-200" : "bg-zinc-900 text-zinc-500"
-                    }`}
-                  >
-                    {cat.count}
+                  <span className="ml-1 text-[10px] text-zinc-500 font-normal">
+                    ({cat.count})
                   </span>
                 )}
               </button>
@@ -125,65 +128,60 @@ export function FunnelChart({
         </div>
 
         {isAllZero ? (
-          <div className="rounded-lg border border-dashed border-zinc-800 p-6 text-center">
-            <p className="text-xs text-zinc-400">No pull requests recorded for category: <span className="text-zinc-200 font-medium capitalize">{activeCategory}</span></p>
+          <div className="p-8 text-center border border-dashed border-white/10 my-4 text-xs font-mono text-zinc-500">
+            No pull requests recorded for {activeCategory}.
           </div>
         ) : (
           <div className="space-y-4">
             {activeStages.map((stage, idx) => {
-              const widthPercent = Math.max(14, Math.round((stage.count / maxCount) * 100));
+              const widthPercent = Math.max(
+                12,
+                Math.round((stage.count / maxCount) * 100)
+              );
               const isBottleneck = stage.is_bottleneck;
-              const isFinalStage = idx === activeStages.length - 1;
 
               return (
-                <div key={idx} className="relative">
-                  <div className="flex items-center justify-between text-xs mb-1">
-                    <span className="font-medium text-zinc-300">{stage.stage_name}</span>
-                    <div className="flex items-center gap-2">
-                      <span className="font-mono font-bold text-white tabular-nums">
+                <div key={idx} className="space-y-1.5">
+                  <div className="flex items-center justify-between text-xs">
+                    <span className="font-medium text-zinc-300">
+                      {stage.stage_name}
+                    </span>
+                    <div className="flex items-center gap-2 font-mono">
+                      <span className="font-bold text-white tabular-nums">
                         {stage.count.toLocaleString()}
                       </span>
                       {idx > 0 && (
                         <span
-                          className={`text-[11px] font-mono font-semibold ${
-                            isBottleneck ? "text-amber-400" : "text-emerald-400"
+                          className={`text-[11px] ${
+                            isBottleneck ? "text-amber-400 font-semibold" : "text-zinc-400"
                           }`}
                         >
-                          {stage.conversion_from_previous_pct}% pass
+                          {stage.conversion_from_previous_pct}%
                         </span>
                       )}
                     </div>
                   </div>
 
-                  {/* Bar track */}
-                  <div className="h-5 w-full rounded-lg bg-zinc-950 p-1">
+                  {/* Clean Hairline Track */}
+                  <div className="h-2 w-full bg-white/[0.04] overflow-hidden">
                     <div
                       style={{ width: `${widthPercent}%` }}
-                      className={`h-full rounded-md transition-all duration-500 ${
+                      className={`h-full transition-all duration-300 ${
                         isBottleneck
-                          ? "bg-amber-500/85"
-                          : isFinalStage
-                          ? "bg-emerald-500/85"
-                          : idx === 0
-                          ? "bg-indigo-500/80"
-                          : "bg-indigo-600/75"
+                          ? "bg-amber-400"
+                          : idx === activeStages.length - 1
+                          ? "bg-white"
+                          : "bg-zinc-400"
                       }`}
                     />
                   </div>
 
-                  {/* Drop-off callout */}
                   {idx > 0 && stage.drop_off_pct > 0 && (
-                    <div className="flex items-center gap-1 text-[11px] text-zinc-400 mt-1 pl-1">
-                      <ChevronRight className="h-3 w-3 text-zinc-500" />
-                      <span>Drop-off:</span>
-                      <span className={`font-mono ${isBottleneck ? "text-amber-400 font-semibold" : "text-zinc-300 font-medium"}`}>
-                        {stage.drop_off_pct}%
+                    <div className="flex items-center justify-between text-[10px] font-mono text-zinc-500 pt-0.5">
+                      <span>Drop-off rate</span>
+                      <span className={isBottleneck ? "text-amber-400 font-bold" : "text-zinc-400"}>
+                        {stage.drop_off_pct}% {isBottleneck && "• BOTTLENECK"}
                       </span>
-                      {isBottleneck && (
-                        <span className="inline-flex items-center gap-1 rounded bg-amber-500/15 px-1.5 py-0.2 text-[10px] font-mono font-medium text-amber-300 border border-amber-500/30 ml-1">
-                          <AlertCircle className="h-2.5 w-2.5 inline" /> Bottleneck
-                        </span>
-                      )}
                     </div>
                   )}
                 </div>
@@ -193,14 +191,14 @@ export function FunnelChart({
         )}
       </div>
 
-      {/* Pipeline Diagnostic Box */}
+      {/* Bottleneck Diagnostic Note */}
       {bottleneckStage && !isAllZero && (
-        <div className="mt-5 rounded-lg border border-amber-500/30 bg-amber-500/10 p-3 text-xs">
-          <div className="flex items-center gap-1.5 text-amber-400 font-semibold mb-1">
-            <Lightbulb className="h-3.5 w-3.5" />
-            <span>Review Pipeline Optimization Recommendation</span>
+        <div className="mt-6 pt-4 border-t border-white/[0.08] text-xs font-mono">
+          <div className="flex items-center gap-1.5 text-zinc-300 font-semibold mb-1">
+            <AlertCircle className="h-3.5 w-3.5 text-amber-400" />
+            <span>PIPELINE DIAGNOSTIC</span>
           </div>
-          <p className="text-[11px] text-zinc-300 leading-relaxed">
+          <p className="text-[11px] text-zinc-400 leading-relaxed font-sans">
             {bottleneckStage.diagnostic_tip}
           </p>
         </div>

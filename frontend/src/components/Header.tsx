@@ -180,91 +180,67 @@ export function Header({
 
   return (
     <>
-      <header className="sticky top-0 z-30 border-b border-zinc-800/80 bg-zinc-950/95 backdrop-blur-md">
+      <header className="sticky top-0 z-30 border-b border-white/[0.08] bg-[#080808]">
         {/* Tier 1: Primary Navigation Bar */}
-        <div className="flex items-center justify-between gap-4 px-6 py-2.5">
+        <div className="flex items-center justify-between gap-4 px-6 py-3">
           {/* Brand & Active Target Repository */}
-          <div id="tour-repo-sync" className="flex items-center gap-3 shrink-0">
-            <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-zinc-950 border border-zinc-800 shadow-sm p-1.5 shrink-0 overflow-hidden">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" className="h-full w-full">
-                <defs>
-                  <linearGradient id="headerPulseGrad" x1="0%" y1="0%" x2="100%" y2="0%">
-                    <stop offset="0%" stopColor="#6366f1" />
-                    <stop offset="35%" stopColor="#818cf8" />
-                    <stop offset="65%" stopColor="#06b6d4" />
-                    <stop offset="100%" stopColor="#10b981" />
-                  </linearGradient>
-                  <linearGradient id="headerBranchGrad" x1="0%" y1="100%" x2="100%" y2="0%">
-                    <stop offset="0%" stopColor="#6366f1" stopOpacity="0.6" />
-                    <stop offset="100%" stopColor="#a855f7" stopOpacity="0.95" />
-                  </linearGradient>
-                </defs>
-                <path d="M 34,68 C 34,44 48,34 64,34 L 78,34" fill="none" stroke="url(#headerBranchGrad)" strokeWidth="6" strokeLinecap="round" />
-                <circle cx="78" cy="34" r="6" fill="#a855f7" stroke="#ffffff" strokeWidth="2" />
-                <path d="M 22,68 L 38,68 L 47,48 L 56,86 L 68,24 L 79,94 L 88,54 L 95,68 L 106,68" fill="none" stroke="url(#headerPulseGrad)" strokeWidth="8" strokeLinecap="round" strokeLinejoin="round" />
-                <circle cx="22" cy="68" r="7" fill="#6366f1" stroke="#ffffff" strokeWidth="2.5" />
-                <circle cx="68" cy="24" r="6" fill="#06b6d4" stroke="#ffffff" strokeWidth="2" />
-                <circle cx="106" cy="68" r="7" fill="#10b981" stroke="#ffffff" strokeWidth="2.5" />
-              </svg>
+          <div id="tour-repo-sync" className="flex items-center gap-3.5 shrink-0">
+            <div className="flex h-8 w-8 items-center justify-center rounded bg-white text-black p-1 shrink-0 overflow-hidden font-bold text-xs tracking-tighter">
+              GP
             </div>
             <div>
               <div className="flex items-center gap-2">
-                <span className="font-bold tracking-tight text-white text-base">GitPulse</span>
-                <span className="rounded-md bg-zinc-800/80 px-2 py-0.5 text-[10px] font-mono font-medium text-zinc-300 border border-zinc-700/60">
-                  v1.1
+                <span className="font-bold tracking-tight text-white text-sm">GitPulse</span>
+                <span className="text-[10px] font-mono text-zinc-500">
+                  / 1.1
                 </span>
               </div>
               <div className="flex items-center gap-1.5 text-xs text-zinc-400">
-                <GitBranch className="h-3.5 w-3.5 text-zinc-400 shrink-0" />
-                <span className="text-zinc-500">Target:</span>
+                <span className="text-zinc-600 font-mono text-[11px]">repo:</span>
                 <button
                   onClick={() => setShowRepoModal(true)}
-                  className="font-mono text-zinc-200 font-semibold hover:text-indigo-300 underline decoration-dotted underline-offset-2 transition cursor-pointer max-w-[200px] truncate"
-                  title="Click to select or switch to any public GitHub repository"
+                  className="font-mono text-zinc-200 font-semibold hover:text-white underline decoration-zinc-600 underline-offset-4 transition cursor-pointer max-w-[200px] truncate"
+                  title="Switch target repository"
                 >
                   {currentRepo}
                 </button>
-                <span className="inline-block h-2 w-2 rounded-full bg-emerald-500 ring-2 ring-emerald-500/20 ml-0.5 shrink-0" />
-                <span className="text-[11px] font-medium text-emerald-400">Live</span>
+                <span className="inline-block h-1.5 w-1.5 rounded-full bg-emerald-500 ml-1 shrink-0" />
               </div>
             </div>
           </div>
 
-          {/* Center Search / AI Query Box */}
-          <div className="hidden md:flex flex-1 max-w-sm lg:max-w-md mx-2">
+          {/* Center Search / Command Input */}
+          <div className="hidden md:flex flex-1 max-w-sm lg:max-w-md mx-4">
             <button
               id="tour-ai-search"
               onClick={onOpenAI}
-              className="group flex w-full h-9 items-center justify-between gap-2 rounded-xl border border-zinc-800 bg-zinc-900/70 px-3 text-xs text-zinc-400 shadow-xs transition hover:border-zinc-700 hover:bg-zinc-900 hover:text-zinc-200 cursor-pointer focus-visible:ring-2 focus-visible:ring-zinc-400 focus-visible:outline-none overflow-hidden"
+              className="group flex w-full h-8 items-center justify-between gap-2 border border-white/10 bg-white/[0.02] px-3 text-xs text-zinc-400 transition hover:border-white/20 hover:text-zinc-200 cursor-pointer focus-visible:outline-none"
             >
               <div className="flex items-center gap-2 min-w-0 flex-1">
-                <Search className="h-4 w-4 shrink-0 text-indigo-400 transition group-hover:scale-110" />
-                <span className="truncate whitespace-nowrap text-zinc-300 text-left">
-                  <span className="font-semibold text-indigo-300">Search:</span>{" "}
-                  <span className="text-zinc-400 hidden lg:inline">&quot;Search repositories, @devs, or ask AI...&quot;</span>
-                  <span className="text-zinc-400 lg:hidden">&quot;Search or ask AI...&quot;</span>
+                <Search className="h-3.5 w-3.5 shrink-0 text-zinc-400" />
+                <span className="truncate whitespace-nowrap text-zinc-400 font-mono text-[11px]">
+                  Search repos, @devs, or query...
                 </span>
               </div>
-              <kbd className="shrink-0 hidden sm:inline-flex items-center rounded border border-zinc-700/80 bg-zinc-800/90 px-1.5 py-0.5 text-[10px] font-mono font-medium text-zinc-300">
+              <kbd className="shrink-0 hidden sm:inline-flex items-center border border-white/10 px-1 py-0.2 text-[10px] font-mono text-zinc-400">
                 ⌘K
               </kbd>
             </button>
           </div>
 
-          {/* Right Toolbar: Date Range, Sync, Leaderboard, Token, Guide */}
+          {/* Right Toolbar */}
           <div className="flex items-center gap-2 shrink-0">
             {/* Mobile AI Button */}
             <button
               onClick={onOpenAI}
-              className="md:hidden flex h-8 w-8 items-center justify-center rounded-lg border border-zinc-800 bg-zinc-900 text-indigo-400 hover:bg-zinc-800"
+              className="md:hidden flex h-8 w-8 items-center justify-center border border-white/10 text-zinc-300 hover:bg-white/10"
               title="Ask AI (⌘K)"
             >
               <Sparkles className="h-4 w-4" />
             </button>
 
             {/* Date Range Selector */}
-            <div className="flex items-center rounded-xl border border-zinc-800 bg-zinc-900/70 p-0.5">
-              <Calendar className="ml-2 mr-1 h-3.5 w-3.5 text-zinc-400 shrink-0" />
+            <div className="flex items-center border border-white/10 bg-black/40">
               {[
                 { label: "7D", value: 7 },
                 { label: "14D", value: 14 },
@@ -273,10 +249,10 @@ export function Header({
                 <button
                   key={item.value}
                   onClick={() => onDaysChange(item.value)}
-                  className={`rounded-lg px-2 py-1 text-xs font-medium transition cursor-pointer ${
+                  className={`px-2.5 py-1 text-xs font-mono transition cursor-pointer ${
                     days === item.value
-                      ? "bg-zinc-100 text-zinc-950 font-semibold shadow-xs"
-                      : "text-zinc-400 hover:text-zinc-200 hover:bg-zinc-800"
+                      ? "bg-white text-black font-bold"
+                      : "text-zinc-400 hover:text-white"
                   }`}
                 >
                   {item.label}
@@ -288,57 +264,56 @@ export function Header({
             <button
               onClick={() => onSyncRepo(currentRepo)}
               disabled={syncing}
-              className="flex items-center gap-1.5 rounded-xl border border-zinc-800 bg-zinc-900 px-3 py-1.5 text-xs font-medium text-zinc-200 hover:bg-zinc-800 hover:border-zinc-700 disabled:opacity-50 transition cursor-pointer whitespace-nowrap"
+              className="flex items-center gap-1.5 border border-white/10 bg-white/[0.02] px-3 py-1 text-xs font-mono font-medium text-zinc-300 hover:bg-white/10 hover:text-white disabled:opacity-50 transition cursor-pointer whitespace-nowrap"
               title="Synchronize repository data with GitHub"
             >
-              <RefreshCw className={`h-3.5 w-3.5 text-indigo-400 ${syncing ? "animate-spin" : ""}`} />
-              <span className="hidden sm:inline">{syncing ? "Syncing..." : "Sync Repo"}</span>
+              <RefreshCw className={`h-3 w-3 ${syncing ? "animate-spin" : ""}`} />
+              <span className="hidden sm:inline">{syncing ? "Syncing..." : "Sync"}</span>
             </button>
 
             {/* Leaderboard Action Button */}
             <button
               onClick={onOpenLeaderboard}
-              title="Open Repository Benchmark Leaderboard"
-              className="flex items-center gap-1.5 rounded-xl border border-amber-500/30 bg-amber-500/10 px-2.5 py-1.5 text-xs font-semibold text-amber-300 hover:text-amber-200 hover:bg-amber-500/20 hover:border-amber-500/50 transition cursor-pointer whitespace-nowrap"
+              title="Open Benchmark Leaderboard"
+              className="flex items-center gap-1.5 border border-white/10 bg-white/[0.02] px-2.5 py-1 text-xs font-mono font-medium text-zinc-300 hover:bg-white/10 hover:text-white transition cursor-pointer whitespace-nowrap"
             >
-              <Trophy className="h-3.5 w-3.5 text-amber-400 shrink-0" />
+              <Trophy className="h-3 w-3 text-zinc-400" />
               <span className="hidden sm:inline">Leaderboard</span>
             </button>
 
             {/* GitHub Token / PAT Button */}
             <button
               onClick={() => setShowTokenModal(true)}
-              title={githubToken ? "GitHub Token Active (5,000 req/hr)" : "Set Personal Access Token to bypass 60 req/hr limit"}
-              className={`flex items-center gap-1.5 rounded-xl border px-2.5 py-1.5 text-xs font-medium transition cursor-pointer whitespace-nowrap ${
+              title={githubToken ? "GitHub Token Active (5,000 req/hr)" : "Set PAT token"}
+              className={`flex items-center gap-1.5 border px-2.5 py-1 text-xs font-mono transition cursor-pointer whitespace-nowrap ${
                 githubToken
-                  ? "border-emerald-500/30 bg-emerald-500/10 text-emerald-400 hover:bg-emerald-500/20"
-                  : "border-zinc-800 bg-zinc-900 text-zinc-300 hover:text-white hover:bg-zinc-800 hover:border-zinc-700"
+                  ? "border-emerald-500/40 text-emerald-400 bg-emerald-500/5"
+                  : "border-white/10 text-zinc-400 hover:text-white hover:bg-white/10"
               }`}
             >
-              <Key className="h-3.5 w-3.5 shrink-0" />
-              <span className="hidden md:inline">{githubToken ? "Token Active" : "Set PAT"}</span>
+              <Key className="h-3 w-3 shrink-0" />
+              <span className="hidden md:inline">{githubToken ? "PAT Active" : "Set PAT"}</span>
             </button>
 
             {/* Help & Guide Button */}
             <button
               onClick={onOpenHelp}
-              title="GitPulse Documentation & Guide (Press '?')"
-              className="flex items-center gap-1.5 rounded-xl border border-zinc-800 bg-zinc-900 px-2.5 py-1.5 text-xs font-medium text-zinc-300 hover:text-white hover:bg-zinc-850 hover:border-zinc-700 transition cursor-pointer whitespace-nowrap"
+              title="GitPulse Guide (Press '?')"
+              className="flex items-center gap-1.5 border border-white/10 px-2.5 py-1 text-xs font-mono text-zinc-400 hover:text-white hover:bg-white/10 transition cursor-pointer whitespace-nowrap"
             >
-              <HelpCircle className="h-3.5 w-3.5 text-indigo-400 shrink-0" />
+              <HelpCircle className="h-3 w-3 shrink-0" />
               <span className="hidden md:inline">Guide</span>
             </button>
           </div>
         </div>
 
-        {/* Tier 2: Dedicated Featured Repositories Subnav Strip */}
-        <div className="flex items-center gap-2 px-6 py-2 border-t border-zinc-800/50 bg-zinc-950/60 overflow-x-auto scrollbar-none">
-          <span className="text-[11px] font-mono text-zinc-500 shrink-0 flex items-center gap-1.5 mr-1">
-            <Globe className="h-3 w-3 text-indigo-400" />
-            <span>Featured:</span>
+        {/* Tier 2: Minimalist Monospaced Presets Strip */}
+        <div className="flex items-center gap-3 px-6 py-2 border-t border-white/[0.06] bg-black/30 overflow-x-auto scrollbar-none text-xs font-mono">
+          <span className="text-[11px] text-zinc-500 shrink-0">
+            INDEX:
           </span>
 
-          <div className="flex items-center gap-1.5 shrink-0">
+          <div className="flex items-center gap-2 shrink-0">
             {featuredPresets.map((p) => {
               const isActive = currentRepo.toLowerCase() === p.repo.toLowerCase();
               return (
@@ -346,18 +321,13 @@ export function Header({
                   key={p.repo}
                   onClick={() => handleSelectPreset(p.repo)}
                   title={p.tooltip}
-                  className={`group relative flex items-center gap-1.5 rounded-lg px-2.5 py-1 text-xs font-mono transition-all cursor-pointer whitespace-nowrap shrink-0 ${
+                  className={`px-2 py-0.5 text-xs transition cursor-pointer whitespace-nowrap shrink-0 flex items-center gap-1.5 ${
                     isActive
-                      ? p.isHero
-                        ? "bg-emerald-500/15 text-emerald-300 border border-emerald-500/40 font-semibold shadow-xs"
-                        : "bg-indigo-500/15 text-indigo-200 border border-indigo-500/40 font-semibold shadow-xs"
-                      : p.isHero
-                      ? "bg-zinc-900/80 text-emerald-400/90 border border-emerald-500/20 hover:border-emerald-500/40 hover:bg-emerald-500/10 hover:text-emerald-300"
-                      : "bg-zinc-900/60 text-zinc-400 border border-zinc-800/80 hover:text-zinc-200 hover:bg-zinc-850 hover:border-zinc-700"
+                      ? "text-white font-bold underline decoration-white underline-offset-4"
+                      : "text-zinc-500 hover:text-zinc-200"
                   }`}
                 >
-                  <span className="text-[11px] group-hover:scale-110 transition-transform">{p.icon}</span>
-                  <span className="font-medium">{p.label}</span>
+                  <span>{p.label}</span>
                   {p.isHero && (
                     <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse ml-0.5" />
                   )}
@@ -381,16 +351,16 @@ export function Header({
 
       {/* GitHub PAT Modal */}
       {showTokenModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4">
-          <div className="relative w-full max-w-md rounded-2xl border border-zinc-800 bg-zinc-950 p-6 shadow-2xl">
-            <div className="flex items-center justify-between pb-3 border-b border-zinc-800">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/85 backdrop-blur-xl p-4">
+          <div className="relative w-full max-w-md rounded-2xl border border-white/[0.12] bg-[#0d0f14]/95 p-6 shadow-2xl">
+            <div className="flex items-center justify-between pb-3 border-b border-white/[0.08]">
               <div className="flex items-center gap-2">
-                <Key className="h-4 w-4 text-violet-400" />
+                <Key className="h-4 w-4 text-emerald-400" />
                 <h3 className="font-semibold text-white text-sm">GitHub Personal Access Token</h3>
               </div>
               <button
                 onClick={() => setShowTokenModal(false)}
-                className="rounded-lg p-1 text-zinc-400 hover:text-white"
+                className="rounded-lg p-1 text-zinc-400 hover:bg-white/[0.06] hover:text-white cursor-pointer transition"
               >
                 <X className="h-4 w-4" />
               </button>
@@ -406,10 +376,10 @@ export function Header({
                 placeholder="ghp_xxxxxxxxxxxxxxxxxxxx"
                 value={tempToken}
                 onChange={(e) => setTempToken(e.target.value)}
-                className="w-full rounded-xl border border-zinc-800 bg-zinc-900 px-3.5 py-2 text-xs font-mono text-white placeholder-zinc-500 focus:border-violet-500 focus:outline-none"
+                className="w-full rounded-xl border border-white/[0.1] bg-white/[0.04] px-3.5 py-2 text-xs font-mono text-white placeholder-zinc-500 focus:border-indigo-400 focus:outline-none"
               />
-              <div className="flex justify-between items-center text-[11px] text-zinc-500">
-                <span>Stored locally in your browser (localStorage)</span>
+              <div className="flex justify-between items-center text-[11px] text-zinc-500 font-mono">
+                <span>Stored locally in browser (localStorage)</span>
                 {githubToken && (
                   <button
                     onClick={() => {
@@ -417,7 +387,7 @@ export function Header({
                       onTokenChange("");
                       setShowTokenModal(false);
                     }}
-                    className="text-rose-400 hover:underline"
+                    className="text-rose-400 hover:underline cursor-pointer"
                   >
                     Remove Token
                   </button>
@@ -428,13 +398,13 @@ export function Header({
             <div className="mt-5 flex justify-end gap-2">
               <button
                 onClick={() => setShowTokenModal(false)}
-                className="rounded-lg px-3 py-1.5 text-xs text-zinc-400 hover:bg-zinc-900"
+                className="rounded-lg px-3 py-1.5 text-xs text-zinc-400 hover:bg-white/[0.06] cursor-pointer"
               >
                 Cancel
               </button>
               <button
                 onClick={handleSaveToken}
-                className="flex items-center gap-1 rounded-lg bg-zinc-100 hover:bg-white text-zinc-950 px-4 py-1.5 text-xs font-semibold shadow-xs transition-colors"
+                className="flex items-center gap-1 rounded-lg bg-white hover:bg-zinc-100 text-zinc-950 px-4 py-1.5 text-xs font-semibold shadow-xs transition-colors cursor-pointer"
               >
                 <Check className="h-3.5 w-3.5" />
                 <span>Save Token</span>
@@ -446,19 +416,19 @@ export function Header({
 
       {/* Custom Repository Switcher Modal */}
       {showRepoModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4">
-          <div className="relative w-full max-w-lg rounded-2xl border border-zinc-800 bg-zinc-950 p-6 shadow-2xl">
-            <div className="flex items-center justify-between pb-3 border-b border-zinc-800">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/85 backdrop-blur-xl p-4">
+          <div className="relative w-full max-w-lg rounded-2xl border border-white/[0.12] bg-[#0d0f14]/95 p-6 shadow-2xl">
+            <div className="flex items-center justify-between pb-3 border-b border-white/[0.08]">
               <div className="flex items-center gap-2.5">
-                <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-zinc-900 border border-zinc-700/80 text-zinc-200">
+                <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-white/[0.04] border border-white/[0.08] text-zinc-200">
                   <FolderGit2 className="h-4 w-4 text-indigo-400" />
                 </div>
                 <div>
                   <h3 className="font-semibold text-zinc-100 text-sm md:text-base">
                     Switch / Analyze GitHub Repository
                   </h3>
-                  <p className="text-[11px] text-zinc-400">
-                    GitPulse can analyze any public GitHub repository worldwide
+                  <p className="text-[11px] text-zinc-400 font-mono">
+                    DuckDB telemetry indexed across public repositories
                   </p>
                 </div>
               </div>
@@ -467,7 +437,7 @@ export function Header({
                   setShowRepoModal(false);
                   setRepoError("");
                 }}
-                className="rounded-lg p-1 text-zinc-400 hover:bg-zinc-900 hover:text-white transition"
+                className="rounded-lg p-1 text-zinc-400 hover:bg-white/[0.06] hover:text-white transition cursor-pointer"
               >
                 <X className="h-4 w-4" />
               </button>

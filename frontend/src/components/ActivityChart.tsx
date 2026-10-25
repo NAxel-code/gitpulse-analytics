@@ -10,7 +10,7 @@ import {
   Tooltip,
   ResponsiveContainer,
 } from "recharts";
-import { GitCommit, Activity, RefreshCw } from "lucide-react";
+import { RefreshCw } from "lucide-react";
 
 interface ActivityPoint {
   time_bucket: string;
@@ -35,7 +35,7 @@ export function ActivityChart({
 
   const formattedData = data.map((d) => ({
     ...d,
-    dateLabel: d.time_bucket.slice(5), // 'MM-DD'
+    dateLabel: d.time_bucket.slice(5),
   }));
 
   const computedMax = Math.max(
@@ -58,38 +58,40 @@ export function ActivityChart({
     );
 
   return (
-    <div className="rounded-xl border border-zinc-800/80 bg-zinc-900/60 p-5 shadow-sm relative overflow-hidden">
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6">
+    <div className="border border-white/[0.08] bg-[#0c0c0e] p-6 h-full flex flex-col justify-between">
+      {/* Header Deck */}
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-white/[0.08] mb-6">
         <div>
-          <div className="flex items-center gap-2">
-            <Activity className="h-4 w-4 text-indigo-400" />
-            <h3 className="font-semibold text-zinc-100 text-sm md:text-base">
-              Repository Activity Velocity
-            </h3>
-          </div>
-          <p className="text-xs text-zinc-400 mt-0.5">
-            Daily time-series trends for code changes, pull requests, and issues in <span className="font-mono text-zinc-300">{repoName}</span>
+          <span className="text-[10px] font-mono uppercase tracking-wider text-zinc-500 block">
+            CHRONOLOGY
+          </span>
+          <h3 className="font-semibold text-white text-base mt-0.5 tracking-tight">
+            Activity &amp; Commit Velocity
+          </h3>
+          <p className="text-xs text-zinc-500 font-mono mt-0.5">
+            Daily timeline for <span className="text-zinc-300 font-medium">{repoName}</span>
           </p>
         </div>
 
-        {/* View Toggle */}
-        <div className="flex items-center rounded-lg border border-zinc-800 bg-zinc-950 p-1 self-start">
+        {/* View Switcher (Text Links, Awwwards Style) */}
+        <div className="flex items-center gap-4 text-xs font-mono self-start sm:self-auto">
           <button
             onClick={() => setMetric("code")}
-            className={`rounded-md px-3 py-1 text-xs font-medium transition-colors focus-visible:ring-2 focus-visible:ring-zinc-700 focus:outline-none ${
+            className={`transition cursor-pointer pb-0.5 relative ${
               metric === "code"
-                ? "bg-zinc-800 text-zinc-100 border border-zinc-700/60 shadow-xs"
-                : "text-zinc-400 hover:text-zinc-200"
+                ? "text-white font-bold border-b border-white"
+                : "text-zinc-500 hover:text-zinc-300"
             }`}
           >
             Commits &amp; PRs
           </button>
+          <span className="text-zinc-700">/</span>
           <button
             onClick={() => setMetric("community")}
-            className={`rounded-md px-3 py-1 text-xs font-medium transition-colors focus-visible:ring-2 focus-visible:ring-zinc-700 focus:outline-none ${
+            className={`transition cursor-pointer pb-0.5 relative ${
               metric === "community"
-                ? "bg-zinc-800 text-zinc-100 border border-zinc-700/60 shadow-xs"
-                : "text-zinc-400 hover:text-zinc-200"
+                ? "text-white font-bold border-b border-white"
+                : "text-zinc-500 hover:text-zinc-300"
             }`}
           >
             Issues &amp; Stars
@@ -98,145 +100,137 @@ export function ActivityChart({
       </div>
 
       {formattedData.length === 0 ? (
-        <div className="h-[280px] w-full flex flex-col items-center justify-center text-center p-6">
-          <Activity className="h-8 w-8 text-zinc-600 mb-2" />
-          <h4 className="text-xs font-semibold text-zinc-300">No Daily Activity Recorded Yet</h4>
-          <p className="text-[11px] text-zinc-500 mt-1 max-w-xs">
-            Time-series activity data for {repoName} has not been synced yet.
-          </p>
+        <div className="h-[280px] w-full flex flex-col items-center justify-center text-center p-6 border border-dashed border-white/10 text-xs font-mono text-zinc-500">
+          <p>No activity history recorded for this repository.</p>
           {onSync && (
             <button
               onClick={onSync}
               disabled={isSyncing}
-              className="mt-3 inline-flex items-center gap-1.5 rounded-lg bg-zinc-800 hover:bg-zinc-700 border border-zinc-700 px-3 py-1.5 text-xs text-zinc-200 transition"
+              className="mt-3 inline-flex items-center gap-1.5 border border-white/10 px-3 py-1 text-xs font-mono text-zinc-300 hover:text-white hover:border-white/30 transition cursor-pointer"
             >
               <RefreshCw className={`h-3 w-3 ${isSyncing ? "animate-spin" : ""}`} />
-              {isSyncing ? "Syncing..." : "Fetch GitHub Data Now"}
+              <span>{isSyncing ? "Syncing..." : "Sync from GitHub"}</span>
             </button>
           )}
         </div>
       ) : (
         <div className="h-[280px] w-full relative">
           {isAllZero && (
-            <div className="absolute inset-0 flex flex-col items-center justify-center bg-zinc-950/80 backdrop-blur-[2px] rounded-lg p-6 text-center z-10">
-              <div className="h-10 w-10 rounded-full bg-zinc-900 border border-zinc-800 flex items-center justify-center text-zinc-400 mb-3 shadow-inner">
-                <Activity className="h-5 w-5 text-indigo-400" />
-              </div>
-              <h4 className="text-sm font-semibold text-zinc-200">
-                No {metric === "code" ? "Commit & PR" : "Issue & Star"} Activity Found
-              </h4>
-              <p className="text-xs text-zinc-400 mt-1 max-w-sm leading-relaxed">
-                Daily activity history for <span className="font-mono text-zinc-300 font-medium">{repoName}</span> is currently empty or has not been synced.
-              </p>
+            <div className="absolute inset-0 flex flex-col items-center justify-center bg-[#0c0c0e]/90 text-center z-10 text-xs font-mono text-zinc-400">
+              <p>No {metric === "code" ? "commits or pull requests" : "issues or stars"} in this timeframe.</p>
               {onSync && (
                 <button
                   onClick={onSync}
                   disabled={isSyncing}
-                  className="mt-4 inline-flex items-center gap-2 rounded-lg bg-indigo-600 hover:bg-indigo-500 disabled:opacity-60 px-4 py-2 text-xs font-medium text-white shadow-sm transition cursor-pointer"
+                  className="mt-3 border border-white/20 px-3.5 py-1.5 text-xs text-white hover:bg-white/10 transition cursor-pointer"
                 >
-                  <RefreshCw className={`h-3.5 w-3.5 ${isSyncing ? "animate-spin" : ""}`} />
-                  {isSyncing ? "Syncing GitHub..." : `Sync Live Data @${repoName}`}
+                  Sync Live Data
                 </button>
               )}
             </div>
           )}
+
           <ResponsiveContainer width="100%" height="100%">
-            <AreaChart data={formattedData} margin={{ top: 10, right: 10, left: 0, bottom: 0 }}>
-            <defs>
-              <linearGradient id="colorCommits" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="5%" stopColor="#6366f1" stopOpacity={0.35} />
-                <stop offset="95%" stopColor="#6366f1" stopOpacity={0.0} />
-              </linearGradient>
-              <linearGradient id="colorPRs" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="5%" stopColor="#10b981" stopOpacity={0.4} />
-                <stop offset="95%" stopColor="#10b981" stopOpacity={0.0} />
-              </linearGradient>
-              <linearGradient id="colorIssues" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="5%" stopColor="#f59e0b" stopOpacity={0.35} />
-                <stop offset="95%" stopColor="#f59e0b" stopOpacity={0.0} />
-              </linearGradient>
-              <linearGradient id="colorStars" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="5%" stopColor="#38bdf8" stopOpacity={0.35} />
-                <stop offset="95%" stopColor="#38bdf8" stopOpacity={0.0} />
-              </linearGradient>
-            </defs>
-            <CartesianGrid strokeDasharray="3 3" stroke="#27272a" vertical={false} />
-            <XAxis
-              dataKey="dateLabel"
-              stroke="#71717a"
-              fontSize={11}
-              tickLine={false}
-              axisLine={{ stroke: "#27272a" }}
-            />
-            <YAxis
-              stroke="#71717a"
-              fontSize={11}
-              tickLine={false}
-              axisLine={{ stroke: "#27272a" }}
-              allowDecimals={false}
-              domain={[0, Math.ceil(computedMax * 1.15)]}
-              width={32}
-            />
-            <Tooltip
-              contentStyle={{
-                backgroundColor: "#18181b",
-                borderColor: "#3f3f46",
-                borderRadius: "0.5rem",
-                color: "#f4f4f5",
-                fontSize: "12px",
-              }}
-            />
-            {metric === "code" && (
-              <Area
-                type="monotone"
-                dataKey="commits"
-                name="Commits"
-                stroke="#6366f1"
-                strokeWidth={2}
-                fillOpacity={1}
-                fill="url(#colorCommits)"
-                isAnimationActive={false}
+            <AreaChart
+              data={formattedData}
+              margin={{ top: 10, right: 10, left: 0, bottom: 0 }}
+            >
+              <defs>
+                <linearGradient id="areaGradientPrimary" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stopColor="#ffffff" stopOpacity={0.12} />
+                  <stop offset="100%" stopColor="#ffffff" stopOpacity={0.0} />
+                </linearGradient>
+                <linearGradient id="areaGradientSecondary" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stopColor="#a1a1aa" stopOpacity={0.08} />
+                  <stop offset="100%" stopColor="#a1a1aa" stopOpacity={0.0} />
+                </linearGradient>
+              </defs>
+              <CartesianGrid
+                strokeDasharray="2 2"
+                stroke="rgba(255, 255, 255, 0.05)"
+                vertical={false}
               />
-            )}
-            {metric === "code" && (
-              <Area
-                type="monotone"
-                dataKey="pull_requests"
-                name="Pull Requests"
-                stroke="#10b981"
-                strokeWidth={2}
-                fillOpacity={1}
-                fill="url(#colorPRs)"
-                isAnimationActive={false}
+              <XAxis
+                dataKey="dateLabel"
+                stroke="#52525b"
+                fontSize={10}
+                fontFamily="ui-monospace, monospace"
+                tickLine={false}
+                axisLine={{ stroke: "rgba(255, 255, 255, 0.08)" }}
               />
-            )}
-            {metric === "community" && (
-              <Area
-                type="monotone"
-                dataKey="issues"
-                name="Issues"
-                stroke="#f59e0b"
-                strokeWidth={2}
-                fillOpacity={1}
-                fill="url(#colorIssues)"
-                isAnimationActive={false}
+              <YAxis
+                stroke="#52525b"
+                fontSize={10}
+                fontFamily="ui-monospace, monospace"
+                tickLine={false}
+                axisLine={{ stroke: "rgba(255, 255, 255, 0.08)" }}
+                allowDecimals={false}
+                domain={[0, Math.ceil(computedMax * 1.15)]}
+                width={36}
               />
-            )}
-            {metric === "community" && (
-              <Area
-                type="monotone"
-                dataKey="stars"
-                name="New Stars"
-                stroke="#38bdf8"
-                strokeWidth={2}
-                fillOpacity={1}
-                fill="url(#colorStars)"
-                isAnimationActive={false}
+              <Tooltip
+                contentStyle={{
+                  backgroundColor: "#080808",
+                  borderColor: "rgba(255, 255, 255, 0.15)",
+                  borderRadius: "0px",
+                  color: "#f4f4f5",
+                  fontSize: "11px",
+                  fontFamily: "ui-monospace, monospace",
+                }}
               />
-            )}
-          </AreaChart>
-        </ResponsiveContainer>
-      </div>
+              {metric === "code" && (
+                <Area
+                  type="monotone"
+                  dataKey="commits"
+                  name="Commits"
+                  stroke="#ffffff"
+                  strokeWidth={1.5}
+                  fillOpacity={1}
+                  fill="url(#areaGradientPrimary)"
+                  isAnimationActive={false}
+                />
+              )}
+              {metric === "code" && (
+                <Area
+                  type="monotone"
+                  dataKey="pull_requests"
+                  name="Pull Requests"
+                  stroke="#a1a1aa"
+                  strokeWidth={1}
+                  strokeDasharray="3 3"
+                  fillOpacity={1}
+                  fill="url(#areaGradientSecondary)"
+                  isAnimationActive={false}
+                />
+              )}
+              {metric === "community" && (
+                <Area
+                  type="monotone"
+                  dataKey="issues"
+                  name="Issues"
+                  stroke="#ffffff"
+                  strokeWidth={1.5}
+                  fillOpacity={1}
+                  fill="url(#areaGradientPrimary)"
+                  isAnimationActive={false}
+                />
+              )}
+              {metric === "community" && (
+                <Area
+                  type="monotone"
+                  dataKey="stars"
+                  name="New Stars"
+                  stroke="#a1a1aa"
+                  strokeWidth={1}
+                  strokeDasharray="3 3"
+                  fillOpacity={1}
+                  fill="url(#areaGradientSecondary)"
+                  isAnimationActive={false}
+                />
+              )}
+            </AreaChart>
+          </ResponsiveContainer>
+        </div>
       )}
     </div>
   );

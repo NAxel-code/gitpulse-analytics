@@ -3,37 +3,85 @@
 @tailwind utilities;
 
 :root {
-  --background: 240 10% 3.9%;
-  --foreground: 0 0% 98%;
-  --card: 240 10% 4.9%;
-  --card-foreground: 0 0% 98%;
-  --primary: 238 84% 67%;
-  --primary-foreground: 0 0% 100%;
-  --muted: 240 3.7% 15.9%;
-  --muted-foreground: 240 5% 64.9%;
-  --accent: 240 3.7% 15.9%;
-  --accent-foreground: 0 0% 98%;
-  --border: 240 3.7% 15.9%;
+  --background: 0 0% 3.5%;
+  --foreground: 0 0% 96%;
+  --muted: 240 4% 16%;
+  --muted-foreground: 240 5% 55%;
+  --border: 0 0% 12%;
 }
 
-body {
-  background-color: #09090b;
-  color: #fafafa;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-  overflow-x: hidden;
+@layer base {
+  * {
+    border-color: rgba(255, 255, 255, 0.08);
+  }
+
+  body {
+    background-color: #080808;
+    color: #f4f4f5;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Inter", "Helvetica Neue", Arial, sans-serif;
+    overflow-x: hidden;
+    letter-spacing: -0.015em;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
 }
 
-/* Custom scrollbars */
+/* Precision Tabular Numbers */
+.tabular-nums {
+  font-variant-numeric: tabular-nums;
+}
+
+/* Awwwards Architectural Grid & Hairline Dividers */
+.hairline-border {
+  border-color: rgba(255, 255, 255, 0.08);
+}
+
+.hairline-t {
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.hairline-b {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.hairline-l {
+  border-left: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.hairline-r {
+  border-right: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+/* Architectural Panel (Zero Bloat, Zero AI-Slop Glow) */
+.editorial-panel {
+  background-color: #0d0d0f;
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  transition: border-color 0.15s ease;
+}
+
+.editorial-panel:hover {
+  border-color: rgba(255, 255, 255, 0.15);
+}
+
+/* Display Numbers (Awwwards Scale) */
+.display-num {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Inter", sans-serif;
+  letter-spacing: -0.04em;
+  line-height: 0.95;
+  font-weight: 700;
+}
+
+/* Subtle, Quiet Scrollbar */
 ::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
+  width: 4px;
+  height: 4px;
 }
 ::-webkit-scrollbar-track {
-  background: #09090b;
+  background: #080808;
 }
 ::-webkit-scrollbar-thumb {
   background: #27272a;
-  border-radius: 3px;
+  border-radius: 2px;
 }
 ::-webkit-scrollbar-thumb:hover {
   background: #3f3f46;
