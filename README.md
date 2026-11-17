@@ -3,7 +3,7 @@
 > **Ujian Tengah Semester (UTS) — COMP6991031 Cloud Services**  
 > **Program Studi:** Computer Science / Teknik Informatika — BINUS University  
 > **Kategori Projek:** Web Application (Cloud, DevOps & Engineering Intelligence)  
-> **Repository GitHub:** [https://github.com/NAxel-code/gitpulse-analytics-uts](https://github.com/NAxel-code/gitpulse-analytics-uts)  
+> **Repository GitHub:** [https://github.com/NAxel-code/gitpulse-analytics](https://github.com/NAxel-code/gitpulse-analytics)  
 > **Artikel Publik:** *[Tautan Artikel Dev.to / Medium / Hashnode]*  
 > **Video Demo YouTube:** *[Tautan Video Demo YouTube (3–5 Menit)]*
 
@@ -122,8 +122,8 @@ Kedua komponen utama (Frontend dan Backend) menggunakan arsitektur **Multi-Stage
 
 ### Langkah 1: Kloning Repositori
 ```bash
-git clone https://github.com/NAxel-code/gitpulse-analytics-uts.git
-cd gitpulse-analytics-uts
+git clone https://github.com/NAxel-code/gitpulse-analytics.git
+cd gitpulse-analytics
 ```
 
 ### Langkah 2: Siapkan File Environment
